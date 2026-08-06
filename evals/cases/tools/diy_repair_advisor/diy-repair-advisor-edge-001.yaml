@@ -1,0 +1,17 @@
+tool: diy_repair_advisor
+id: diy-repair-advisor-edge-001
+description: "diy_repair_advisor attaches chat_message for tire/PSI queries"
+tier: 1
+persona: fleet-driver
+vehicle_id: VEH-0025
+driver_id: drv-samantha-carter
+input:
+  type: text
+  input_args:
+    query: "what PSI should my tires be"
+    dtc_code: ""
+expected:
+  tool_output:
+    source: "owner-manuals"
+    query: "what PSI should my tires be"
+latency_budget_ms: 1000

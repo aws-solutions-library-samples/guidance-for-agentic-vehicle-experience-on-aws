@@ -1,0 +1,386 @@
+<mxfile host="app.diagrams.net" agent="Kiro-diagrams-skill">
+  <diagram id="candidate-2-data-fusion" name="CVX Candidate 2 - Data Fusion (Two-Phase)">
+    <mxGraphModel dx="2800" dy="1700" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2800" pageHeight="1780" background="#FFFFFF" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- ===== Title block ===== -->
+        <mxCell id="title-group" connectable="0" style="group;fontFamily=Helvetica;" value="" vertex="1" parent="1">
+          <mxGeometry x="60" y="30" width="2680" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="title-text" style="text;html=1;resizable=1;points=[];autosize=1;align=left;verticalAlign=top;spacingTop=-4;fontSize=30;fontStyle=1;fontFamily=Helvetica;" value="CVX Data Fusion — Two-Phase Grounding Pattern" vertex="1" parent="title-group">
+          <mxGeometry width="1900" height="42" as="geometry" />
+        </mxCell>
+        <mxCell id="subtitle-text" style="text;html=1;resizable=0;points=[];autosize=1;align=left;verticalAlign=top;spacingTop=-4;fontSize=16;fontFamily=Helvetica;" value="Cost + latency optimization: one cross-account Athena query at session start seeds AgentCore Memory; every subsequent turn reads only in-region." vertex="1" parent="title-group">
+          <mxGeometry x="5" y="40" width="2200" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="title-separator" style="line;strokeWidth=2;html=1;fontSize=14;strokeColor=#FF9900;fontFamily=Helvetica;" value="" vertex="1" parent="title-group">
+          <mxGeometry x="5" y="70" width="2670" height="10" as="geometry" />
+        </mxCell>
+
+        <!-- ============================================================ -->
+        <!-- ============  PHASE 1  BAND — SESSION INIT  ================ -->
+        <!-- ============================================================ -->
+
+        <mxCell id="phase1-band" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF8E1;strokeColor=#FF8F00;strokeWidth=3;dashed=0;fontFamily=Helvetica;verticalAlign=top;align=left;container=1;collapsible=0;shadow=0;" vertex="1" parent="1">
+          <mxGeometry x="60" y="140" width="1940" height="720" as="geometry" />
+        </mxCell>
+
+        <!-- Phase 1 header banner -->
+        <mxCell id="phase1-header" value="PHASE 1 — SESSION INITIALIZATION" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FF8F00;strokeColor=none;fontColor=#FFFFFF;fontFamily=Helvetica;fontStyle=1;fontSize=20;align=left;spacingLeft=30;verticalAlign=middle;" vertex="1" parent="phase1-band">
+          <mxGeometry width="1940" height="46" as="geometry" />
+        </mxCell>
+        <mxCell id="phase1-subheader" value="⏱ ONCE per session · ~6–7 seconds · cross-account Athena roundtrip · seeds AgentCore Memory · runs BEFORE first user turn" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Helvetica;fontSize=13;fontStyle=2;fontColor=#5D4037;spacingLeft=30;" vertex="1" parent="phase1-band">
+          <mxGeometry y="50" width="1900" height="26" as="geometry" />
+        </mxCell>
+
+        <!-- Phase 1: CVX account boundary -->
+        <mxCell id="p1-cvx-account" value="CVX account / region" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#232F3E;dashed=1;dashPattern=8 4;fontSize=13;fontStyle=1;fontColor=#232F3E;fontFamily=Helvetica;verticalAlign=top;align=left;spacingLeft=15;spacingTop=8;strokeWidth=2;container=1;collapsible=0;" vertex="1" parent="phase1-band">
+          <mxGeometry x="30" y="90" width="1120" height="610" as="geometry" />
+        </mxCell>
+
+        <!-- Phase 1: ADP account boundary -->
+        <mxCell id="p1-adp-account" value="ADP account / region — cross-account authorization boundary" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#232F3E;dashed=1;dashPattern=8 4;fontSize=13;fontStyle=1;fontColor=#232F3E;fontFamily=Helvetica;verticalAlign=top;align=left;spacingLeft=15;spacingTop=8;strokeWidth=2;container=1;collapsible=0;" vertex="1" parent="phase1-band">
+          <mxGeometry x="1180" y="90" width="720" height="610" as="geometry" />
+        </mxCell>
+
+        <!-- Phase 1: AgentCore Runtime (persona_loader) -->
+        <mxCell id="p1-runtime-container" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E0F2F1;strokeColor=#01A88D;fontSize=12;fontStyle=1;fontColor=#01A88D;fontFamily=Helvetica;verticalAlign=top;align=left;spacingLeft=70;spacingTop=10;strokeWidth=1.5;shadow=1;container=1;collapsible=0;" value="Bedrock AgentCore Runtime" vertex="1" parent="p1-cvx-account">
+          <mxGeometry x="30" y="60" width="340" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="p1-runtime-icon" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;fillColor=#01A88D;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.bedrock_agentcore;fontFamily=Helvetica;" value="" vertex="1" parent="p1-runtime-container">
+          <mxGeometry x="12" y="10" width="48" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="p1-runtime-sublist" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=11;fontFamily=Helvetica;fontColor=#232F3E;" value="&lt;div&gt;&lt;b&gt;persona_loader&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;i style=&quot;font-size: 10px; color: #666;&quot;&gt;fires at session start after&lt;/i&gt;&lt;/div&gt;&lt;div&gt;&lt;i style=&quot;font-size: 10px; color: #666;&quot;&gt;caller/VIN/tenant resolution&lt;/i&gt;&lt;/div&gt;" vertex="1" parent="p1-runtime-container">
+          <mxGeometry x="14" y="65" width="320" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Phase 1: CMS Redis LKS (one-shot read at init) -->
+        <mxCell id="p1-redis-container" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5E6F7;strokeColor=#C925D1;fontSize=12;fontStyle=1;fontColor=#C925D1;fontFamily=Helvetica;verticalAlign=top;align=left;spacingLeft=70;spacingTop=10;strokeWidth=1.5;shadow=1;container=1;collapsible=0;" value="CMS Redis LKS (ElastiCache)" vertex="1" parent="p1-cvx-account">
+          <mxGeometry x="30" y="270" width="340" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="p1-redis-icon" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;fillColor=#C925D1;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.elasticache;fontFamily=Helvetica;" value="" vertex="1" parent="p1-redis-container">
+          <mxGeometry x="12" y="10" width="48" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="p1-redis-sublist" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=11;fontFamily=Helvetica;fontColor=#232F3E;" value="&lt;div&gt;&lt;b&gt;LKS snapshot: one-shot read&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;i style=&quot;font-size: 10px; color: #666;&quot;&gt;DTCs, telemetry, tires, GPS&lt;/i&gt;&lt;/div&gt;&lt;div&gt;&lt;i style=&quot;font-size: 10px; color: #666;&quot;&gt;→ held in session context&lt;/i&gt;&lt;/div&gt;&lt;div&gt;&lt;i style=&quot;font-size: 10px; color: #666;&quot;&gt;for the whole conversation&lt;/i&gt;&lt;/div&gt;" vertex="1" parent="p1-redis-container">
+          <mxGeometry x="14" y="65" width="320" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Phase 1: AgentCore Memory (seed write target) -->
+        <mxCell id="p1-memory-container" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E0F2F1;strokeColor=#01A88D;fontSize=12;fontStyle=1;fontColor=#01A88D;fontFamily=Helvetica;verticalAlign=top;align=left;spacingLeft=70;spacingTop=10;strokeWidth=1.5;shadow=1;container=1;collapsible=0;" value="Bedrock AgentCore Memory" vertex="1" parent="p1-cvx-account">
+          <mxGeometry x="580" y="270" width="500" height="230" as="geometry" />
+        </mxCell>
+        <mxCell id="p1-memory-icon" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;fillColor=#01A88D;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.bedrock_agentcore;fontFamily=Helvetica;" value="" vertex="1" parent="p1-memory-container">
+          <mxGeometry x="12" y="10" width="48" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="p1-memory-sublist" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=11;fontFamily=Helvetica;fontColor=#232F3E;" value="&lt;div&gt;&lt;b&gt;SEED WRITE — metadata-tagged records&lt;/b&gt;&lt;/div&gt;&lt;div style=&quot;font-family: monospace; font-size: 10px; color: #01A88D; margin-top: 4px;&quot;&gt;persona_id, vehicle_id, customer_id,&lt;br&gt;data_source, tenant_id&lt;/div&gt;&lt;div style=&quot;margin-top: 6px;&quot;&gt;· vehicle_identity · service_records&lt;/div&gt;&lt;div&gt;· charging_sessions · customer_360&lt;/div&gt;&lt;div&gt;· customer_interactions · ota_campaigns&lt;/div&gt;&lt;div style=&quot;margin-top: 6px; font-size: 10px; color: #666;&quot;&gt;&lt;i&gt;&lt; 100 KiB serialized JSON; metadata set by loader, not by LLM&lt;/i&gt;&lt;/div&gt;" vertex="1" parent="p1-memory-container">
+          <mxGeometry x="14" y="65" width="470" height="160" as="geometry" />
+        </mxCell>
+
+        <!-- Phase 1: ADP Centralized Data Repository (STAR of Phase 1) -->
+        <mxCell id="p1-cdr-container" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EDE7F6;strokeColor=#8C4FFF;fontSize=13;fontStyle=1;fontColor=#8C4FFF;fontFamily=Helvetica;verticalAlign=top;align=left;spacingLeft=70;spacingTop=10;strokeWidth=2;shadow=1;container=1;collapsible=0;" value="ADP Centralized Data Repository" vertex="1" parent="p1-adp-account">
+          <mxGeometry x="30" y="90" width="660" height="410" as="geometry" />
+        </mxCell>
+        <mxCell id="p1-cdr-icon" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;fillColor=#8C4FFF;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.lake_formation;fontFamily=Helvetica;" value="" vertex="1" parent="p1-cdr-container">
+          <mxGeometry x="12" y="10" width="48" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="p1-cdr-sub-icon-athena" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;fillColor=#8C4FFF;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=9;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.athena;fontFamily=Helvetica;" value="Athena" vertex="1" parent="p1-cdr-container">
+          <mxGeometry x="80" y="220" width="40" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="p1-cdr-sub-icon-glue" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;fillColor=#8C4FFF;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=9;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.glue;fontFamily=Helvetica;" value="Glue" vertex="1" parent="p1-cdr-container">
+          <mxGeometry x="200" y="220" width="40" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="p1-cdr-sub-icon-s3" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;fillColor=#7AA116;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=9;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.simple_storage_service;fontFamily=Helvetica;" value="S3" vertex="1" parent="p1-cdr-container">
+          <mxGeometry x="320" y="220" width="40" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="p1-cdr-sublist" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=11;fontFamily=Helvetica;fontColor=#232F3E;" value="&lt;div&gt;&lt;b&gt;Amazon Athena + AWS Glue + Amazon S3, governed by AWS Lake Formation&lt;/b&gt;&lt;/div&gt;&lt;div style=&quot;font-size: 10px; color: #666; margin-top: 4px;&quot;&gt;&lt;i&gt;Cross-account grant: lakeformation:GetDataAccess on 6 ADP databases&lt;/i&gt;&lt;/div&gt;&lt;div style=&quot;margin-top: 6px;&quot;&gt;· 6 ADP data products queried:&lt;/div&gt;&lt;div style=&quot;padding-left: 14px;&quot;&gt;&amp;nbsp;&amp;nbsp;vehicle_identity, service_records,&lt;/div&gt;&lt;div style=&quot;padding-left: 14px;&quot;&gt;&amp;nbsp;&amp;nbsp;charging_sessions, customer_360,&lt;/div&gt;&lt;div style=&quot;padding-left: 14px;&quot;&gt;&amp;nbsp;&amp;nbsp;customer_interactions, ota_campaigns&lt;/div&gt;&lt;div style=&quot;margin-top: 6px;&quot;&gt;· Partition-pruned by vehicle_id / customer_id&lt;/div&gt;" vertex="1" parent="p1-cdr-container">
+          <mxGeometry x="14" y="65" width="640" height="145" as="geometry" />
+        </mxCell>
+        <mxCell id="p1-cdr-footer" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=11;fontFamily=Helvetica;fontColor=#232F3E;" value="&lt;div style=&quot;font-size: 10px; color: #666;&quot;&gt;&lt;i&gt;S3 access via Lake Formation token-vending machine — CVX never receives the ADP KMS key.&lt;/i&gt;&lt;/div&gt;" vertex="1" parent="p1-cdr-container">
+          <mxGeometry x="14" y="280" width="640" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="p1-cdr-star" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FF8F00;strokeColor=#E65100;fontColor=#FFFFFF;fontStyle=1;fontSize=11;fontFamily=Helvetica;align=center;verticalAlign=middle;strokeWidth=1;" value="⭐ ONLY QUERIED HERE" vertex="1" parent="p1-cdr-container">
+          <mxGeometry x="440" y="220" width="200" height="34" as="geometry" />
+        </mxCell>
+        <mxCell id="p1-cdr-latency" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;fontFamily=Helvetica;fontColor=#5D4037;fontStyle=2;" value="&lt;div&gt;⏱ &lt;b&gt;~5–7 s&lt;/b&gt; wall-clock (cross-region adds 100–300 ms)&lt;/div&gt;&lt;div&gt;💰 amortized across every subsequent turn&lt;/div&gt;" vertex="1" parent="p1-cdr-container">
+          <mxGeometry x="14" y="330" width="640" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Phase 1 arrows -->
+        <mxCell id="p1-arrow-runtime-to-redis-real" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#01A88D;strokeWidth=3;rounded=0;fontFamily=Helvetica;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="p1-runtime-container" target="p1-redis-container">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p1-arrow-runtime-to-redis-label" value="① one-shot LKS read" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=none;fontFamily=Helvetica;fontSize=11;fontStyle=1;fontColor=#01A88D;" connectable="0" vertex="1" parent="p1-arrow-runtime-to-redis-real">
+          <mxGeometry relative="1" x="0" y="0" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Runtime → Athena/CDR (cross-account, star of Phase 1) -->
+        <mxCell id="p1-arrow-runtime-to-cdr" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#FF8F00;strokeWidth=4;rounded=0;fontFamily=Helvetica;exitX=1;exitY=0.5;entryX=0;entryY=0.3;" edge="1" parent="1" source="p1-runtime-container" target="p1-cdr-container">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p1-arrow-runtime-to-cdr-label" value="② Athena query (cross-account, partition-pruned)" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=#FFF8E1;fontFamily=Helvetica;fontSize=12;fontStyle=1;fontColor=#E65100;" connectable="0" vertex="1" parent="p1-arrow-runtime-to-cdr">
+          <mxGeometry relative="1" x="0" y="0" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Athena/CDR → AgentCore Memory (result rows, seed write) -->
+        <mxCell id="p1-arrow-cdr-to-memory" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#FF8F00;strokeWidth=4;dashed=1;dashPattern=8 4;rounded=0;fontFamily=Helvetica;exitX=0;exitY=0.7;entryX=1;entryY=0.3;" edge="1" parent="1" source="p1-cdr-container" target="p1-memory-container">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p1-arrow-cdr-to-memory-label" value="③ result rows → Memory SEED WRITE" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=#FFF8E1;fontFamily=Helvetica;fontSize=12;fontStyle=1;fontColor=#E65100;" connectable="0" vertex="1" parent="p1-arrow-cdr-to-memory">
+          <mxGeometry relative="1" x="0" y="0" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Phase 1: annotation panel at bottom -->
+        <mxCell id="p1-footer-note" value="&lt;div&gt;&lt;b&gt;Invariant established by Phase 1:&lt;/b&gt; every ADP-derived fact needed for the session is now materialized in AgentCore Memory, keyed by exact-match metadata. The cross-account authorization boundary is crossed &lt;b&gt;here and only here&lt;/b&gt;.&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFECB3;strokeColor=#FF8F00;fontFamily=Helvetica;fontSize=12;fontColor=#5D4037;align=left;verticalAlign=middle;spacingLeft=15;spacingRight=15;strokeWidth=1;" vertex="1" parent="phase1-band">
+          <mxGeometry x="30" y="640" width="1880" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- ============================================================ -->
+        <!-- =============  DIVIDER between phases  ==================== -->
+        <!-- ============================================================ -->
+
+        <mxCell id="divider-text" value="─── SESSION READY · supervisor now accepts user turns ─── " style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=15;fontStyle=1;fontColor=#232F3E;" vertex="1" parent="1">
+          <mxGeometry x="60" y="865" width="1940" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="divider-arrow-down" style="endArrow=block;endFill=1;html=1;strokeColor=#232F3E;strokeWidth=3;rounded=0;fontFamily=Helvetica;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1030" y="885" as="sourcePoint" />
+            <mxPoint x="1030" y="905" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- ============================================================ -->
+        <!-- =============  PHASE 2  BAND — PER-TURN  ================== -->
+        <!-- ============================================================ -->
+
+        <mxCell id="phase2-band" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E0F7FA;strokeColor=#00838F;strokeWidth=3;dashed=0;fontFamily=Helvetica;verticalAlign=top;align=left;container=1;collapsible=0;shadow=0;" vertex="1" parent="1">
+          <mxGeometry x="60" y="910" width="1940" height="850" as="geometry" />
+        </mxCell>
+
+        <!-- Phase 2 header banner -->
+        <mxCell id="phase2-header" value="PHASE 2 — PER-TURN TOOL DISPATCH" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#00838F;strokeColor=none;fontColor=#FFFFFF;fontFamily=Helvetica;fontStyle=1;fontSize=20;align=left;spacingLeft=30;verticalAlign=middle;" vertex="1" parent="phase2-band">
+          <mxGeometry width="1940" height="46" as="geometry" />
+        </mxCell>
+        <mxCell id="phase2-subheader" value="⚡ EVERY turn · sub-100 ms Memory reads · in-region only · Athena is NOT re-queried" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Helvetica;fontSize=13;fontStyle=2;fontColor=#004D40;spacingLeft=30;" vertex="1" parent="phase2-band">
+          <mxGeometry y="50" width="1900" height="26" as="geometry" />
+        </mxCell>
+
+        <!-- Phase 2: CVX account boundary -->
+        <mxCell id="p2-cvx-account" value="CVX account / region" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#232F3E;dashed=1;dashPattern=8 4;fontSize=13;fontStyle=1;fontColor=#232F3E;fontFamily=Helvetica;verticalAlign=top;align=left;spacingLeft=15;spacingTop=8;strokeWidth=2;container=1;collapsible=0;" vertex="1" parent="phase2-band">
+          <mxGeometry x="30" y="90" width="1120" height="670" as="geometry" />
+        </mxCell>
+
+        <!-- Phase 2: ADP account boundary -->
+        <mxCell id="p2-adp-account" value="ADP account / region — cross-account authorization boundary" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#232F3E;dashed=1;dashPattern=8 4;fontSize=13;fontStyle=1;fontColor=#232F3E;fontFamily=Helvetica;verticalAlign=top;align=left;spacingLeft=15;spacingTop=8;strokeWidth=2;container=1;collapsible=0;" vertex="1" parent="phase2-band">
+          <mxGeometry x="1180" y="90" width="720" height="670" as="geometry" />
+        </mxCell>
+
+        <!-- Phase 2: AgentCore Runtime (supervisor) -->
+        <mxCell id="p2-runtime-container" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E0F2F1;strokeColor=#01A88D;fontSize=12;fontStyle=1;fontColor=#01A88D;fontFamily=Helvetica;verticalAlign=top;align=left;spacingLeft=70;spacingTop=10;strokeWidth=1.5;shadow=1;container=1;collapsible=0;" value="Bedrock AgentCore Runtime" vertex="1" parent="p2-cvx-account">
+          <mxGeometry x="30" y="60" width="340" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-runtime-icon" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;fillColor=#01A88D;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.bedrock_agentcore;fontFamily=Helvetica;" value="" vertex="1" parent="p2-runtime-container">
+          <mxGeometry x="12" y="10" width="48" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-runtime-sublist" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=11;fontFamily=Helvetica;fontColor=#232F3E;" value="&lt;div&gt;&lt;b&gt;Strands supervisor agent&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;i style=&quot;font-size: 10px; color: #666;&quot;&gt;dispatches tools per user turn;&lt;/i&gt;&lt;/div&gt;&lt;div&gt;&lt;i style=&quot;font-size: 10px; color: #666;&quot;&gt;each tool routes to its data source&lt;/i&gt;&lt;/div&gt;&lt;div&gt;&lt;i style=&quot;font-size: 10px; color: #666;&quot;&gt;via exact-match metadata filter&lt;/i&gt;&lt;/div&gt;" vertex="1" parent="p2-runtime-container">
+          <mxGeometry x="14" y="65" width="320" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Phase 2: AgentCore Memory (hot path, star of Phase 2) -->
+        <mxCell id="p2-memory-container" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E0F2F1;strokeColor=#01A88D;fontSize=12;fontStyle=1;fontColor=#01A88D;fontFamily=Helvetica;verticalAlign=top;align=left;spacingLeft=70;spacingTop=10;strokeWidth=2;shadow=1;container=1;collapsible=0;" value="Bedrock AgentCore Memory" vertex="1" parent="p2-cvx-account">
+          <mxGeometry x="580" y="60" width="500" height="230" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-memory-icon" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;fillColor=#01A88D;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.bedrock_agentcore;fontFamily=Helvetica;" value="" vertex="1" parent="p2-memory-container">
+          <mxGeometry x="12" y="10" width="48" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-memory-sublist" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=11;fontFamily=Helvetica;fontColor=#232F3E;" value="&lt;div&gt;&lt;b&gt;HOT PATH — 6 tool families read here&lt;/b&gt;&lt;/div&gt;&lt;div style=&quot;font-family: monospace; font-size: 10px; color: #01A88D; margin-top: 4px;&quot;&gt;filter: data_source={value}, vehicle_id={vin}&lt;/div&gt;&lt;div style=&quot;margin-top: 6px;&quot;&gt;· &lt;code style=&quot;font-family: monospace;&quot;&gt;vehicle_identity()&lt;/code&gt;&lt;/div&gt;&lt;div&gt;· &lt;code style=&quot;font-family: monospace;&quot;&gt;service_history()&lt;/code&gt;&lt;/div&gt;&lt;div&gt;· &lt;code style=&quot;font-family: monospace;&quot;&gt;charging_history()&lt;/code&gt;&lt;/div&gt;&lt;div&gt;· &lt;code style=&quot;font-family: monospace;&quot;&gt;customer_profile()&lt;/code&gt;&lt;/div&gt;&lt;div&gt;· &lt;code style=&quot;font-family: monospace;&quot;&gt;interaction_history()&lt;/code&gt;&lt;/div&gt;&lt;div&gt;· &lt;code style=&quot;font-family: monospace;&quot;&gt;ota_history()&lt;/code&gt;&lt;/div&gt;&lt;div style=&quot;margin-top: 6px; color: #00838F; font-weight: bold; font-size: 12px;&quot;&gt;⚡ ~10–100 ms per call&lt;/div&gt;" vertex="1" parent="p2-memory-container">
+          <mxGeometry x="14" y="65" width="470" height="160" as="geometry" />
+        </mxCell>
+
+        <!-- Phase 2: CMS Redis LKS snapshot (held in session, NOT re-read) -->
+        <mxCell id="p2-lks-snapshot" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#999999;fontSize=12;fontStyle=1;fontColor=#666666;fontFamily=Helvetica;verticalAlign=top;align=left;spacingLeft=15;spacingTop=10;strokeWidth=1.5;dashed=1;dashPattern=4 4;shadow=0;container=1;collapsible=0;" value="LKS snapshot — HELD in session context (no re-read)" vertex="1" parent="p2-cvx-account">
+          <mxGeometry x="30" y="340" width="500" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-lks-snapshot-sublist" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=11;fontFamily=Helvetica;fontColor=#232F3E;" value="&lt;div&gt;· &lt;code style=&quot;font-family: monospace;&quot;&gt;triage()&lt;/code&gt; reads from the Phase-1-loaded snapshot + tenant policy DDB&lt;/div&gt;&lt;div&gt;· &lt;code style=&quot;font-family: monospace;&quot;&gt;escalate()&lt;/code&gt; packages the same snapshot as handoff payload&lt;/div&gt;&lt;div style=&quot;font-size: 10px; color: #666; margin-top: 4px;&quot;&gt;&lt;i&gt;Redis is NOT re-queried per turn — the session's point-in-time picture is stable.&lt;/i&gt;&lt;/div&gt;" vertex="1" parent="p2-lks-snapshot">
+          <mxGeometry x="14" y="35" width="470" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- Phase 2: CMS DynamoDB (write path for book()) -->
+        <mxCell id="p2-ddb-container" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5E6F7;strokeColor=#C925D1;fontSize=12;fontStyle=1;fontColor=#C925D1;fontFamily=Helvetica;verticalAlign=top;align=left;spacingLeft=70;spacingTop=10;strokeWidth=1.5;shadow=1;container=1;collapsible=0;" value="CMS DynamoDB" vertex="1" parent="p2-cvx-account">
+          <mxGeometry x="580" y="340" width="500" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-ddb-icon" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;fillColor=#C925D1;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.dynamodb;fontFamily=Helvetica;" value="" vertex="1" parent="p2-ddb-container">
+          <mxGeometry x="12" y="10" width="48" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-ddb-sublist" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=11;fontFamily=Helvetica;fontColor=#232F3E;" value="&lt;div&gt;· &lt;code style=&quot;font-family: monospace;&quot;&gt;book()&lt;/code&gt; writes to service-history table&lt;/div&gt;&lt;div&gt;· tenant booking config read at need&lt;/div&gt;" vertex="1" parent="p2-ddb-container">
+          <mxGeometry x="14" y="65" width="470" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- Phase 2: CMS Recalls Lambda -->
+        <mxCell id="p2-recalls-container" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF3E0;strokeColor=#ED7100;fontSize=12;fontStyle=1;fontColor=#ED7100;fontFamily=Helvetica;verticalAlign=top;align=left;spacingLeft=70;spacingTop=10;strokeWidth=1.5;shadow=1;container=1;collapsible=0;" value="CMS Recalls Integration Lambda" vertex="1" parent="p2-cvx-account">
+          <mxGeometry x="30" y="490" width="1050" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-recalls-icon" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;fillColor=#ED7100;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.lambda;fontFamily=Helvetica;" value="" vertex="1" parent="p2-recalls-container">
+          <mxGeometry x="12" y="10" width="48" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-recalls-sublist" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=11;fontFamily=Helvetica;fontColor=#232F3E;" value="&lt;div&gt;· &lt;code style=&quot;font-family: monospace;&quot;&gt;recalls-lookup() · recalls-status() · recalls-timeline()&lt;/code&gt;&lt;/div&gt;&lt;div&gt;&lt;i style=&quot;font-size: 10px; color: #666;&quot;&gt;NHTSA open/closed status per VIN; also factored into triage() P0-P3 classification&lt;/i&gt;&lt;/div&gt;" vertex="1" parent="p2-recalls-container">
+          <mxGeometry x="14" y="65" width="1020" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- Phase 2: Bedrock KB in ADP (cross-account Retrieve) -->
+        <mxCell id="p2-kb-container" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E0F2F1;strokeColor=#01A88D;fontSize=12;fontStyle=1;fontColor=#01A88D;fontFamily=Helvetica;verticalAlign=top;align=left;spacingLeft=70;spacingTop=10;strokeWidth=1.5;shadow=1;container=1;collapsible=0;" value="Bedrock Knowledge Base" vertex="1" parent="p2-adp-account">
+          <mxGeometry x="30" y="60" width="660" height="230" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-kb-icon" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;fillColor=#01A88D;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.bedrock;fontFamily=Helvetica;" value="Knowledge&#xa;Bases" vertex="1" parent="p2-kb-container">
+          <mxGeometry x="12" y="10" width="48" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-kb-sublist" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=11;fontFamily=Helvetica;fontColor=#232F3E;" value="&lt;div&gt;&lt;b&gt;Cross-account Retrieve · resource policy grants CVX role&lt;/b&gt;&lt;/div&gt;&lt;div style=&quot;font-family: monospace; font-size: 10px; color: #01A88D; margin-top: 4px;&quot;&gt;filter: source_category={category}&lt;/div&gt;&lt;div style=&quot;margin-top: 6px;&quot;&gt;· &lt;code style=&quot;font-family: monospace;&quot;&gt;knowledge()&lt;/code&gt; — any category, per persona&lt;/div&gt;&lt;div&gt;· &lt;code style=&quot;font-family: monospace;&quot;&gt;parts_lookup()&lt;/code&gt; — parts_catalog&lt;/div&gt;&lt;div&gt;· &lt;code style=&quot;font-family: monospace;&quot;&gt;retrieve()&lt;/code&gt; — dtc_guide, tsb_recall, owner_manual, service_policy, charging_narrative&lt;/div&gt;&lt;div&gt;· &lt;code style=&quot;font-family: monospace;&quot;&gt;diy_repair_advisor()&lt;/code&gt; — local rules + dtc_guide&lt;/div&gt;&lt;div style=&quot;margin-top: 4px; font-size: 10px; color: #666;&quot;&gt;&lt;i&gt;SigV4 signed; validated in ADP account; audited in ADP CloudTrail.&lt;/i&gt;&lt;/div&gt;" vertex="1" parent="p2-kb-container">
+          <mxGeometry x="14" y="65" width="640" height="165" as="geometry" />
+        </mxCell>
+
+        <!-- Phase 2: Grayed-out CDR with explicit "NOT called" callout -->
+        <mxCell id="p2-cdr-nocall" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#B0B0B0;fontSize=12;fontStyle=1;fontColor=#909090;fontFamily=Helvetica;verticalAlign=top;align=left;spacingLeft=70;spacingTop=10;strokeWidth=1.5;dashed=1;dashPattern=6 4;shadow=0;container=1;collapsible=0;" value="ADP Centralized Data Repository" vertex="1" parent="p2-adp-account">
+          <mxGeometry x="30" y="340" width="660" height="230" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-cdr-nocall-icon" style="sketch=0;points=[];outlineConnect=0;fontColor=#909090;fillColor=#B0B0B0;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.lake_formation;fontFamily=Helvetica;opacity=40;" value="" vertex="1" parent="p2-cdr-nocall">
+          <mxGeometry x="12" y="10" width="48" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-cdr-nocall-stamp" value="✗ NOT called per turn" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D32F2F;strokeColor=#B71C1C;fontColor=#FFFFFF;fontFamily=Helvetica;fontStyle=1;fontSize=18;align=center;verticalAlign=middle;strokeWidth=2;rotation=-15;" vertex="1" parent="p2-cdr-nocall">
+          <mxGeometry x="200" y="80" width="260" height="46" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-cdr-nocall-explain" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=12;fontFamily=Helvetica;fontColor=#666666;fontStyle=0;" value="&lt;div style=&quot;margin-top: 8px;&quot;&gt;Athena / Glue / S3 / Lake Formation — &lt;b&gt;idle during a session&lt;/b&gt;.&lt;/div&gt;&lt;div style=&quot;margin-top: 6px; font-size: 11px;&quot;&gt;Every fact CVX needs from these products was materialized to AgentCore Memory in Phase 1. Re-querying here would waste cross-account roundtrips and add 100–300 ms per turn for no new information.&lt;/div&gt;" vertex="1" parent="p2-cdr-nocall">
+          <mxGeometry x="20" y="140" width="620" height="85" as="geometry" />
+        </mxCell>
+
+        <!-- Phase 2 arrows -->
+        <!-- Runtime → Memory (hot path, thick teal) -->
+        <mxCell id="p2-arrow-runtime-to-memory" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#00838F;strokeWidth=4;rounded=0;fontFamily=Helvetica;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="p2-runtime-container" target="p2-memory-container">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-arrow-runtime-to-memory-label" value="④ Memory read (filter by data_source metadata)" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=#E0F7FA;fontFamily=Helvetica;fontSize=12;fontStyle=1;fontColor=#00838F;" connectable="0" vertex="1" parent="p2-arrow-runtime-to-memory">
+          <mxGeometry relative="1" x="-0.5" y="-14" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Runtime → KB (cross-account Retrieve) -->
+        <mxCell id="p2-arrow-runtime-to-kb" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#00838F;strokeWidth=3;rounded=0;fontFamily=Helvetica;exitX=1;exitY=0.3;entryX=0;entryY=0.5;" edge="1" parent="1" source="p2-runtime-container" target="p2-kb-container">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1200" y="1015" />
+              <mxPoint x="1200" y="1105" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p2-arrow-runtime-to-kb-label" value="⑤ Bedrock Retrieve (filter by source_category)" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=#E0F7FA;fontFamily=Helvetica;fontSize=12;fontStyle=1;fontColor=#00838F;" connectable="0" vertex="1" parent="p2-arrow-runtime-to-kb">
+          <mxGeometry relative="1" x="0.4" y="0" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Runtime → LKS snapshot (in-process, dashed grey — just a reference line) -->
+        <mxCell id="p2-arrow-runtime-to-lks" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#999999;strokeWidth=2;dashed=1;dashPattern=4 4;rounded=0;fontFamily=Helvetica;exitX=0.25;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="p2-runtime-container" target="p2-lks-snapshot">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-arrow-runtime-to-lks-label" value="⑥ in-process ref" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=#E0F7FA;fontFamily=Helvetica;fontSize=10;fontStyle=2;fontColor=#666666;" connectable="0" vertex="1" parent="p2-arrow-runtime-to-lks">
+          <mxGeometry relative="1" x="0" y="0" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Runtime → DDB (write path) -->
+        <mxCell id="p2-arrow-runtime-to-ddb" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#C925D1;strokeWidth=3;dashed=1;dashPattern=6 4;rounded=0;fontFamily=Helvetica;exitX=0.75;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="p2-runtime-container" target="p2-ddb-container">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-arrow-runtime-to-ddb-label" value="⑦ book() write" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=#E0F7FA;fontFamily=Helvetica;fontSize=11;fontStyle=1;fontColor=#C925D1;" connectable="0" vertex="1" parent="p2-arrow-runtime-to-ddb">
+          <mxGeometry relative="1" x="0" y="0" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Runtime → Recalls Lambda -->
+        <mxCell id="p2-arrow-runtime-to-recalls" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#ED7100;strokeWidth=3;rounded=0;fontFamily=Helvetica;exitX=0.5;exitY=1;entryX=0.15;entryY=0;" edge="1" parent="1" source="p2-runtime-container" target="p2-recalls-container">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="200" y="1450" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p2-arrow-runtime-to-recalls-label" value="⑧ recalls-*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=#E0F7FA;fontFamily=Helvetica;fontSize=11;fontStyle=1;fontColor=#ED7100;" connectable="0" vertex="1" parent="p2-arrow-runtime-to-recalls">
+          <mxGeometry relative="1" x="0" y="0" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Phase 2 footer note -->
+        <mxCell id="p2-footer-note" value="&lt;div&gt;&lt;b&gt;Invariant enforced by Phase 2:&lt;/b&gt; the hot path never crosses to the ADP Centralized Data Repository. Reads route to AgentCore Memory (fast) or Bedrock KB (governed reference). CMS writes (book, escalate) stay in-region. This is why an N-turn session pays the ~6s Athena cost &lt;b&gt;once&lt;/b&gt;, not &lt;b&gt;N times&lt;/b&gt;.&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#B2EBF2;strokeColor=#00838F;fontFamily=Helvetica;fontSize=12;fontColor=#004D40;align=left;verticalAlign=middle;spacingLeft=15;spacingRight=15;strokeWidth=1;" vertex="1" parent="phase2-band">
+          <mxGeometry x="30" y="780" width="1880" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- ============================================================ -->
+        <!-- ============  RIGHT SIDE:  PER-TOOL ROUTING TABLE  ========= -->
+        <!-- ============================================================ -->
+
+        <mxCell id="legend-bg" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EDF3FF;strokeColor=#6C8EBF;strokeWidth=1;fontFamily=Helvetica;verticalAlign=top;align=left;spacingTop=12;spacingLeft=20;fontSize=17;fontStyle=1;fontColor=#232F3E;" value="Per-tool routing — where each tool call goes" vertex="1" parent="1">
+          <mxGeometry x="2020" y="140" width="720" height="1620" as="geometry" />
+        </mxCell>
+
+        <!-- Section A: Memory readers -->
+        <mxCell id="legend-secA-header" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#01A88D;strokeColor=none;fontColor=#FFFFFF;fontFamily=Helvetica;fontStyle=1;fontSize=13;align=left;verticalAlign=middle;spacingLeft=12;" value="A · AgentCore Memory readers (loaded at Phase 1)" vertex="1" parent="1">
+          <mxGeometry x="2040" y="185" width="680" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-secA-body" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=12;fontFamily=Helvetica;fontColor=#232F3E;" value="&lt;table cellpadding=&quot;3&quot; cellspacing=&quot;0&quot; style=&quot;font-family: Helvetica; font-size: 12px;&quot;&gt;&lt;tr style=&quot;color: #01A88D; font-weight: bold; border-bottom: 1px solid #B2DFDB;&quot;&gt;&lt;td width=&quot;180&quot;&gt;Tool&lt;/td&gt;&lt;td&gt;Memory filter&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;code&gt;vehicle_identity()&lt;/code&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;data_source=vehicle_identity, vehicle_id&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;code&gt;service_history()&lt;/code&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;data_source=service_records, vehicle_id&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;code&gt;charging_history()&lt;/code&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;data_source=charging_sessions, vehicle_id&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;code&gt;customer_profile()&lt;/code&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;data_source=customer_360, customer_id&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;code&gt;interaction_history()&lt;/code&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;data_source=customer_interactions, customer_id&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;code&gt;ota_history()&lt;/code&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;data_source=ota_campaigns, vehicle_id&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;div style=&quot;font-size: 10px; color: #01A88D; font-style: italic; margin-top: 4px;&quot;&gt;Rationale: session-init snapshot; values do not change during a session.&lt;/div&gt;" vertex="1" parent="1">
+          <mxGeometry x="2045" y="220" width="680" height="300" as="geometry" />
+        </mxCell>
+
+        <!-- Section B: CMS operational -->
+        <mxCell id="legend-secB-header" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#C925D1;strokeColor=none;fontColor=#FFFFFF;fontFamily=Helvetica;fontStyle=1;fontSize=13;align=left;verticalAlign=middle;spacingLeft=12;" value="B · CMS operational state (session-cached or per-turn)" vertex="1" parent="1">
+          <mxGeometry x="2040" y="530" width="680" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-secB-body" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=12;fontFamily=Helvetica;fontColor=#232F3E;" value="&lt;table cellpadding=&quot;3&quot; cellspacing=&quot;0&quot; style=&quot;font-family: Helvetica; font-size: 12px;&quot;&gt;&lt;tr style=&quot;color: #C925D1; font-weight: bold; border-bottom: 1px solid #E1BEE7;&quot;&gt;&lt;td width=&quot;140&quot;&gt;Tool&lt;/td&gt;&lt;td&gt;Data source&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;code&gt;triage()&lt;/code&gt;&lt;/td&gt;&lt;td&gt;Redis LKS snapshot (Phase-1) + tenant policy DDB&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;code&gt;book()&lt;/code&gt;&lt;/td&gt;&lt;td&gt;CMS DDB &lt;code&gt;service-history&lt;/code&gt; &lt;b&gt;write&lt;/b&gt; + booking config&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;code&gt;escalate()&lt;/code&gt;&lt;/td&gt;&lt;td&gt;LKS+DDB snapshot + Amazon Connect queue ARN&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;div style=&quot;font-size: 10px; color: #C925D1; font-style: italic; margin-top: 4px;&quot;&gt;Rationale: live vehicle state (read via Phase-1 cache); writes back to CMS.&lt;/div&gt;" vertex="1" parent="1">
+          <mxGeometry x="2045" y="565" width="680" height="160" as="geometry" />
+        </mxCell>
+
+        <!-- Section C: ADP KB (cross-account) -->
+        <mxCell id="legend-secC-header" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#01A88D;strokeColor=none;fontColor=#FFFFFF;fontFamily=Helvetica;fontStyle=1;fontSize=13;align=left;verticalAlign=middle;spacingLeft=12;" value="C · ADP Bedrock KB (cross-account Retrieve, per-turn)" vertex="1" parent="1">
+          <mxGeometry x="2040" y="735" width="680" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-secC-body" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=12;fontFamily=Helvetica;fontColor=#232F3E;" value="&lt;table cellpadding=&quot;3&quot; cellspacing=&quot;0&quot; style=&quot;font-family: Helvetica; font-size: 12px;&quot;&gt;&lt;tr style=&quot;color: #01A88D; font-weight: bold; border-bottom: 1px solid #B2DFDB;&quot;&gt;&lt;td width=&quot;170&quot;&gt;Tool&lt;/td&gt;&lt;td&gt;source_category filter&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;code&gt;knowledge()&lt;/code&gt;&lt;/td&gt;&lt;td&gt;persona-mapped (dtc_guide / tsb_recall / …)&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;code&gt;parts_lookup()&lt;/code&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;parts_catalog&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;code&gt;retrieve()&lt;/code&gt;&lt;/td&gt;&lt;td&gt;caller-specified (any of 6 categories)&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;code&gt;diy_repair_advisor()&lt;/code&gt;&lt;/td&gt;&lt;td&gt;local rules + &lt;code&gt;dtc_guide&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;div style=&quot;font-size: 10px; color: #01A88D; font-style: italic; margin-top: 4px;&quot;&gt;Rationale: reference content; KB is the source of truth. Filtered top-k keeps latency low.&lt;/div&gt;" vertex="1" parent="1">
+          <mxGeometry x="2045" y="770" width="680" height="200" as="geometry" />
+        </mxCell>
+
+        <!-- Section D: Recalls -->
+        <mxCell id="legend-secD-header" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ED7100;strokeColor=none;fontColor=#FFFFFF;fontFamily=Helvetica;fontStyle=1;fontSize=13;align=left;verticalAlign=middle;spacingLeft=12;" value="D · CMS Recalls Lambda (per-turn)" vertex="1" parent="1">
+          <mxGeometry x="2040" y="985" width="680" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-secD-body" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=12;fontFamily=Helvetica;fontColor=#232F3E;" value="&lt;table cellpadding=&quot;3&quot; cellspacing=&quot;0&quot; style=&quot;font-family: Helvetica; font-size: 12px;&quot;&gt;&lt;tr style=&quot;color: #ED7100; font-weight: bold; border-bottom: 1px solid #FFE0B2;&quot;&gt;&lt;td width=&quot;180&quot;&gt;Tool&lt;/td&gt;&lt;td&gt;Data source&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;code&gt;recalls-lookup()&lt;/code&gt;&lt;/td&gt;&lt;td&gt;NHTSA via CMS Recalls Lambda&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;code&gt;recalls-status()&lt;/code&gt;&lt;/td&gt;&lt;td&gt;NHTSA via CMS Recalls Lambda&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;code&gt;recalls-timeline()&lt;/code&gt;&lt;/td&gt;&lt;td&gt;NHTSA via CMS Recalls Lambda&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;div style=&quot;font-size: 10px; color: #ED7100; font-style: italic; margin-top: 4px;&quot;&gt;Rationale: freshness matters for open recall status; also factored into triage() P0-P3.&lt;/div&gt;" vertex="1" parent="1">
+          <mxGeometry x="2045" y="1020" width="680" height="160" as="geometry" />
+        </mxCell>
+
+        <!-- Section E: What is NOT called per-turn -->
+        <mxCell id="legend-secE-header" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D32F2F;strokeColor=none;fontColor=#FFFFFF;fontFamily=Helvetica;fontStyle=1;fontSize=13;align=left;verticalAlign=middle;spacingLeft=12;" value="E · ✗ NOT called per turn (design invariant)" vertex="1" parent="1">
+          <mxGeometry x="2040" y="1195" width="680" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-secE-body" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=12;fontFamily=Helvetica;fontColor=#232F3E;" value="&lt;table cellpadding=&quot;3&quot; cellspacing=&quot;0&quot; style=&quot;font-family: Helvetica; font-size: 12px;&quot;&gt;&lt;tr style=&quot;color: #D32F2F; font-weight: bold; border-bottom: 1px solid #FFCDD2;&quot;&gt;&lt;td width=&quot;220&quot;&gt;Resource&lt;/td&gt;&lt;td&gt;Why not per-turn&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;ADP Athena / Glue / S3&lt;/td&gt;&lt;td&gt;Materialized to Memory at Phase 1; re-query is redundant.&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;CMS Redis LKS&lt;/td&gt;&lt;td&gt;Snapshot held in session context; stable point-in-time.&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Lake Formation token vend&lt;/td&gt;&lt;td&gt;Only fetched during Phase 1 cross-account Athena call.&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;div style=&quot;font-size: 10px; color: #D32F2F; font-style: italic; margin-top: 4px;&quot;&gt;Consequence: an N-turn session pays cross-account cost O(1), not O(N).&lt;/div&gt;" vertex="1" parent="1">
+          <mxGeometry x="2045" y="1230" width="680" height="150" as="geometry" />
+        </mxCell>
+
+        <!-- Section F: Arrow styles legend -->
+        <mxCell id="legend-secF-header" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#455A64;strokeColor=none;fontColor=#FFFFFF;fontFamily=Helvetica;fontStyle=1;fontSize=13;align=left;verticalAlign=middle;spacingLeft=12;" value="F · Arrow &amp; band conventions" vertex="1" parent="1">
+          <mxGeometry x="2040" y="1395" width="680" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-secF-body" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=12;fontFamily=Helvetica;fontColor=#232F3E;" value="&lt;div&gt;&lt;span style=&quot;color: #FF8F00; font-weight: bold;&quot;&gt;━━▶ (thick amber)&lt;/span&gt; = Phase 1 session-init call (once per session)&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: #FF8F00; font-weight: bold;&quot;&gt;╌╌▶ (thick amber dashed)&lt;/span&gt; = Phase 1 write / return&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: #00838F; font-weight: bold;&quot;&gt;━━▶ (thick teal)&lt;/span&gt; = Phase 2 per-turn read&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: #C925D1; font-weight: bold;&quot;&gt;╌╌▶ (magenta dashed)&lt;/span&gt; = Phase 2 write (book())&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: #999999; font-weight: bold;&quot;&gt;╌╌▶ (grey dashed)&lt;/span&gt; = in-process reference to cached state&lt;/div&gt;&lt;div style=&quot;margin-top: 6px;&quot;&gt;&lt;span style=&quot;background: #FFF8E1; padding: 2px 6px;&quot;&gt;&amp;nbsp;amber band&amp;nbsp;&lt;/span&gt; = Phase 1 (session-init, ~6-7s)&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background: #E0F7FA; padding: 2px 6px;&quot;&gt;&amp;nbsp;teal band&amp;nbsp;&lt;/span&gt; = Phase 2 (per-turn, ~10-100ms)&lt;/div&gt;" vertex="1" parent="1">
+          <mxGeometry x="2045" y="1430" width="680" height="300" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

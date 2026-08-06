@@ -1,0 +1,56 @@
+%%{init: {'theme': 'dark', 'themeVariables': {'fontSize': '15px'}, 'sequence': {'actorMargin': 70, 'boxMargin': 12, 'noteFontSize': 14, 'wrap': true, 'width': 200}}}%%
+sequenceDiagram
+    autonumber
+    participant C as Customer
+    participant AC as Amazon Connect
+    participant AR as AgentCore Runtime bidi
+    participant NS as Nova 2 Sonic
+    participant SA as Supervisor Agent
+    participant TL as Tool triage or knowledge
+
+    C->>AC: Places voice call
+    AC->>AR: WebSocket open plus session.start<br/>tenantId, vin, jwt
+    AR->>NS: Open bidirectional audio stream
+    AR->>SA: Construct BidiAgent with tool catalog
+
+    Note over C,NS: Audio streaming phase<br/>16 kHz mono PCM, 100 ms chunks
+
+    C->>AC: Speaks utterance
+    AC->>AR: PCM chunks
+    AR->>NS: PCM chunks bidi
+
+    C-->>AC: Trailing silence
+    AC-->>AR: PCM silence
+    AR-->>NS: PCM silence
+
+    rect rgb(70, 40, 90)
+    Note over NS: CONSTRAINT: End-of-utterance detection<br/>requires >= 1,600 ms trailing silence.<br/>Below threshold, Nova accepts audio<br/>but emits ZERO TTS for the rest<br/>of the session.
+    end
+
+    NS->>SA: End-of-turn -- dispatch tools
+
+    rect rgb(120, 40, 40)
+    Note over SA,TL: CONSTRAINT ZONE: ~1 s tool-completion budget<br/>Nova 2 Sonic v2 platform limit<br/>not workaroundable in app code
+    Note over SA,TL: Order: triage first, then routed specialists
+    SA->>TL: Invoke tool
+    TL-->>SA: Result
+    SA-->>NS: Return tool output
+    end
+
+    Note over SA,NS: If any tool exceeds ~1 s,<br/>Nova post-tool TTS goes silent<br/>for the rest of the session,<br/>until the 55 s session timeout fires.
+
+    NS->>NS: TTS synth 24 kHz PCM
+    NS-->>AR: Audio output chunks
+    AR-->>AC: Audio output chunks
+    AC-->>C: Spoken response
+
+    C->>AC: Session end caller hangs up
+    AC->>AR: Close WebSocket
+
+    Note over C,TL: ----------  Separate constraint boundary  ----------
+
+    rect rgb(40, 60, 100)
+    Note over AR,NS: CONSTRAINT: 55 s AgentCore session timeout
+    Note over AR,NS: No audio bytes or interactive content between AR and NS for 55 s -> AgentCore closes session with InternalErrorCode=532.
+    Note over AR,NS: Long tool chains must finish inside this window. Sessions with user think-time need keep-alive activity before 55 s.
+    end

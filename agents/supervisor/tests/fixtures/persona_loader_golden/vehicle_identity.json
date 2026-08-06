@@ -1,0 +1,44 @@
+[
+  {
+    "vin": "1FTRX18W6XKB12345",
+    "model_year": "2022",
+    "make": "Ford",
+    "model": "F-150",
+    "trim": "Lariat",
+    "body_style": "pickup",
+    "drive_type": "AWD",
+    "powertrain_type": "BEV",
+    "battery_chemistry": "NMC",
+    "battery_pack_kwh": "98.0",
+    "range_epa_mi": "300",
+    "current_software_version": "4.2.1"
+  },
+  {
+    "vin": "1FMCU0J91KUB12345",
+    "model_year": "2023",
+    "make": "Ford",
+    "model": "Mustang Mach-E",
+    "trim": "GT",
+    "body_style": "suv",
+    "drive_type": "AWD",
+    "powertrain_type": "BEV",
+    "battery_chemistry": "NMC",
+    "battery_pack_kwh": "91.0",
+    "range_epa_mi": "270",
+    "current_software_version": "5.0.3"
+  },
+  {
+    "vin": "5YJSA1DG9PF123456",
+    "model_year": "2023",
+    "make": "Generic",
+    "model": "Sedan-EV",
+    "trim": "Standard",
+    "body_style": "sedan",
+    "drive_type": "RWD",
+    "powertrain_type": "BEV",
+    "battery_chemistry": "LFP",
+    "battery_pack_kwh": "75.0",
+    "range_epa_mi": "250",
+    "current_software_version": "2024.12.1"
+  }
+]

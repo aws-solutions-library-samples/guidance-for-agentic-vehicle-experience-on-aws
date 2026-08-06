@@ -1,0 +1,49 @@
+# Runtime dependencies for the AgentCore supervisor deployment.
+#
+# This file lives at the repo root because the AgentCore starter toolkit
+# auto-detects `requirements.txt` relative to the source_path, and our
+# source_path is the repo root (so the entrypoint can import the
+# agents.supervisor.* package tree).
+#
+# The authoritative copy is agents/supervisor/requirements.txt; this is
+# kept in sync manually. If you change one, change the other.
+#
+# Lambdas have their own requirements.txt under lambdas/*/ and are
+# deployed by a separate build script (scripts/build-*.sh), so they
+# are unaffected by this file.
+
+# bedrock-agentcore: preview package, pinned to installed working version per
+# ~/.kiro/steering/dependency-versions.md. Verified 2026-08-03 by T1.1 substrate gate:
+# BedrockAgentCoreApp 1.9.1 confirmed functional for non-conversational scheduled
+# invocations. See docs/tech.md § "CVX Tier 2 substrate (verified 2026-08-03)".
+bedrock-agentcore==1.9.1
+# bedrock-agentcore-starter-toolkit: preview companion package (invoke, launch, configure
+# CLI). Was absent from requirements.txt despite being installed 0.3.9. Pinned 2026-08-03.
+bedrock-agentcore-starter-toolkit==0.3.9
+# strands-agents pinned to ==1.39.0 (lazy pyaudio import; works on linux/arm64
+# without portaudio system lib). Versions <1.27.0 import pyaudio eagerly at
+# `strands.experimental.bidi.io.audio` module load — breaks any deploy that
+# can't install pyaudio. Strands 1.27.0+ uses __getattr__ lazy loading so
+# pyaudio is only loaded if BidiAudioIO is explicitly used (which the bidi
+# runtime does NOT — audio chunks come in via WebSocket, not local mic).
+#
+# A critical fix for Nova Sonic v2 (PR #2188, merged 2026-04-24 in upstream)
+# is in the 1.39.0 release — bidi_app.py's local monkey-patch can stay for
+# safety but is no longer strictly required.
+strands-agents==1.39.0
+boto3>=1.35.0
+requests>=2.32.0
+# pydantic bumped to 2.13.4 (latest stable as of 2026-05-27, locally tested,
+# known-compatible with the rest of the stack).
+# Required to resolve with strands-agents==1.39.0, which transitively
+# requires pydantic>=2.11.0 via mcp>=1.23.0.
+pydantic==2.13.4
+python-frontmatter>=1.1.0
+# Required by strands.experimental.bidi for Nova Sonic (bidi_app.py).
+# Text-mode agentcore_app.py doesn't use this but having it in one
+# requirements set keeps both runtimes deployable from the same image.
+aws_sdk_bedrock_runtime>=0.0.2
+# Eval pipeline additional dependencies (pinned exact versions per dependency-versions.md)
+pyyaml==6.0.2
+# websockets 13.1 released 2024-09-09 — satisfies 7-day quarantine rule
+websockets==13.1

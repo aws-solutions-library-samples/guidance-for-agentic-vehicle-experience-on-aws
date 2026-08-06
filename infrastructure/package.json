@@ -1,0 +1,29 @@
+{
+  "name": "vsa-infrastructure",
+  "version": "0.1.0",
+  "private": true,
+  "bin": {
+    "vsa": "bin/vsa.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "synth": "cdk synth",
+    "diff": "cdk diff",
+    "deploy": "cdk deploy",
+    "test": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "aws-cdk": "^2.160.0",
+    "ts-node": "^10.9.2",
+    "typescript": "~5.4.0"
+  },
+  "dependencies": {
+    "@aws-cdk/aws-apigatewayv2-alpha": "^2.114.1-alpha.0",
+    "@aws-cdk/aws-apigatewayv2-authorizers-alpha": "^2.114.1-alpha.0",
+    "@aws-cdk/aws-apigatewayv2-integrations-alpha": "^2.114.1-alpha.0",
+    "aws-cdk-lib": "^2.160.0",
+    "constructs": "^10.3.0"
+  }
+}

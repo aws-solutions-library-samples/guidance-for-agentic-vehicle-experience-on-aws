@@ -1,0 +1,20 @@
+id: recall-lookup-text-001
+description: "E2E: Driver asks about open recalls on their vehicle; agent looks up knowledge base via real Nova + AgentCore"
+tier: 3
+persona: fleet-driver
+vehicle_id: VEH-0025
+driver_id: drv-samantha-carter
+input:
+  type: text
+  utterance: "are there any open recalls on my vehicle?"
+expected:
+  tool_calls:
+    - name: lookup_knowledge
+      args_contain: {}
+  routing:
+    offers_diy_choice: false
+    safety_critical: false
+  response:
+    must_contain_one_of: ["recall", "NHTSA", "no open recalls", "safety", "dealer", "service"]
+    must_not_contain: ["DIY", "do it yourself"]
+latency_budget_ms: 10000

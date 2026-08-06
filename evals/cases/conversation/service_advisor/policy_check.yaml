@@ -1,0 +1,21 @@
+id: service-advisor-policy-check-001
+description: "Service advisor checks the service escalation policy; agent calls knowledge with service_policy category"
+tier: 2
+persona: service_advisor
+persona_id: service_advisor
+vehicle_id: VEH-1001
+driver_id: drv-service-advisor-001
+input:
+  type: text
+  utterance: "What is the escalation policy when a repair takes longer than the quoted time?"
+expected:
+  tool_calls:
+    - name: knowledge
+      args_contain: {}
+  routing:
+    offers_diy_choice: false
+    safety_critical: false
+  response:
+    must_contain_one_of: ["policy", "escalation", "SLA", "notify", "customer", "exceed", "quoted", "time"]
+    must_not_contain: ["I cannot look up policy", "no policy information"]
+latency_budget_ms: 5000

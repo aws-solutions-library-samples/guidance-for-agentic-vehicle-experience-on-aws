@@ -1,0 +1,22 @@
+id: dtc-p0299-text-001
+description: "E2E: Driver reports check engine light and sluggish feel; agent triages then finds service center via real Nova + AgentCore"
+tier: 3
+persona: fleet-driver
+vehicle_id: VEH-0025
+driver_id: drv-samantha-carter
+input:
+  type: text
+  utterance: "check engine light is on and the car feels sluggish"
+expected:
+  tool_calls:
+    - name: triage
+      args_contain: {}
+    - name: find_service_center
+      args_contain: {}
+  routing:
+    offers_diy_choice: false
+    safety_critical: false
+  response:
+    must_contain_one_of: ["turbocharger", "boost pressure", "sluggish", "service center", "appointment", "P0299", "shop"]
+    must_not_contain: ["do it yourself", "DIY", "walk you through"]
+latency_budget_ms: 10000

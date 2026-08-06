@@ -1,0 +1,388 @@
+{
+  "tenantId": "meridian",
+  "catalogVersion": "meridian-2026-07",
+  "items": [
+    {
+      "tenantId": "meridian",
+      "itemKey": "META#catalogVersion",
+      "value": "meridian-2026-07"
+    },
+    {
+      "tenantId": "meridian",
+      "itemKey": "META#tenantConfig",
+      "deliveryCadence": {
+        "orderPlacedToPayment":           { "minHours": 0.00001, "maxHours": 0.00001 },
+        "paymentToAssignedToPlant":       { "minHours": 0.00333, "maxHours": 0.00333 },
+        "assignedToPlantToSubAssembly":   { "minHours": 0.00333, "maxHours": 0.00333 },
+        "subAssemblyToPaint":             { "minHours": 0.00333, "maxHours": 0.00333 },
+        "paintToFinalAssembly":           { "minHours": 0.00333, "maxHours": 0.00333 },
+        "finalAssemblyToQualityControl":  { "minHours": 0.00333, "maxHours": 0.00333 },
+        "qualityControlToShipped":        { "minHours": 0.00333, "maxHours": 0.00333 },
+        "shippedToAtDealer":              { "minHours": 0.00333, "maxHours": 0.00333 },
+        "atDealerToReadyForDelivery":     { "minHours": 0.00333, "maxHours": 0.00333 }
+      }
+    },
+
+    {
+      "tenantId": "meridian",
+      "itemKey": "CAT#compact-ev",
+      "categoryKey": "CAT#compact-ev",
+      "displayName": "Compact EV",
+      "description": "Placeholder category A — compact electric vehicle segment.",
+      "iconKey": "categories/compact-ev.svg",
+      "displayOrder": 1
+    },
+    {
+      "tenantId": "meridian",
+      "itemKey": "CAT#luxury-ev",
+      "categoryKey": "CAT#luxury-ev",
+      "displayName": "Luxury EV",
+      "description": "Placeholder category B — premium electric vehicle segment.",
+      "iconKey": "categories/luxury-ev.svg",
+      "displayOrder": 2
+    },
+    {
+      "tenantId": "meridian",
+      "itemKey": "CAT#performance-ev",
+      "categoryKey": "CAT#performance-ev",
+      "displayName": "Performance EV",
+      "description": "Placeholder category C — high-performance electric vehicle segment.",
+      "iconKey": "categories/performance-ev.svg",
+      "displayOrder": 3
+    },
+    {
+      "tenantId": "meridian",
+      "itemKey": "CAT#utility-ev",
+      "categoryKey": "CAT#utility-ev",
+      "displayName": "Utility EV",
+      "description": "Placeholder category D — utility and crossover electric vehicle segment.",
+      "iconKey": "categories/utility-ev.svg",
+      "displayOrder": 4
+    },
+
+    {
+      "tenantId": "meridian",
+      "itemKey": "MODEL#compact-ev#windrose",
+      "categoryKey": "CAT#compact-ev",
+      "displayName": "Windrose",
+      "tagline": "Placeholder model — compact EV fixture copy.",
+      "basePrice": 29900.00,
+      "specs": {
+        "range_km": 380,
+        "chargeTime_min": 35,
+        "motorPower_kw": 150,
+        "kerbWeight_kg": 1520,
+        "topSpeed_kph": 180
+      },
+      "heroImageKey": "compact-ev/windrose/hero.jpg",
+      "displayOrder": 1
+    },
+    {
+      "tenantId": "meridian",
+      "itemKey": "MODEL#luxury-ev#trailwind",
+      "categoryKey": "CAT#luxury-ev",
+      "displayName": "Trailwind",
+      "tagline": "Placeholder model — luxury EV fixture copy.",
+      "basePrice": 54900.00,
+      "specs": {
+        "range_km": 520,
+        "chargeTime_min": 28,
+        "motorPower_kw": 280,
+        "kerbWeight_kg": 2040,
+        "topSpeed_kph": 210
+      },
+      "heroImageKey": "luxury-ev/trailwind/hero.jpg",
+      "displayOrder": 1
+    },
+    {
+      "tenantId": "meridian",
+      "itemKey": "MODEL#performance-ev#crestwind",
+      "categoryKey": "CAT#performance-ev",
+      "displayName": "Crestwind",
+      "tagline": "Placeholder model — performance EV fixture copy.",
+      "basePrice": 74900.00,
+      "specs": {
+        "range_km": 440,
+        "chargeTime_min": 22,
+        "motorPower_kw": 420,
+        "kerbWeight_kg": 1980,
+        "topSpeed_kph": 260
+      },
+      "heroImageKey": "performance-ev/crestwind/hero.jpg",
+      "displayOrder": 1
+    },
+    {
+      "tenantId": "meridian",
+      "itemKey": "MODEL#utility-ev#azimuth",
+      "categoryKey": "CAT#utility-ev",
+      "displayName": "Azimuth",
+      "tagline": "Placeholder model — utility EV fixture copy.",
+      "basePrice": 44900.00,
+      "specs": {
+        "range_km": 460,
+        "chargeTime_min": 40,
+        "motorPower_kw": 210,
+        "kerbWeight_kg": 2180,
+        "topSpeed_kph": 190
+      },
+      "heroImageKey": "utility-ev/azimuth/hero.jpg",
+      "displayOrder": 1
+    },
+
+    {
+      "tenantId": "meridian",
+      "itemKey": "VAR#compact-ev#windrose#standard",
+      "displayName": "Standard",
+      "priceDelta": 0.00,
+      "specDeltas": { "trimLevel": "base" },
+      "displayOrder": 1
+    },
+    {
+      "tenantId": "meridian",
+      "itemKey": "VAR#compact-ev#windrose#plus",
+      "displayName": "Plus",
+      "priceDelta": 3000.00,
+      "specDeltas": { "trimLevel": "plus", "range_km": 420 },
+      "displayOrder": 2
+    },
+    {
+      "tenantId": "meridian",
+      "itemKey": "VAR#luxury-ev#trailwind#standard",
+      "displayName": "Standard",
+      "priceDelta": 0.00,
+      "specDeltas": { "trimLevel": "base" },
+      "displayOrder": 1
+    },
+    {
+      "tenantId": "meridian",
+      "itemKey": "VAR#luxury-ev#trailwind#grand",
+      "displayName": "Grand",
+      "priceDelta": 8000.00,
+      "specDeltas": { "trimLevel": "grand", "range_km": 560 },
+      "displayOrder": 2
+    },
+    {
+      "tenantId": "meridian",
+      "itemKey": "VAR#performance-ev#crestwind#standard",
+      "displayName": "Standard",
+      "priceDelta": 0.00,
+      "specDeltas": { "trimLevel": "base" },
+      "displayOrder": 1
+    },
+    {
+      "tenantId": "meridian",
+      "itemKey": "VAR#performance-ev#crestwind#track",
+      "displayName": "Track",
+      "priceDelta": 12000.00,
+      "specDeltas": { "trimLevel": "track", "motorPower_kw": 500 },
+      "displayOrder": 2
+    },
+    {
+      "tenantId": "meridian",
+      "itemKey": "VAR#utility-ev#azimuth#standard",
+      "displayName": "Standard",
+      "priceDelta": 0.00,
+      "specDeltas": { "trimLevel": "base" },
+      "displayOrder": 1
+    },
+    {
+      "tenantId": "meridian",
+      "itemKey": "VAR#utility-ev#azimuth#max",
+      "displayName": "Max",
+      "priceDelta": 6000.00,
+      "specDeltas": { "trimLevel": "max", "range_km": 500 },
+      "displayOrder": 2
+    },
+
+    {
+      "tenantId": "meridian",
+      "itemKey": "COLOR#compact-ev#windrose#standard#placeholder-white",
+      "displayName": "Placeholder White",
+      "hexSwatch": "#F0F0F0",
+      "swatchImageKey": "compact-ev/windrose/standard/placeholder-white-swatch.jpg",
+      "vehicleImageKey": "compact-ev/windrose/standard/placeholder-white-vehicle.jpg",
+      "priceDelta": 0.00,
+      "displayOrder": 1
+    },
+    {
+      "tenantId": "meridian",
+      "itemKey": "COLOR#compact-ev#windrose#standard#placeholder-blue",
+      "displayName": "Placeholder Blue",
+      "hexSwatch": "#2255AA",
+      "swatchImageKey": "compact-ev/windrose/standard/placeholder-blue-swatch.jpg",
+      "vehicleImageKey": "compact-ev/windrose/standard/placeholder-blue-vehicle.jpg",
+      "priceDelta": 500.00,
+      "displayOrder": 2
+    },
+    {
+      "tenantId": "meridian",
+      "itemKey": "COLOR#luxury-ev#trailwind#standard#placeholder-silver",
+      "displayName": "Placeholder Silver",
+      "hexSwatch": "#CCCCCC",
+      "swatchImageKey": "luxury-ev/trailwind/standard/placeholder-silver-swatch.jpg",
+      "vehicleImageKey": "luxury-ev/trailwind/standard/placeholder-silver-vehicle.jpg",
+      "priceDelta": 0.00,
+      "displayOrder": 1
+    },
+    {
+      "tenantId": "meridian",
+      "itemKey": "COLOR#performance-ev#crestwind#standard#placeholder-red",
+      "displayName": "Placeholder Red",
+      "hexSwatch": "#CC2200",
+      "swatchImageKey": "performance-ev/crestwind/standard/placeholder-red-swatch.jpg",
+      "vehicleImageKey": "performance-ev/crestwind/standard/placeholder-red-vehicle.jpg",
+      "priceDelta": 0.00,
+      "displayOrder": 1
+    },
+    {
+      "tenantId": "meridian",
+      "itemKey": "COLOR#utility-ev#azimuth#standard#placeholder-green",
+      "displayName": "Placeholder Green",
+      "hexSwatch": "#336633",
+      "swatchImageKey": "utility-ev/azimuth/standard/placeholder-green-swatch.jpg",
+      "vehicleImageKey": "utility-ev/azimuth/standard/placeholder-green-vehicle.jpg",
+      "priceDelta": 0.00,
+      "displayOrder": 1
+    },
+
+    {
+      "tenantId": "meridian",
+      "itemKey": "INTERIOR#windrose#placeholder-light",
+      "modelId": "windrose",
+      "displayName": "Placeholder Light Interior",
+      "description": "Placeholder interior fixture — content authoring by Atlanta OEM.",
+      "materialLabel": "Placeholder Fabric",
+      "colorLabel": "Light",
+      "hexSwatch": "#E8E0D0",
+      "imageKey": "interiors/windrose/placeholder-light.jpg",
+      "priceDelta": 0.00,
+      "displayOrder": 1
+    },
+    {
+      "tenantId": "meridian",
+      "itemKey": "INTERIOR#trailwind#placeholder-dark",
+      "modelId": "trailwind",
+      "displayName": "Placeholder Dark Interior",
+      "description": "Placeholder interior fixture — content authoring by Atlanta OEM.",
+      "materialLabel": "Placeholder Leather",
+      "colorLabel": "Dark",
+      "hexSwatch": "#2A2A2A",
+      "imageKey": "interiors/trailwind/placeholder-dark.jpg",
+      "priceDelta": 1500.00,
+      "displayOrder": 1
+    },
+    {
+      "tenantId": "meridian",
+      "itemKey": "INTERIOR#crestwind#placeholder-sport",
+      "modelId": "crestwind",
+      "displayName": "Placeholder Sport Interior",
+      "description": "Placeholder interior fixture — content authoring by Atlanta OEM.",
+      "materialLabel": "Placeholder Alcantara",
+      "colorLabel": "Sport",
+      "hexSwatch": "#1A1A1A",
+      "imageKey": "interiors/crestwind/placeholder-sport.jpg",
+      "priceDelta": 2500.00,
+      "displayOrder": 1
+    },
+    {
+      "tenantId": "meridian",
+      "itemKey": "INTERIOR#azimuth#placeholder-utility",
+      "modelId": "azimuth",
+      "displayName": "Placeholder Utility Interior",
+      "description": "Placeholder interior fixture — content authoring by Atlanta OEM.",
+      "materialLabel": "Placeholder Wipe-Clean",
+      "colorLabel": "Neutral",
+      "hexSwatch": "#888888",
+      "imageKey": "interiors/azimuth/placeholder-utility.jpg",
+      "priceDelta": 0.00,
+      "displayOrder": 1
+    },
+
+    {
+      "tenantId": "meridian",
+      "itemKey": "IVE#placeholder-ive-alpha",
+      "displayName": "Placeholder IVE Alpha",
+      "description": "Placeholder IVE package fixture — content authoring by Atlanta OEM.",
+      "features": ["placeholder-feature-a1", "placeholder-feature-a2"],
+      "priceDelta": 0.00,
+      "displayOrder": 1
+    },
+    {
+      "tenantId": "meridian",
+      "itemKey": "IVE#placeholder-ive-beta",
+      "displayName": "Placeholder IVE Beta",
+      "description": "Placeholder IVE package fixture — content authoring by Atlanta OEM.",
+      "features": ["placeholder-feature-b1", "placeholder-feature-b2", "placeholder-feature-b3"],
+      "priceDelta": 1200.00,
+      "displayOrder": 2
+    },
+    {
+      "tenantId": "meridian",
+      "itemKey": "IVE#placeholder-ive-gamma",
+      "displayName": "Placeholder IVE Gamma",
+      "description": "Placeholder IVE package fixture — content authoring by Atlanta OEM.",
+      "features": ["placeholder-feature-g1"],
+      "priceDelta": 2400.00,
+      "displayOrder": 3
+    },
+    {
+      "tenantId": "meridian",
+      "itemKey": "IVE#placeholder-ive-delta",
+      "displayName": "Placeholder IVE Delta",
+      "description": "Placeholder IVE package fixture — content authoring by Atlanta OEM.",
+      "features": ["placeholder-feature-d1", "placeholder-feature-d2"],
+      "priceDelta": 3600.00,
+      "displayOrder": 4
+    },
+
+    {
+      "tenantId": "meridian",
+      "itemKey": "ACC#placeholder-charger-home",
+      "displayName": "Placeholder Home Charger",
+      "description": "Placeholder accessory — 11 kW home wall unit. Content authoring by Atlanta OEM.",
+      "price": 799.00,
+      "imageKey": "accessories/placeholder-charger-home.jpg",
+      "category": "charging"
+    },
+    {
+      "tenantId": "meridian",
+      "itemKey": "ACC#placeholder-floor-mats",
+      "displayName": "Placeholder All-Weather Floor Mats",
+      "description": "Placeholder accessory — moulded cargo and cabin mats. Content authoring by Atlanta OEM.",
+      "price": 149.00,
+      "imageKey": "accessories/placeholder-floor-mats.jpg",
+      "category": "protection"
+    },
+
+    {
+      "tenantId": "meridian",
+      "itemKey": "ACC-COMPAT#placeholder-charger-home#compact-ev#windrose",
+      "notes": "Placeholder compatibility record. All variants."
+    },
+    {
+      "tenantId": "meridian",
+      "itemKey": "ACC-COMPAT#placeholder-charger-home#luxury-ev#trailwind",
+      "notes": "Placeholder compatibility record. All variants."
+    },
+    {
+      "tenantId": "meridian",
+      "itemKey": "ACC-COMPAT#placeholder-charger-home#performance-ev#crestwind",
+      "notes": "Placeholder compatibility record. All variants."
+    },
+    {
+      "tenantId": "meridian",
+      "itemKey": "ACC-COMPAT#placeholder-charger-home#utility-ev#azimuth",
+      "notes": "Placeholder compatibility record. All variants."
+    },
+    {
+      "tenantId": "meridian",
+      "itemKey": "ACC-COMPAT#placeholder-floor-mats#compact-ev#windrose",
+      "notes": "Placeholder compatibility record. All variants."
+    },
+    {
+      "tenantId": "meridian",
+      "itemKey": "ACC-COMPAT#placeholder-floor-mats#utility-ev#azimuth",
+      "notes": "Placeholder compatibility record. All variants."
+    }
+  ]
+}

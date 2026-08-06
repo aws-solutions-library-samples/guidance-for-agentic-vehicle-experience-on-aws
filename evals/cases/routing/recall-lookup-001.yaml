@@ -1,0 +1,21 @@
+id: recall-lookup-001
+description: "Driver asks about recalls on their vehicle; agent should call knowledge tool then summarize"
+tier: 2
+persona: fleet-driver
+vehicle_id: VEH-0025
+driver_id: drv-samantha-carter
+input:
+  type: text
+  utterance: "do I have any recalls on my vehicle?"
+expected:
+  tool_calls:
+    - name: lookup_knowledge
+      args_contain:
+        query: "recall"
+  routing:
+    offers_diy_choice: false
+    safety_critical: false
+  response:
+    must_contain_one_of: ["recall", "fuel pump", "24V-567", "dealer", "free repair", "no recalls"]
+    must_not_contain: ["DIY", "do it yourself"]
+latency_budget_ms: 5000

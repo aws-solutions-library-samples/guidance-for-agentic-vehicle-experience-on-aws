@@ -1,0 +1,26 @@
+tool: book
+id: book-edge-001
+description: "Book with propose-slot action produces valid STAR envelope with P3 default priority"
+tier: 1
+persona: fleet-driver
+vehicle_id: VEH-0025
+driver_id: drv-samantha-carter
+input:
+  type: text
+  utterance: "book service for brake warning"
+  input_args:
+    reportedSymptom: "Brake warning light on, ABS disabled."
+    customerActionsTaken:
+      - "create-ticket"
+      - "propose-slot"
+    narrative: "P3 monitor — brake warning, schedule inspection within two weeks."
+expected:
+  tool_output:
+    envelope:
+      schemaVersion: "1.0.0"
+      messageType: "ServiceRequestAdd"
+      payload:
+        priority: "P3"
+        actions:
+          recommended: "monitor"
+latency_budget_ms: 1000

@@ -1,0 +1,21 @@
+id: service-advisor-tsb-lookup-001
+description: "Service advisor queries for a TSB on brake squeal; agent calls knowledge with tsb_recall category"
+tier: 2
+persona: service_advisor
+persona_id: service_advisor
+vehicle_id: VEH-1001
+driver_id: drv-service-advisor-001
+input:
+  type: text
+  utterance: "Is there a TSB for brake squeal on this vehicle?"
+expected:
+  tool_calls:
+    - name: knowledge
+      args_contain: {}
+  routing:
+    offers_diy_choice: false
+    safety_critical: false
+  response:
+    must_contain_one_of: ["TSB", "bulletin", "brake", "squeal", "technical service", "procedure", "recall"]
+    must_not_contain: ["I cannot search for TSBs", "no bulletin available"]
+latency_budget_ms: 5000

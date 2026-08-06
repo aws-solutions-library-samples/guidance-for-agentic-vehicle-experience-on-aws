@@ -1,0 +1,205 @@
+<mxfile host="app.diagrams.net" agent="Kiro-diagrams-skill">
+  <diagram id="cvx-2-data-foundation" name="CVX Diagram 2 - Data Foundation and Composition">
+    <mxGraphModel dx="2600" dy="1600" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2600" pageHeight="1500" background="#FFFFFF" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- ===== Title block ===== -->
+        <mxCell id="title-group" connectable="0" style="group;fontFamily=Helvetica;" value="" vertex="1" parent="1">
+          <mxGeometry height="83" width="1700" x="60" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="title-text" style="text;html=1;resizable=1;points=[];autosize=1;align=left;verticalAlign=top;spacingTop=-4;fontSize=30;fontStyle=1;fontFamily=Helvetica;" value="CVX Data Foundation &amp; Composition" vertex="1" parent="title-group">
+          <mxGeometry height="42" width="1600" as="geometry" />
+        </mxCell>
+        <mxCell id="subtitle-text" style="text;html=1;resizable=0;points=[];autosize=1;align=left;verticalAlign=top;spacingTop=-4;fontSize=16;fontFamily=Helvetica;" value="Where CVX gets the facts: live vehicle telemetry + governed fleet data grounding every answer" vertex="1" parent="title-group">
+          <mxGeometry height="25" width="1600" x="5" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="title-separator" style="line;strokeWidth=2;html=1;fontSize=14;strokeColor=#FF9900;fontFamily=Helvetica;" value="" vertex="1" parent="title-group">
+          <mxGeometry height="10" width="1690" x="5" y="70" as="geometry" />
+        </mxCell>
+
+        <!-- ===== Outer CVX account dashed boundary ===== -->
+        <mxCell id="cvx-account" value="CVX account / region" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#232F3E;dashed=1;dashPattern=8 4;fontSize=14;fontStyle=1;fontColor=#232F3E;fontFamily=Helvetica;verticalAlign=top;align=left;spacingLeft=20;spacingTop=10;strokeWidth=2;container=1;collapsible=0;" vertex="1" parent="1">
+          <mxGeometry x="80" y="150" width="850" height="1200" as="geometry" />
+        </mxCell>
+
+        <!-- ===== Off-diagram tag inside CVX account (Diagram 1) ===== -->
+        <mxCell id="tag-d1" style="shape=step;perimeter=stepPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#F5F5F5;strokeColor=#999999;strokeWidth=1.5;dashed=0;fontSize=13;fontStyle=1;fontFamily=Helvetica;fontColor=#232F3E;align=center;verticalAlign=middle;direction=east;" value="← Diagram 1&#xa;&lt;i style=&quot;font-size: 10px; font-weight: normal; color: #666;&quot;&gt;per-turn from Supervisor [3]&lt;/i&gt;" vertex="1" parent="cvx-account">
+          <mxGeometry x="30" y="100" width="240" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- ===== Bedrock AgentCore Runtime (box 4) — compact edge ===== -->
+        <mxCell id="runtime-container" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E0F2F1;strokeColor=#01A88D;fontSize=12;fontStyle=1;fontColor=#01A88D;fontFamily=Helvetica;verticalAlign=top;align=left;spacingLeft=70;spacingTop=10;strokeWidth=1.5;shadow=1;container=1;collapsible=0;" value="Bedrock AgentCore Runtime" vertex="1" parent="cvx-account">
+          <mxGeometry x="330" y="80" width="320" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="runtime-icon" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;fillColor=#01A88D;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.bedrock_agentcore;fontFamily=Helvetica;" value="" vertex="1" parent="runtime-container">
+          <mxGeometry x="12" y="10" width="48" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="runtime-sublist" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=11;fontFamily=Helvetica;fontColor=#232F3E;" value="&lt;div&gt;Strands supervisor agent&lt;/div&gt;&lt;div&gt;&lt;i style=&quot;font-size: 10px; color: #666;&quot;&gt;grounds each turn from LKS, memory,&lt;/i&gt;&lt;/div&gt;&lt;div&gt;&lt;i style=&quot;font-size: 10px; color: #666;&quot;&gt;knowledge base, and central data repository&lt;/i&gt;&lt;/div&gt;" vertex="1" parent="runtime-container">
+          <mxGeometry x="14" y="65" width="300" height="65" as="geometry" />
+        </mxCell>
+
+        <!-- ===== AgentCore Memory (box 5) ===== -->
+        <mxCell id="memory-container" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E0F2F1;strokeColor=#01A88D;fontSize=12;fontStyle=1;fontColor=#01A88D;fontFamily=Helvetica;verticalAlign=top;align=left;spacingLeft=70;spacingTop=10;strokeWidth=1.5;shadow=1;container=1;collapsible=0;" value="Bedrock AgentCore Memory" vertex="1" parent="cvx-account">
+          <mxGeometry x="330" y="290" width="320" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="memory-icon" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;fillColor=#01A88D;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.bedrock_agentcore;fontFamily=Helvetica;" value="" vertex="1" parent="memory-container">
+          <mxGeometry x="12" y="10" width="48" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="memory-sublist" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=11;fontFamily=Helvetica;fontColor=#232F3E;" value="&lt;div&gt;· Long-term customer memory (LTM)&lt;/div&gt;&lt;div&gt;· Owner preferences,&lt;br&gt;&amp;nbsp;&amp;nbsp;prior contacts, contexts&lt;/div&gt;&lt;div&gt;· Read [6], write [4c]&lt;/div&gt;" vertex="1" parent="memory-container">
+          <mxGeometry x="14" y="65" width="300" height="65" as="geometry" />
+        </mxCell>
+
+        <!-- ===== CMS foundation swimlane (light-fill grouping) ===== -->
+        <mxCell id="cms-foundation" value="CMS foundation — real-time operational state" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#666666;fontSize=13;fontStyle=1;fontColor=#333333;fontFamily=Helvetica;verticalAlign=top;align=left;spacingLeft=20;spacingTop=10;strokeWidth=1.5;dashed=0;container=1;collapsible=0;" vertex="1" parent="cvx-account">
+          <mxGeometry x="30" y="490" width="790" height="670" as="geometry" />
+        </mxCell>
+
+        <!-- ===== CMS Redis LKS (box 8) ===== -->
+        <mxCell id="redis-container" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5E6F7;strokeColor=#C925D1;fontSize=12;fontStyle=1;fontColor=#C925D1;fontFamily=Helvetica;verticalAlign=top;align=left;spacingLeft=70;spacingTop=10;strokeWidth=1.5;shadow=1;container=1;collapsible=0;" value="CMS Redis LKS (ElastiCache)" vertex="1" parent="cms-foundation">
+          <mxGeometry x="30" y="60" width="320" height="170" as="geometry" />
+        </mxCell>
+        <mxCell id="redis-icon" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;fillColor=#C925D1;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.elasticache;fontFamily=Helvetica;" value="" vertex="1" parent="redis-container">
+          <mxGeometry x="12" y="10" width="48" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="redis-sublist" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=11;fontFamily=Helvetica;fontColor=#232F3E;" value="&lt;div&gt;· Latest Known State (LKS)&lt;/div&gt;&lt;div&gt;· Real-time telemetry values&lt;/div&gt;&lt;div&gt;· DTCs, engine, HVAC, tires,&lt;br&gt;&amp;nbsp;&amp;nbsp;location, service alerts&lt;/div&gt;" vertex="1" parent="redis-container">
+          <mxGeometry x="14" y="65" width="300" height="95" as="geometry" />
+        </mxCell>
+
+        <!-- ===== CMS DynamoDB (box 9) ===== -->
+        <mxCell id="ddb-container" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5E6F7;strokeColor=#C925D1;fontSize=12;fontStyle=1;fontColor=#C925D1;fontFamily=Helvetica;verticalAlign=top;align=left;spacingLeft=70;spacingTop=10;strokeWidth=1.5;shadow=1;container=1;collapsible=0;" value="CMS DynamoDB" vertex="1" parent="cms-foundation">
+          <mxGeometry x="30" y="280" width="320" height="170" as="geometry" />
+        </mxCell>
+        <mxCell id="ddb-icon" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;fillColor=#C925D1;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.dynamodb;fontFamily=Helvetica;" value="" vertex="1" parent="ddb-container">
+          <mxGeometry x="12" y="10" width="48" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="ddb-sublist" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=11;fontFamily=Helvetica;fontColor=#232F3E;" value="&lt;div&gt;· vehicles&lt;/div&gt;&lt;div&gt;· trips&lt;/div&gt;&lt;div&gt;· service-history&lt;/div&gt;&lt;div&gt;· owner/vehicle profiles&lt;/div&gt;" vertex="1" parent="ddb-container">
+          <mxGeometry x="14" y="65" width="300" height="95" as="geometry" />
+        </mxCell>
+
+        <!-- ===== CMS Recalls Integration Lambda (box 10) ===== -->
+        <mxCell id="recalls-container" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF3E0;strokeColor=#ED7100;fontSize=12;fontStyle=1;fontColor=#ED7100;fontFamily=Helvetica;verticalAlign=top;align=left;spacingLeft=70;spacingTop=10;strokeWidth=1.5;shadow=1;container=1;collapsible=0;" value="CMS Recalls Integration Lambda" vertex="1" parent="cms-foundation">
+          <mxGeometry x="30" y="490" width="320" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="recalls-icon" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;fillColor=#ED7100;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.lambda;fontFamily=Helvetica;" value="" vertex="1" parent="recalls-container">
+          <mxGeometry x="12" y="10" width="48" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="recalls-sublist" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=11;fontFamily=Helvetica;fontColor=#232F3E;" value="&lt;div&gt;· recalls-lookup()&lt;/div&gt;&lt;div&gt;· recalls-status()&lt;/div&gt;&lt;div&gt;· recalls-timeline()&lt;/div&gt;" vertex="1" parent="recalls-container">
+          <mxGeometry x="14" y="65" width="300" height="75" as="geometry" />
+        </mxCell>
+
+        <!-- ===== ADP account boundary (dashed, cross-account) ===== -->
+        <mxCell id="adp-account" value="ADP account / region — cross-account authorization boundary" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#232F3E;dashed=1;dashPattern=8 4;fontSize=14;fontStyle=1;fontColor=#232F3E;fontFamily=Helvetica;verticalAlign=top;align=left;spacingLeft=20;spacingTop=10;strokeWidth=2;container=1;collapsible=0;" vertex="1" parent="1">
+          <mxGeometry x="1000" y="220" width="700" height="900" as="geometry" />
+        </mxCell>
+
+        <!-- ===== Bedrock Knowledge Base (box 11) ===== -->
+        <mxCell id="kb-container" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E0F2F1;strokeColor=#01A88D;fontSize=12;fontStyle=1;fontColor=#01A88D;fontFamily=Helvetica;verticalAlign=top;align=left;spacingLeft=70;spacingTop=10;strokeWidth=1.5;shadow=1;container=1;collapsible=0;" value="Bedrock Knowledge Base" vertex="1" parent="adp-account">
+          <mxGeometry x="40" y="80" width="620" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="kb-icon" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;fillColor=#01A88D;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.bedrock;fontFamily=Helvetica;" value="Knowledge&#xa;Bases" vertex="1" parent="kb-container">
+          <mxGeometry x="12" y="10" width="48" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="kb-sublist" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=11;fontFamily=Helvetica;fontColor=#232F3E;" value="&lt;div&gt;· Vehicle-KB with metadata sidecars:&lt;/div&gt;&lt;div&gt;&amp;nbsp;&amp;nbsp;&lt;i&gt;source_category&lt;/i&gt; (dtc_guide,&lt;br&gt;&amp;nbsp;&amp;nbsp;service_manual, recalls, symptoms)&lt;/div&gt;&lt;div&gt;· 51+ documents (DTCs P0420, P0300,&lt;br&gt;&amp;nbsp;&amp;nbsp;C0035, U0100, P0171, B0001, ...)&lt;/div&gt;&lt;div&gt;· Retrieve top-k, filtered by category&lt;/div&gt;" vertex="1" parent="kb-container">
+          <mxGeometry x="14" y="65" width="600" height="105" as="geometry" />
+        </mxCell>
+
+        <!-- ===== Centralized Data Repository (box 12) — ONE collapsed box ===== -->
+        <mxCell id="cdr-container" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EDE7F6;strokeColor=#8C4FFF;fontSize=12;fontStyle=1;fontColor=#8C4FFF;fontFamily=Helvetica;verticalAlign=top;align=left;spacingLeft=70;spacingTop=10;strokeWidth=1.5;shadow=1;container=1;collapsible=0;" value="Centralized Data Repository" vertex="1" parent="adp-account">
+          <mxGeometry x="40" y="380" width="620" height="230" as="geometry" />
+        </mxCell>
+        <mxCell id="cdr-icon" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;fillColor=#8C4FFF;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.lake_formation;fontFamily=Helvetica;" value="" vertex="1" parent="cdr-container">
+          <mxGeometry x="12" y="10" width="48" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="cdr-sublist" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=11;fontFamily=Helvetica;fontColor=#232F3E;" value="&lt;div&gt;&lt;b&gt;(Amazon Athena + AWS Glue + Amazon S3, governed by AWS Lake Formation)&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;· Historical vehicle usage aggregated&lt;/div&gt;&lt;div&gt;· Fleet-level analytics, trends&lt;/div&gt;&lt;div&gt;· Cross-account access via Lake Formation grants&lt;/div&gt;&lt;div&gt;· Called on session-init [4b] and select per-turn scenarios&lt;/div&gt;" vertex="1" parent="cdr-container">
+          <mxGeometry x="14" y="65" width="600" height="155" as="geometry" />
+        </mxCell>
+
+        <!-- ===== Arrows ===== -->
+        <!-- [3] tag-d1 → Runtime -->
+        <mxCell id="arrow-3" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=open;endFill=0;strokeColor=#545B64;strokeWidth=2;rounded=0;fontFamily=Helvetica;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="tag-d1" target="runtime-container">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- [4a] Runtime → Redis LKS (solid, session-init) -->
+        <mxCell id="arrow-4a" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=open;endFill=0;strokeColor=#545B64;strokeWidth=2;rounded=0;fontFamily=Helvetica;exitX=0.25;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="runtime-container" target="redis-container">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- [4b] Runtime → CDR (solid, crosses ADP boundary) -->
+        <mxCell id="arrow-4b" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=open;endFill=0;strokeColor=#545B64;strokeWidth=2;rounded=0;fontFamily=Helvetica;exitX=1;exitY=0.3;entryX=0;entryY=0.3;" edge="1" parent="1" source="runtime-container" target="cdr-container">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- [4c] Runtime → Memory (dashed, write) -->
+        <mxCell id="arrow-4c" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=open;endFill=0;strokeColor=#545B64;strokeWidth=2;rounded=0;fontFamily=Helvetica;dashed=1;dashPattern=6 4;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="runtime-container" target="memory-container">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- [6] Runtime → Memory (solid, per-turn read) -->
+        <mxCell id="arrow-6" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=open;endFill=0;strokeColor=#545B64;strokeWidth=2;rounded=0;fontFamily=Helvetica;exitX=0.75;exitY=1;entryX=0.75;entryY=0;" edge="1" parent="1" source="runtime-container" target="memory-container">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- [7] Runtime → KB (solid, crosses ADP boundary) -->
+        <mxCell id="arrow-7" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=open;endFill=0;strokeColor=#545B64;strokeWidth=2;rounded=0;fontFamily=Helvetica;exitX=1;exitY=0.7;entryX=0;entryY=0.5;" edge="1" parent="1" source="runtime-container" target="kb-container">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- [8] Runtime → Recalls Lambda (solid) -->
+        <mxCell id="arrow-8" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=open;endFill=0;strokeColor=#545B64;strokeWidth=2;rounded=0;fontFamily=Helvetica;exitX=0.25;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="memory-container" target="recalls-container">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- [9] Runtime → CMS DynamoDB (dashed, book write) -->
+        <mxCell id="arrow-9" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=open;endFill=0;strokeColor=#545B64;strokeWidth=2;rounded=0;fontFamily=Helvetica;dashed=1;dashPattern=6 4;exitX=0.75;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="memory-container" target="ddb-container">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- ===== Step badges ===== -->
+        <mxCell id="badge-3" style="ellipse;whiteSpace=wrap;html=1;fillColor=#007CBD;strokeColor=none;fontColor=#FFFFFF;fontStyle=1;fontSize=13;fontFamily=Helvetica;shadow=1;align=center;verticalAlign=middle;labelBackgroundColor=none;" value="3" vertex="1" parent="1">
+          <mxGeometry x="360" y="290" width="28" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="badge-4a" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#007CBD;strokeColor=none;fontColor=#FFFFFF;fontStyle=1;fontSize=12;fontFamily=Helvetica;shadow=1;align=center;verticalAlign=middle;labelBackgroundColor=none;" value="4a" vertex="1" parent="1">
+          <mxGeometry x="440" y="510" width="40" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="badge-4b" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#007CBD;strokeColor=none;fontColor=#FFFFFF;fontStyle=1;fontSize=12;fontFamily=Helvetica;shadow=1;align=center;verticalAlign=middle;labelBackgroundColor=none;" value="4b" vertex="1" parent="1">
+          <mxGeometry x="880" y="310" width="40" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="badge-4c" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#007CBD;strokeColor=none;fontColor=#FFFFFF;fontStyle=1;fontSize=12;fontFamily=Helvetica;shadow=1;align=center;verticalAlign=middle;labelBackgroundColor=none;" value="4c" vertex="1" parent="1">
+          <mxGeometry x="510" y="365" width="40" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="badge-6" style="ellipse;whiteSpace=wrap;html=1;fillColor=#007CBD;strokeColor=none;fontColor=#FFFFFF;fontStyle=1;fontSize=13;fontFamily=Helvetica;shadow=1;align=center;verticalAlign=middle;labelBackgroundColor=none;" value="6" vertex="1" parent="1">
+          <mxGeometry x="595" y="365" width="28" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="badge-7" style="ellipse;whiteSpace=wrap;html=1;fillColor=#007CBD;strokeColor=none;fontColor=#FFFFFF;fontStyle=1;fontSize=13;fontFamily=Helvetica;shadow=1;align=center;verticalAlign=middle;labelBackgroundColor=none;" value="7" vertex="1" parent="1">
+          <mxGeometry x="880" y="345" width="28" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="badge-8" style="ellipse;whiteSpace=wrap;html=1;fillColor=#007CBD;strokeColor=none;fontColor=#FFFFFF;fontStyle=1;fontSize=13;fontFamily=Helvetica;shadow=1;align=center;verticalAlign=middle;labelBackgroundColor=none;" value="8" vertex="1" parent="1">
+          <mxGeometry x="440" y="925" width="28" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="badge-9" style="ellipse;whiteSpace=wrap;html=1;fillColor=#007CBD;strokeColor=none;fontColor=#FFFFFF;fontStyle=1;fontSize=13;fontFamily=Helvetica;shadow=1;align=center;verticalAlign=middle;labelBackgroundColor=none;" value="9" vertex="1" parent="1">
+          <mxGeometry x="595" y="750" width="28" height="28" as="geometry" />
+        </mxCell>
+
+        <!-- ===== Legend on the right ===== -->
+        <mxCell id="legend-bg" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EDF3FF;strokeColor=#6C8EBF;strokeWidth=1;fontFamily=Helvetica;verticalAlign=top;align=left;spacingTop=10;spacingLeft=20;fontSize=16;fontStyle=1;fontColor=#232F3E;" value="Numbered flow steps" vertex="1" parent="1">
+          <mxGeometry x="1740" y="150" width="820" height="1050" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-body" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=13;fontFamily=Helvetica;fontColor=#232F3E;" value="&lt;div&gt;&lt;b&gt;[3]&lt;/b&gt; Per-turn entry: Supervisor Lambda (Diagram 1) invokes AgentCore Runtime with the user's turn payload.&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;[4a]&lt;/b&gt; Runtime → CMS Redis LKS. Session-init: reads latest known state for the target vehicle (DTCs, telemetry, HVAC, tires, location).&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;[4b]&lt;/b&gt; Runtime → Centralized Data Repository (ADP). Session-init: reads historical aggregates (Athena over Glue/S3, governed by Lake Formation). Crosses cross-account boundary.&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;[4c]&lt;/b&gt; Runtime → AgentCore Memory (write, dashed). Session-init: writes context, owner facts, prior contact refs for LTM.&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;[6]&lt;/b&gt; Runtime → AgentCore Memory. Per-turn read: retrieves customer preferences, prior context.&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;[7]&lt;/b&gt; Runtime → Bedrock Knowledge Base (Retrieve). Per-turn: filtered top-k retrieval by source_category (dtc_guide, service_manual, etc.). Crosses cross-account boundary.&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;[8]&lt;/b&gt; Runtime → CMS Recalls Lambda. Per-turn: recalls-lookup, recalls-status, recalls-timeline tool calls.&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;[9]&lt;/b&gt; Runtime → CMS DynamoDB (write, dashed). Per-turn: book() writes to service-history when customer confirms appointment.&lt;/div&gt;" vertex="1" parent="1">
+          <mxGeometry x="1760" y="195" width="785" height="990" as="geometry" />
+        </mxCell>
+
+        <!-- ===== Line styles / arrow legend ===== -->
+        <mxCell id="line-styles-bg" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#666666;strokeWidth=1;fontFamily=Helvetica;verticalAlign=top;align=left;spacingTop=10;spacingLeft=20;fontSize=13;fontStyle=1;fontColor=#232F3E;" value="Arrow styles" vertex="1" parent="1">
+          <mxGeometry x="80" y="1370" width="330" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="line-styles-body" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=11;fontFamily=Helvetica;fontColor=#232F3E;" value="&lt;div&gt;━━&gt; solid: read / synchronous call&lt;/div&gt;&lt;div&gt;╌╌&gt; dashed: async / write&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;i&gt;← Diagram N&lt;/i&gt; off-diagram tag&lt;/div&gt;" vertex="1" parent="1">
+          <mxGeometry x="95" y="1405" width="300" height="80" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

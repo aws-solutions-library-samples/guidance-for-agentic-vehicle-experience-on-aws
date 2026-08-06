@@ -1,0 +1,17 @@
+tool: knowledge
+id: knowledge-error-001
+description: "lookup_knowledge returns found=false when no documents match the query (uses all-nonsense terms so common automotive words like fault/code don't accidentally match)"
+tier: 1
+persona: fleet-driver
+vehicle_id: VEH-0025
+driver_id: drv-samantha-carter
+input:
+  type: text
+  input_args:
+    query: "xyzzy plugh thud frobnicate"
+    max_results: 3
+expected:
+  tool_output:
+    found: false
+    passages: []
+latency_budget_ms: 1000

@@ -1,0 +1,16 @@
+tool: vehicle_identity
+id: vehicle-identity-edge-001
+description: "lookup_vehicle_identity with fixture VIN returns found=true with vehicle details"
+tier: 1
+persona: fleet-driver
+vehicle_id: VEH-0025
+driver_id: drv-samantha-carter
+input:
+  type: text
+  input_args:
+    vin: "1FTRX18W6XKB12345"
+expected:
+  tool_output:
+    found: true
+    vehicleId: "VEH-0025"
+latency_budget_ms: 1000

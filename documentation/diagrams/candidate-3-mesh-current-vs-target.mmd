@@ -1,0 +1,72 @@
+flowchart LR
+
+%% CVX Supervisor and specialist agent mesh — CURRENT vs TARGET
+%% Source: agentic-architecture.adoc §"Supervisor and specialist agent mesh"
+%%   → "Current state vs. target architecture" (4 dimensions)
+%%   → "Mesh topology" ASCII sketch (Supervisor → Triage / Booking / Auth-Context / VFO)
+%% Maturity convention (matches diagrams 1–3 + the-customer-journey.adoc):
+%%   green  solid   = Demonstrated in CVX                (functional)
+%%   amber  dashed  = Not yet demonstrated in a reference implementation (roadmap)
+
+  %% ============================================================
+  %%  CURRENT STATE — functional / Demonstrated in CVX (LEFT)
+  %% ============================================================
+  subgraph CURRENT["<b>CURRENT STATE</b> · Demonstrated in CVX"]
+    direction TB
+    C_CLIENT["Client<br/>voice / chat"]
+
+    C_SUP["<b>VSA Supervisor — single process</b><br/>━━━━━━━━━━━━━━━━━━━━━━━<br/>Strands BidiAgent (voice) / Agent (text)<br/>Claude Sonnet 4.6 via Bedrock inference profile<br/>━━━━━━━━━━━━━━━━━━━━━━━<br/><b>Inline Python @tool callables:</b><br/>• triage()  •  booking()  •  auth_context()<br/>• cost_agent()  •  recall_warranty_agent()<br/>• maintenance_agent()  •  rebalancing_agent()<br/>━━━━━━━━━━━━━━━━━━━━━━━<br/><b>Routing</b> = supervisor system prompt<br/><b>Tenancy</b> = single-tenant<br/>(resolved from WebSocket headers)"]
+
+    C_CORPORA["<b>corpora/*.md</b><br/>loaded at module import"]
+
+    C_CLIENT --> C_SUP
+    C_SUP -->|"imports at startup"| C_CORPORA
+  end
+
+  %% ============================================================
+  %%  TARGET STATE — roadmap / Not yet demonstrated (RIGHT)
+  %% ============================================================
+  subgraph TARGET["<b>TARGET STATE</b> · Not yet demonstrated in a reference implementation"]
+    direction TB
+    T_CLIENT["Client<br/>voice / chat"]
+
+    T_TENANT["<b>Tenant Config Service</b><br/>DynamoDB <i>vsa-tenant-config</i><br/>per-tenant KB · branding ·<br/>policy · specialist enablement"]
+
+    T_SUP["<b>VSA Supervisor</b><br/>system prompt loaded per-tenant<br/><b>Routing</b> = DynamoDB + AppConfig<br/>(A/B testable per tenant)"]
+
+    T_REG["<b>Specialist Registry</b><br/>discovery — no supervisor redeploy<br/>to add or update a specialist"]
+
+    subgraph T_SPECIALISTS["<b>Independently deployed specialist services</b> · Lambda or Fargate"]
+      direction TB
+      T_TRIAGE["Triage service"]
+      T_BOOKING["Booking service"]
+      T_AUTH["Auth / Context service"]
+      T_VFO["VFO specialists<br/>Cost · Recall/Warranty ·<br/>Maintenance · Rebalancing"]
+      T_TA["Tenant-specific agents<br/>rental-policy · fleet-SLA ·<br/>OEM-warranty"]
+    end
+
+    T_KB["<b>Bedrock Knowledge Base</b><br/>OpenSearch Serverless<br/>content updates without redeploy"]
+
+    T_CLIENT --> T_SUP
+    T_TENANT -.->|"loaded at<br/>session start"| T_SUP
+    T_SUP -->|"discover"| T_REG
+    T_REG --> T_SPECIALISTS
+    T_SPECIALISTS -.->|"retrieve"| T_KB
+  end
+
+  %% Invisible edge to force CURRENT on left, TARGET on right in LR layout
+  CURRENT ~~~ TARGET
+
+  %% ============================================================
+  %%  Styling — functional (solid green) vs roadmap (dashed amber)
+  %% ============================================================
+  classDef fnc fill:#E8F5E9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
+  classDef rdm fill:#FFF3E0,stroke:#EF6C00,stroke-width:2px,color:#E65100,stroke-dasharray: 6 4
+
+  class C_CLIENT,C_SUP,C_CORPORA fnc
+  class T_CLIENT,T_SUP,T_TENANT,T_REG,T_KB,T_TRIAGE,T_BOOKING,T_AUTH,T_VFO,T_TA rdm
+
+  style CURRENT fill:#F1F8E9,stroke:#2E7D32,stroke-width:3px,color:#1B5E20
+
+  style TARGET       fill:#FFF8E1,stroke:#EF6C00,stroke-width:3px,color:#E65100,stroke-dasharray: 8 4
+  style T_SPECIALISTS fill:#FFECB3,stroke:#EF6C00,stroke-width:2.5px,color:#E65100,stroke-dasharray: 8 4

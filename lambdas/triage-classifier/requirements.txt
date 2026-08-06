@@ -1,0 +1,3 @@
+pyyaml>=6.0
+boto3>=1.34
+redis>=5.0

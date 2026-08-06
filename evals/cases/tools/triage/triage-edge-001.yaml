@@ -1,0 +1,16 @@
+tool: triage
+id: triage-edge-001
+description: "Triage with no DTCs — mock returns P2 classification"
+tier: 1
+persona: fleet-driver
+vehicle_id: VEH-0025
+driver_id: drv-samantha-carter
+input:
+  type: text
+  input_args:
+    vin: "1FTRX18W6XKB12345"
+expected:
+  tool_output:
+    classification: "P2"
+    sessionId: "vsa-sess-mock000001"
+latency_budget_ms: 1000

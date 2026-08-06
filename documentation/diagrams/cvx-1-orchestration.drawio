@@ -1,0 +1,269 @@
+<mxfile host="app.diagrams.net" agent="Kiro-diagrams-skill">
+  <diagram id="cvx-1-orchestration" name="CVX Diagram 1 - Agentic Orchestration">
+    <mxGraphModel dx="2400" dy="1400" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2400" pageHeight="1400" background="#FFFFFF" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- ===== Title block ===== -->
+        <mxCell id="title-group" connectable="0" style="group;fontFamily=Helvetica;" value="" vertex="1" parent="1">
+          <mxGeometry height="83" width="1600" x="60" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="title-text" style="text;html=1;resizable=1;points=[];autosize=1;align=left;verticalAlign=top;spacingTop=-4;fontSize=30;fontStyle=1;fontFamily=Helvetica;" value="CVX Agentic Orchestration" vertex="1" parent="title-group">
+          <mxGeometry height="42" width="1500" as="geometry" />
+        </mxCell>
+        <mxCell id="subtitle-text" style="text;html=1;resizable=0;points=[];autosize=1;align=left;verticalAlign=top;spacingTop=-4;fontSize=16;fontFamily=Helvetica;" value="How a connected-vehicle owner's voice, chat, or app request reaches the AI and gets answered" vertex="1" parent="title-group">
+          <mxGeometry height="25" width="1500" x="5" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="title-separator" style="line;strokeWidth=2;html=1;fontSize=14;strokeColor=#FF9900;fontFamily=Helvetica;" value="" vertex="1" parent="title-group">
+          <mxGeometry height="10" width="1590" x="5" y="70" as="geometry" />
+        </mxCell>
+
+        <!-- ===== CVX account dashed boundary ===== -->
+        <mxCell id="cvx-account" value="CVX account / region" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#232F3E;dashed=1;dashPattern=8 4;fontSize=14;fontStyle=1;fontColor=#232F3E;fontFamily=Helvetica;verticalAlign=top;align=left;spacingLeft=20;spacingTop=10;strokeWidth=2;container=1;collapsible=0;" vertex="1" parent="1">
+          <mxGeometry x="330" y="140" width="1330" height="1180" as="geometry" />
+        </mxCell>
+
+        <!-- ===== Customer (external, outside CVX account) ===== -->
+        <mxCell id="customer-container" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#666666;fontSize=12;fontStyle=1;fontColor=#333333;fontFamily=Helvetica;verticalAlign=top;align=center;spacingTop=8;strokeWidth=1;shadow=1;" value="Customer (A)" vertex="1" parent="1">
+          <mxGeometry x="80" y="500" width="180" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="customer-icon" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#232F3E;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=11;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.users;fontFamily=Helvetica;" value="&lt;i&gt;voice / chat / web / mobile&lt;/i&gt;" vertex="1" parent="customer-container">
+          <mxGeometry x="66" y="35" width="48" height="48" as="geometry" />
+        </mxCell>
+
+        <!-- ===== Amazon Connect (box 1) with channel sub-list ===== -->
+        <mxCell id="connect-container" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFEBEE;strokeColor=#DD344C;fontSize=12;fontStyle=1;fontColor=#DD344C;fontFamily=Helvetica;verticalAlign=top;align=left;spacingLeft=70;spacingTop=10;strokeWidth=1.5;shadow=1;container=1;collapsible=0;" value="Amazon Connect" vertex="1" parent="cvx-account">
+          <mxGeometry x="80" y="70" width="320" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="connect-icon" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;fillColor=#DD344C;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.connect;fontFamily=Helvetica;" value="" vertex="1" parent="connect-container">
+          <mxGeometry x="12" y="10" width="48" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="connect-sublist" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=11;fontFamily=Helvetica;fontColor=#232F3E;" value="&lt;div&gt;· Voice channel (Nova 2 Sonic)&lt;/div&gt;&lt;div&gt;· Chat channel (Connect Chat SDK)&lt;/div&gt;&lt;div&gt;· Tenant-branded contact flows&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;i style=&quot;font-size: 10px; color: #666666;&quot;&gt;(escalation detail → Diagram 3)&lt;/i&gt;&lt;/div&gt;" vertex="1" parent="connect-container">
+          <mxGeometry x="14" y="65" width="300" height="105" as="geometry" />
+        </mxCell>
+
+        <!-- ===== API Gateway + Cognito (box 2) ===== -->
+        <mxCell id="apigw-container" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FCE4EC;strokeColor=#E7157B;fontSize=12;fontStyle=1;fontColor=#E7157B;fontFamily=Helvetica;verticalAlign=top;align=left;spacingLeft=70;spacingTop=10;strokeWidth=1.5;shadow=1;container=1;collapsible=0;" value="Amazon API Gateway (+ Cognito)" vertex="1" parent="cvx-account">
+          <mxGeometry x="80" y="320" width="320" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="apigw-icon" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;fillColor=#E7157B;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.api_gateway;fontFamily=Helvetica;" value="" vertex="1" parent="apigw-container">
+          <mxGeometry x="12" y="10" width="48" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="cognito-icon" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;fillColor=#DD344C;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.cognito;fontFamily=Helvetica;" value="" vertex="1" parent="apigw-container">
+          <mxGeometry x="240" y="10" width="48" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="apigw-sublist" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=11;fontFamily=Helvetica;fontColor=#232F3E;" value="&lt;div&gt;· REST: POST {vsaApiEndpoint}&lt;br&gt;&amp;nbsp;&amp;nbsp;/assistant/chat&lt;/div&gt;&lt;div&gt;· Cognito JWT authorizer&lt;/div&gt;&lt;div&gt;· persona from cognito:groups +&lt;br&gt;&amp;nbsp;&amp;nbsp;custom:role&lt;/div&gt;" vertex="1" parent="apigw-container">
+          <mxGeometry x="14" y="65" width="300" height="105" as="geometry" />
+        </mxCell>
+
+        <!-- ===== Supervisor Lambda (box 3) ===== -->
+        <mxCell id="supervisor-container" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF3E0;strokeColor=#ED7100;fontSize=12;fontStyle=1;fontColor=#ED7100;fontFamily=Helvetica;verticalAlign=top;align=left;spacingLeft=70;spacingTop=10;strokeWidth=1.5;shadow=1;container=1;collapsible=0;" value="Supervisor Lambda (proxy)" vertex="1" parent="cvx-account">
+          <mxGeometry x="500" y="195" width="320" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="supervisor-icon" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;fillColor=#ED7100;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.lambda;fontFamily=Helvetica;" value="" vertex="1" parent="supervisor-container">
+          <mxGeometry x="12" y="10" width="48" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="supervisor-sublist" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=11;fontFamily=Helvetica;fontColor=#232F3E;" value="&lt;div&gt;· Single proxy for Connect &amp;&lt;br&gt;&amp;nbsp;&amp;nbsp;API Gateway ingress&lt;/div&gt;&lt;div&gt;· channel = session attribute,&lt;br&gt;&amp;nbsp;&amp;nbsp;not code branch&lt;/div&gt;&lt;div&gt;· destination for response fan-out&lt;/div&gt;" vertex="1" parent="supervisor-container">
+          <mxGeometry x="14" y="65" width="300" height="105" as="geometry" />
+        </mxCell>
+
+        <!-- ===== Bedrock AgentCore Runtime (box 4) ===== -->
+        <mxCell id="runtime-container" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E0F2F1;strokeColor=#01A88D;fontSize=12;fontStyle=1;fontColor=#01A88D;fontFamily=Helvetica;verticalAlign=top;align=left;spacingLeft=70;spacingTop=10;strokeWidth=1.5;shadow=1;container=1;collapsible=0;" value="Bedrock AgentCore Runtime" vertex="1" parent="cvx-account">
+          <mxGeometry x="500" y="450" width="320" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="runtime-icon" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;fillColor=#01A88D;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.bedrock_agentcore;fontFamily=Helvetica;" value="" vertex="1" parent="runtime-container">
+          <mxGeometry x="12" y="10" width="48" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="runtime-sublist" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=11;fontFamily=Helvetica;fontColor=#232F3E;" value="&lt;div&gt;· bidi (voice, Nova 2 Sonic)&lt;/div&gt;&lt;div&gt;· text (chat / web / mobile)&lt;/div&gt;&lt;div&gt;· Strands supervisor agent&lt;/div&gt;&lt;div&gt;· Claude Sonnet 4.6&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;i style=&quot;font-size: 10px; color: #666666;&quot;&gt;executes tool loop&lt;/i&gt;&lt;/div&gt;" vertex="1" parent="runtime-container">
+          <mxGeometry x="14" y="65" width="300" height="145" as="geometry" />
+        </mxCell>
+
+        <!-- ===== Triage Classifier Lambda (box 6) ===== -->
+        <mxCell id="triage-container" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF3E0;strokeColor=#ED7100;fontSize=12;fontStyle=1;fontColor=#ED7100;fontFamily=Helvetica;verticalAlign=top;align=left;spacingLeft=70;spacingTop=10;strokeWidth=1.5;shadow=1;container=1;collapsible=0;" value="Triage Classifier Lambda" vertex="1" parent="cvx-account">
+          <mxGeometry x="900" y="450" width="320" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="triage-icon" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;fillColor=#ED7100;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.lambda;fontFamily=Helvetica;" value="" vertex="1" parent="triage-container">
+          <mxGeometry x="12" y="10" width="48" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="triage-sublist" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=11;fontFamily=Helvetica;fontColor=#232F3E;" value="&lt;div&gt;triage(): deterministic P0 / P1 /&lt;br&gt;P2 / P3 rules engine&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Inputs: DTCs + telemetry + recalls&lt;br&gt;+ tenant policy overrides&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;i style=&quot;font-size: 10px; color: #666666;&quot;&gt;P0/P1/P2 output → Diagram 3&lt;/i&gt;&lt;/div&gt;" vertex="1" parent="triage-container">
+          <mxGeometry x="14" y="65" width="300" height="145" as="geometry" />
+        </mxCell>
+
+        <!-- ===== Off-diagram tag → Diagram 2 (grounding) ===== -->
+        <mxCell id="tag-d2" style="shape=step;perimeter=stepPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#F5F5F5;strokeColor=#999999;strokeWidth=1.5;dashed=0;fontSize=13;fontStyle=1;fontFamily=Helvetica;fontColor=#232F3E;align=center;verticalAlign=middle;" value="→ Diagram 2&#xa;&lt;i style=&quot;font-size: 10px; font-weight: normal; color: #666;&quot;&gt;grounding data path&lt;/i&gt;" vertex="1" parent="cvx-account">
+          <mxGeometry x="500" y="770" width="240" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- ===== Off-diagram tag → Diagram 3 (escalation) ===== -->
+        <mxCell id="tag-d3" style="shape=step;perimeter=stepPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#F5F5F5;strokeColor=#999999;strokeWidth=1.5;dashed=0;fontSize=13;fontStyle=1;fontFamily=Helvetica;fontColor=#232F3E;align=center;verticalAlign=middle;" value="→ Diagram 3&#xa;&lt;i style=&quot;font-size: 10px; font-weight: normal; color: #666;&quot;&gt;escalation / warm-transfer&lt;/i&gt;" vertex="1" parent="cvx-account">
+          <mxGeometry x="900" y="770" width="240" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- ===== Arrows ===== -->
+        <!-- [1] Customer → Connect (voice/chat) -->
+        <mxCell id="arrow-1" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=open;endFill=0;strokeColor=#545B64;strokeWidth=2;rounded=0;fontFamily=Helvetica;exitX=1;exitY=0.3;entryX=0;entryY=0.4;" edge="1" parent="1" source="customer-container" target="connect-container">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow-1-label" value="voice / chat" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=none;fontSize=11;fontFamily=Helvetica;" connectable="0" vertex="1" parent="arrow-1">
+          <mxGeometry x="-0.3" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- [1'] Customer → API Gateway (web/mobile) -->
+        <mxCell id="arrow-1p" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=open;endFill=0;strokeColor=#545B64;strokeWidth=2;rounded=0;fontFamily=Helvetica;exitX=1;exitY=0.7;entryX=0;entryY=0.5;" edge="1" parent="1" source="customer-container" target="apigw-container">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow-1p-label" value="web / mobile" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=none;fontSize=11;fontFamily=Helvetica;" connectable="0" vertex="1" parent="arrow-1p">
+          <mxGeometry x="-0.3" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- [2] Connect → Supervisor -->
+        <mxCell id="arrow-2" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=open;endFill=0;strokeColor=#545B64;strokeWidth=2;rounded=0;fontFamily=Helvetica;exitX=1;exitY=0.6;entryX=0;entryY=0.3;" edge="1" parent="1" source="connect-container" target="supervisor-container">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- [2'] API Gateway → Supervisor -->
+        <mxCell id="arrow-2p" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=open;endFill=0;strokeColor=#545B64;strokeWidth=2;rounded=0;fontFamily=Helvetica;exitX=1;exitY=0.4;entryX=0;entryY=0.7;" edge="1" parent="1" source="apigw-container" target="supervisor-container">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- [3] Supervisor → AgentCore Runtime -->
+        <mxCell id="arrow-3" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=open;endFill=0;strokeColor=#545B64;strokeWidth=2;rounded=0;fontFamily=Helvetica;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="supervisor-container" target="runtime-container">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- [5] Runtime → Triage -->
+        <mxCell id="arrow-5" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=open;endFill=0;strokeColor=#545B64;strokeWidth=2;rounded=0;fontFamily=Helvetica;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="runtime-container" target="triage-container">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow-5-label" value="triage()" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=none;fontSize=11;fontFamily=Helvetica;fontStyle=2;" connectable="0" vertex="1" parent="arrow-5">
+          <mxGeometry x="0" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- [4] Runtime → Diagram 2 tag (session-init grounding — dashed to signify off-diagram) -->
+        <mxCell id="arrow-4" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=open;endFill=0;strokeColor=#545B64;strokeWidth=2;rounded=0;fontFamily=Helvetica;exitX=0.25;exitY=1;entryX=0.3;entryY=0;" edge="1" parent="1" source="runtime-container" target="tag-d2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow-4-label" value="session-init grounding" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=none;fontSize=11;fontFamily=Helvetica;fontStyle=2;" connectable="0" vertex="1" parent="arrow-4">
+          <mxGeometry x="0" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- [6/7/8/9] Runtime → Diagram 2 tag (per-turn grounding) -->
+        <mxCell id="arrow-6789" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=open;endFill=0;strokeColor=#545B64;strokeWidth=2;rounded=0;fontFamily=Helvetica;exitX=0.75;exitY=1;entryX=0.7;entryY=0;" edge="1" parent="1" source="runtime-container" target="tag-d2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow-6789-label" value="per-turn grounding" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=none;fontSize=11;fontFamily=Helvetica;fontStyle=2;" connectable="0" vertex="1" parent="arrow-6789">
+          <mxGeometry x="0" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- [10] Triage → Diagram 3 tag (escalation) -->
+        <mxCell id="arrow-10" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=open;endFill=0;strokeColor=#545B64;strokeWidth=2;rounded=0;fontFamily=Helvetica;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="triage-container" target="tag-d3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow-10-label" value="P0/P1/P2 escalate" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=none;fontSize=11;fontFamily=Helvetica;fontStyle=2;" connectable="0" vertex="1" parent="arrow-10">
+          <mxGeometry x="0" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- [12] Runtime → Supervisor (response) -->
+        <mxCell id="arrow-12" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=open;endFill=0;strokeColor=#248814;strokeWidth=2;rounded=0;fontFamily=Helvetica;exitX=0.25;exitY=0;entryX=0.25;entryY=1;" edge="1" parent="1" source="runtime-container" target="supervisor-container">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow-12-label" value="response" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=none;fontSize=11;fontFamily=Helvetica;fontStyle=2;fontColor=#248814;" connectable="0" vertex="1" parent="arrow-12">
+          <mxGeometry x="0.2" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- [13a] Supervisor → Connect (voice/chat response) -->
+        <mxCell id="arrow-13a" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=open;endFill=0;strokeColor=#248814;strokeWidth=2;rounded=0;fontFamily=Helvetica;exitX=0;exitY=0.3;entryX=1;entryY=0.4;" edge="1" parent="1" source="supervisor-container" target="connect-container">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- [13b] Supervisor → API Gateway (web/mobile response) -->
+        <mxCell id="arrow-13b" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=open;endFill=0;strokeColor=#248814;strokeWidth=2;rounded=0;fontFamily=Helvetica;exitX=0;exitY=0.7;entryX=1;entryY=0.5;" edge="1" parent="1" source="supervisor-container" target="apigw-container">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- [14a] Connect → Customer (response back) -->
+        <mxCell id="arrow-14a" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=open;endFill=0;strokeColor=#248814;strokeWidth=2;rounded=0;fontFamily=Helvetica;exitX=0;exitY=0.7;entryX=1;entryY=0.15;dashed=0;" edge="1" parent="1" source="connect-container" target="customer-container">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- [14b] API Gateway → Customer (response back) -->
+        <mxCell id="arrow-14b" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=open;endFill=0;strokeColor=#248814;strokeWidth=2;rounded=0;fontFamily=Helvetica;exitX=0;exitY=0.7;entryX=1;entryY=0.85;" edge="1" parent="1" source="apigw-container" target="customer-container">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- ===== Step badges on arrows ===== -->
+        <mxCell id="badge-1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#007CBD;strokeColor=none;fontColor=#FFFFFF;fontStyle=1;fontSize=13;fontFamily=Helvetica;shadow=1;align=center;verticalAlign=middle;labelBackgroundColor=none;" value="1" vertex="1" parent="1">
+          <mxGeometry x="290" y="450" width="28" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="badge-1p" style="ellipse;whiteSpace=wrap;html=1;fillColor=#007CBD;strokeColor=none;fontColor=#FFFFFF;fontStyle=1;fontSize=13;fontFamily=Helvetica;shadow=1;align=center;verticalAlign=middle;labelBackgroundColor=none;" value="1'" vertex="1" parent="1">
+          <mxGeometry x="290" y="620" width="28" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="badge-2" style="ellipse;whiteSpace=wrap;html=1;fillColor=#007CBD;strokeColor=none;fontColor=#FFFFFF;fontStyle=1;fontSize=13;fontFamily=Helvetica;shadow=1;align=center;verticalAlign=middle;labelBackgroundColor=none;" value="2" vertex="1" parent="1">
+          <mxGeometry x="750" y="330" width="28" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="badge-2p" style="ellipse;whiteSpace=wrap;html=1;fillColor=#007CBD;strokeColor=none;fontColor=#FFFFFF;fontStyle=1;fontSize=13;fontFamily=Helvetica;shadow=1;align=center;verticalAlign=middle;labelBackgroundColor=none;" value="2'" vertex="1" parent="1">
+          <mxGeometry x="750" y="500" width="28" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="badge-3" style="ellipse;whiteSpace=wrap;html=1;fillColor=#007CBD;strokeColor=none;fontColor=#FFFFFF;fontStyle=1;fontSize=13;fontFamily=Helvetica;shadow=1;align=center;verticalAlign=middle;labelBackgroundColor=none;" value="3" vertex="1" parent="1">
+          <mxGeometry x="1000" y="590" width="28" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="badge-4" style="ellipse;whiteSpace=wrap;html=1;fillColor=#007CBD;strokeColor=none;fontColor=#FFFFFF;fontStyle=1;fontSize=13;fontFamily=Helvetica;shadow=1;align=center;verticalAlign=middle;labelBackgroundColor=none;" value="4" vertex="1" parent="1">
+          <mxGeometry x="890" y="850" width="28" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="badge-5" style="ellipse;whiteSpace=wrap;html=1;fillColor=#007CBD;strokeColor=none;fontColor=#FFFFFF;fontStyle=1;fontSize=13;fontFamily=Helvetica;shadow=1;align=center;verticalAlign=middle;labelBackgroundColor=none;" value="5" vertex="1" parent="1">
+          <mxGeometry x="1225" y="695" width="28" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="badge-6789" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#007CBD;strokeColor=none;fontColor=#FFFFFF;fontStyle=1;fontSize=11;fontFamily=Helvetica;shadow=1;align=center;verticalAlign=middle;labelBackgroundColor=none;" value="6/7/8/9" vertex="1" parent="1">
+          <mxGeometry x="1050" y="850" width="60" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="badge-10" style="ellipse;whiteSpace=wrap;html=1;fillColor=#007CBD;strokeColor=none;fontColor=#FFFFFF;fontStyle=1;fontSize=13;fontFamily=Helvetica;shadow=1;align=center;verticalAlign=middle;labelBackgroundColor=none;" value="10" vertex="1" parent="1">
+          <mxGeometry x="1330" y="850" width="28" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="badge-12" style="ellipse;whiteSpace=wrap;html=1;fillColor=#007CBD;strokeColor=none;fontColor=#FFFFFF;fontStyle=1;fontSize=13;fontFamily=Helvetica;shadow=1;align=center;verticalAlign=middle;labelBackgroundColor=none;" value="12" vertex="1" parent="1">
+          <mxGeometry x="855" y="590" width="28" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="badge-13a" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#007CBD;strokeColor=none;fontColor=#FFFFFF;fontStyle=1;fontSize=12;fontFamily=Helvetica;shadow=1;align=center;verticalAlign=middle;labelBackgroundColor=none;" value="13a" vertex="1" parent="1">
+          <mxGeometry x="750" y="290" width="40" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="badge-13b" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#007CBD;strokeColor=none;fontColor=#FFFFFF;fontStyle=1;fontSize=12;fontFamily=Helvetica;shadow=1;align=center;verticalAlign=middle;labelBackgroundColor=none;" value="13b" vertex="1" parent="1">
+          <mxGeometry x="750" y="540" width="40" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="badge-14a" style="ellipse;whiteSpace=wrap;html=1;fillColor=#007CBD;strokeColor=none;fontColor=#FFFFFF;fontStyle=1;fontSize=13;fontFamily=Helvetica;shadow=1;align=center;verticalAlign=middle;labelBackgroundColor=none;" value="14" vertex="1" parent="1">
+          <mxGeometry x="290" y="405" width="28" height="28" as="geometry" />
+        </mxCell>
+
+        <!-- ===== Legend on the right ===== -->
+        <mxCell id="legend-bg" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EDF3FF;strokeColor=#6C8EBF;strokeWidth=1;fontFamily=Helvetica;verticalAlign=top;align=left;spacingTop=10;spacingLeft=20;fontSize=16;fontStyle=1;fontColor=#232F3E;" value="Numbered flow steps" vertex="1" parent="1">
+          <mxGeometry x="1730" y="140" width="640" height="1180" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-body" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=13;fontFamily=Helvetica;fontColor=#232F3E;" value="&lt;div&gt;&lt;b&gt;[1]&lt;/b&gt; Customer → Amazon Connect. Voice call (PSTN) or Connect Chat message; DNIS resolves tenant.&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;[1']&lt;/b&gt; Customer → API Gateway. Web / mobile POST to /assistant/chat; Cognito JWT authorizer.&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;[2]&lt;/b&gt; Amazon Connect → Supervisor Lambda. Tenant-branded contact flow invokes the Lambda integration.&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;[2']&lt;/b&gt; API Gateway → Supervisor Lambda. REST proxy forwards to the same Lambda that Connect uses.&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;[3]&lt;/b&gt; Supervisor Lambda → AgentCore Runtime. Invokes vsa_supervisor_bidi_* (voice) or vsa_supervisor_text_* (chat/web).&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;[4]&lt;/b&gt; Session-init grounding (folded — full detail on Diagram 2). AgentCore Runtime fans out to CMS Redis LKS + Centralized Data Repository + AgentCore Memory.&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;[5]&lt;/b&gt; AgentCore Runtime → Triage Classifier. Deterministic P0/P1/P2/P3 rules engine over DTCs + telemetry + recalls + tenant policy overrides.&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;[6/7/8/9]&lt;/b&gt; Per-turn grounding (folded — full detail on Diagram 2). AgentCore Memory reads [6], Bedrock KB Retrieve [7], CMS Recalls [8], CMS DynamoDB write on book() [9].&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;[10]&lt;/b&gt; Escalation (folded — full detail on Diagram 3). Triggered when triage() returns P0/P1/P2 or on explicit customer request.&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;[12]&lt;/b&gt; AgentCore Runtime → Supervisor Lambda. Synthesized grounded response (voice: token stream to Nova 2 Sonic; text: JSON).&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;[13a]&lt;/b&gt; Supervisor Lambda → Amazon Connect. Voice: Nova 2 Sonic audio via Connect. Chat: text via Connect Chat WebSocket.&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;[13b]&lt;/b&gt; Supervisor Lambda → API Gateway. Web / mobile JSON response with text + triage + vin + citations fields.&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;[14]&lt;/b&gt; Amazon Connect / API Gateway → Customer. End-to-end response delivered on the same channel the customer entered on.&lt;/div&gt;" vertex="1" parent="1">
+          <mxGeometry x="1750" y="185" width="605" height="1120" as="geometry" />
+        </mxCell>
+
+        <!-- ===== Line styles / arrow legend ===== -->
+        <mxCell id="line-styles-bg" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#666666;strokeWidth=1;fontFamily=Helvetica;verticalAlign=top;align=left;spacingTop=10;spacingLeft=20;fontSize=13;fontStyle=1;fontColor=#232F3E;" value="Arrow styles" vertex="1" parent="1">
+          <mxGeometry x="80" y="1150" width="220" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="line-styles-body" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=11;fontFamily=Helvetica;fontColor=#232F3E;" value="&lt;div&gt;&lt;font color=&quot;#545B64&quot;&gt;━━&gt;&lt;/font&gt; forward request / call&lt;/div&gt;&lt;div&gt;&lt;font color=&quot;#248814&quot;&gt;━━&gt;&lt;/font&gt; response back to caller&lt;/div&gt;&lt;div&gt;&lt;font color=&quot;#232F3E&quot;&gt;⇢&lt;/font&gt; async / write&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;i&gt;→ Diagram N&lt;/i&gt; off-diagram tag&lt;/div&gt;" vertex="1" parent="1">
+          <mxGeometry x="95" y="1185" width="200" height="100" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

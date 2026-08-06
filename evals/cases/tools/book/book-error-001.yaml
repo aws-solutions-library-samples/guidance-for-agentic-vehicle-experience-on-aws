@@ -1,0 +1,20 @@
+tool: book
+id: book-error-001
+description: "Book raises BookError when customerActionsTaken contains an invalid action value"
+tier: 1
+persona: fleet-driver
+vehicle_id: VEH-0025
+driver_id: drv-samantha-carter
+input:
+  type: text
+  utterance: "book service with invalid action"
+  input_args:
+    reportedSymptom: "Engine warning light on."
+    customerActionsTaken:
+      - "invalid-action-xyz"
+    narrative: "Test invalid action."
+expected:
+  tool_output:
+    error: "BookError"
+    message_contains: "Invalid action"
+latency_budget_ms: 1000

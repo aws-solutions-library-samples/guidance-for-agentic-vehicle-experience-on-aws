@@ -1,0 +1,53 @@
+# DTC severity table for VSA triage classifier.
+# severity: critical | high | moderate | low
+# safe_to_drive: "yes" | limited | no
+# Curated subset; unknown codes default to {severity: moderate, system: unknown, safe_to_drive: "yes"}.
+# Source of truth: VSA_TRIAGE_CLASSIFIER.md Section 3.
+#
+# P-level produced from (severity, safe_to_drive):
+#   (critical, no)        → P0    (stop driving)
+#   (critical, limited)   → P1
+#   (critical, yes)       → P1
+#   (high, no)            → P0    (stop driving)
+#   (high, limited)       → P1
+#   (high, yes)           → P1
+#   (moderate, no)        → P1
+#   (moderate, limited)   → P2
+#   (moderate, yes)       → P2
+#   (low, no)             → P2
+#   (low, limited)        → P3
+#   (low, yes)            → P3
+#
+# Codes must stay in sync with:
+#   - services/simulation event catalog (CMS repo, seed_vsa_demo_events.py)
+#   - MaintenanceProcessor DTC emission (CMS repo, Flink)
+# When adding a row here, also ensure the simulator/processor emits the
+# same code and the VSA demo event catalog references it.
+
+# ── P0 (critical + no → stop driving) ──────────────────────────────────────
+C1234: { severity: critical, system: brakes,         safe_to_drive: "no" }       # Brake system fault
+P0217: { severity: critical, system: powertrain,     safe_to_drive: "no" }       # Coolant over-temp — was "limited" pre-2026-04-30; flipped to match NHTSA "stop driving" guidance and the VSA demo narrative.
+P0700: { severity: high,     system: transmission,   safe_to_drive: "no" }       # Transmission failure (limp mode) — was "limited"; demo bump.
+P0A80: { severity: critical, system: hv_battery,     safe_to_drive: "no" }       # HV battery thermal/replace required (EV) — new for VSA demo.
+
+# ── P1 (high + limited / critical + limited) ───────────────────────────────
+P0300: { severity: high,     system: powertrain,     safe_to_drive: "limited" }  # Random/multi misfire — was "yes"; bumped so severe misfire demos as P1 rather than P1 (same result via high+limited; was high+yes → P1, kept stable).
+P0606: { severity: high,     system: powertrain,     safe_to_drive: "limited" }  # PCM processor fault
+C1201: { severity: high,     system: brakes,         safe_to_drive: "limited" }  # Traction control system disabled
+C1241: { severity: high,     system: brakes,         safe_to_drive: "limited" }  # Low brake fluid
+U0100: { severity: high,     system: communication,  safe_to_drive: "limited" }  # Lost comm PCM
+U0121: { severity: high,     system: communication,  safe_to_drive: "limited" }  # Lost comm ABS
+P0340: { severity: high,     system: powertrain,     safe_to_drive: "limited" }  # Camshaft position sensor — new for VSA demo.
+
+# ── P2 (moderate) ──────────────────────────────────────────────────────────
+P0420: { severity: moderate, system: emissions,      safe_to_drive: "yes" }      # Catalyst efficiency
+P0171: { severity: moderate, system: fuel,           safe_to_drive: "yes" }      # Lean fuel mixture — new for VSA demo.
+C0035: { severity: moderate, system: abs,            safe_to_drive: "yes" }      # LF wheel speed sensor
+C0040: { severity: moderate, system: abs,            safe_to_drive: "yes" }      # RF wheel speed sensor
+U0401: { severity: moderate, system: communication,  safe_to_drive: "yes" }      # Invalid data from ECM
+
+# ── P3 (low) ───────────────────────────────────────────────────────────────
+P0442: { severity: low,      system: emissions,      safe_to_drive: "yes" }      # Small evap leak
+P0562: { severity: low,      system: electrical,     safe_to_drive: "yes" }      # System voltage low (minor) — new for VSA demo.
+B1000: { severity: low,      system: body,           safe_to_drive: "yes" }      # ECU internal
+B1315: { severity: low,      system: body,           safe_to_drive: "yes" }      # Battery voltage low

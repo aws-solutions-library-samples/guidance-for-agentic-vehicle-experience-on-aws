@@ -1,0 +1,20 @@
+tool: escalate
+id: escalate-error-001
+description: "escalate_to_human raises EscalateError for invalid severity value"
+tier: 1
+persona: fleet-driver
+vehicle_id: VEH-0025
+driver_id: drv-samantha-carter
+input:
+  type: text
+  utterance: "escalate with invalid severity"
+  input_args:
+    severity: "INVALID"
+    reason: "test invalid severity"
+    summary: ""
+    dispatch_roadside: false
+expected:
+  tool_output:
+    error: "EscalateError"
+    message_contains: "Invalid severity"
+latency_budget_ms: 1000
