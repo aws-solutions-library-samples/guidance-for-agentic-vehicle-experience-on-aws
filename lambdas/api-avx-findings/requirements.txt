@@ -1,0 +1,11 @@
+boto3==1.43.6
+# requests: imported at MODULE scope by agents/executors/{dms,vehicle_command}.py, which
+# this Lambda now bundles (scripts/build-avx-lambda.sh :: bundle_executors) so the approve
+# route can dispatch. Without it the whole executor package fails to import at cold start —
+# caught 2026-09-23 by importing the staged bundle in isolation, which is the only check
+# that sees this: a repo-root import resolves `requests` from the dev venv and passes.
+#
+# Pinned to match the root requirements.txt exactly. A different version here than in the
+# AgentCore runtime image would mean the same executor code runs against two different HTTP
+# clients depending on which artifact invoked it.
+requests==2.34.0

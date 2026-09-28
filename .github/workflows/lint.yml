@@ -1,0 +1,302 @@
+---
+# Basic CI lint workflow.
+#
+# Runs on push to main and on every PR. Performs lightweight static checks
+# on YAML, Python, and shell scripts. Does NOT run CodeQL - that is
+# handled by the org's Default Setup CodeQL configuration.
+#
+# This workflow exists primarily to give the public repo's CI surface
+# something useful to do, and to provide the Default Setup Actions
+# language scanner a workflow file to analyze.
+#
+# CVX language mix: Python (agents/, lambdas/, evals/, scripts/) +
+# TypeScript (infrastructure/) + Bash (scripts/*.sh).
+# yamllint covers .github/workflows/; shellcheck covers *.sh;
+# flake8 covers the Python layer (E/F errors only, no style churn).
+
+name: Lint
+
+"on":
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+permissions:
+  contents: read
+
+jobs:
+  yaml-lint:
+    name: YAML lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout repository
+        # yamllint disable-line rule:line-length
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
+
+      - name: Set up Python
+        # yamllint disable-line rule:line-length
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065  # v5.6.0
+        with:
+          python-version: "3.13"
+
+      - name: Install yamllint
+        run: pip install --no-input "yamllint==1.35.1"
+
+      - name: Run yamllint
+        run: |
+          yamllint --no-warnings \
+            --config-data '{extends: default, rules: {
+              line-length: disable,
+              document-start: disable,
+              truthy: {check-keys: false}}}' \
+            .github/workflows/ || true
+
+  python-lint:
+    name: Python lint (flake8)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout repository
+        # yamllint disable-line rule:line-length
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
+
+      - name: Set up Python
+        # yamllint disable-line rule:line-length
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065  # v5.6.0
+        with:
+          python-version: "3.13"
+
+      - name: Install flake8
+        run: pip install --no-input "flake8==7.1.2"
+
+      - name: Run flake8
+        # E/F errors only (syntax + undefined names). W (style) and C
+        # (complexity) are suppressed. E501/E402 also ignored to avoid
+        # line-length and module-level import ordering noise.
+        run: |
+          flake8 \
+            --select=E,F \
+            --extend-ignore=E501,E402 \
+            --max-line-length=200 \
+            agents/ lambdas/ evals/ scripts/ || true
+
+  python-lint-errors:
+    name: Python errors (flake8, gating)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout repository
+        # yamllint disable-line rule:line-length
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
+
+      - name: Set up Python
+        # yamllint disable-line rule:line-length
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065  # v5.6.0
+        with:
+          python-version: "3.13"
+
+      - name: Install flake8
+        run: pip install --no-input "flake8==7.1.2"
+
+      - name: Run flake8 (bug classes only, no '|| true')
+        # Companion to `python-lint` above, which is broad and ADVISORY. This one
+        # is narrow and GATING.
+        #
+        # Why not just drop the '|| true' up there: measured 2026-09-20, the broad
+        # invocation reports 863 findings (571 E-style, 292 pyflakes), so gating it
+        # would redden main immediately. Restricting to the classes that mean "this
+        # code is wrong" rather than "this code is untidy" gives 17, of which 16 are
+        # F811 redefinitions — almost all harmless function-local re-imports in
+        # tests. Excluding F811 leaves ZERO, so this gate is green today and any
+        # future hit is a real defect rather than backlog noise.
+        #
+        # F821 is here because it is the exact class behind Group 5 review Cycle 4's
+        # Critical: a `log.error` inside an `except` in a module with no logger, so
+        # the guard raised NameError every time while reading as protection. The
+        # advisory job above WOULD have caught it, and discarded the result.
+        #
+        # Verified to fire, not assumed: a probe file with `log.error` in an
+        # exception handler produces `F821 undefined name 'log'` and exit 1 under
+        # exactly this invocation.
+        #
+        # F632 (`is` against a literal) and E9 (syntax/IO errors) are included on
+        # the same principle — both are always defects, never style.
+        #
+        # Widening this list is welcome; do it by fixing the findings first and
+        # confirming the gate is still green, not by adding '|| true'.
+        run: |
+          flake8 \
+            --select=F821,F632,E9 \
+            --max-line-length=200 \
+            agents/ lambdas/ evals/ scripts/
+
+  shell-lint:
+    name: ShellCheck
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout repository
+        # yamllint disable-line rule:line-length
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
+
+      - name: Run shellcheck
+        run: |
+          if find . -path ./.venv -prune \
+               -o -name '*.sh' -print \
+               | head -1 | read; then
+            sudo apt-get install -y -qq shellcheck
+            find . -path ./.venv -prune \
+              -o -name '*.sh' -print \
+              -exec shellcheck -e SC1091,SC2086,SC2155 {} + || true
+          fi
+
+  schema-tests:
+    name: Schema contract tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        # yamllint disable-line rule:line-length
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
+
+      - name: Set up Python
+        # yamllint disable-line rule:line-length
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065  # v5.6.0
+        with:
+          python-version: "3.13"
+
+      - name: Install test dependencies
+        run: |
+          pip install --no-input \
+            "pytest==8.3.5" \
+            "jsonschema==4.23.0" \
+            "openapi-spec-validator==0.7.1"
+
+      - name: Run contract tripwire tests
+        # Runs tests/schemas/ in isolation — no Lambda runtime deps needed.
+        # These are the byte-identical contract guards (spec § D8).
+        # Failure here means a schema file was modified without updating the
+        # pinned checksums; see tests/schemas/test_contract_fixtures_byte_identical.py.
+        run: |
+          python3 -m pytest tests/schemas/ -v --tb=short
+
+      - name: Validate AVX OpenAPI contract (pinned validator)
+        # Explicitly validates the AVX findings-actions OpenAPI document under
+        # the pinned openapi-spec-validator version (0.7.1 installed above).
+        # This step exists because 0.7.1 and 0.9.0 produce different exit codes
+        # against this contract, and the pinned version is the authoritative one.
+        # Without this step the validator is installed but never run, so a
+        # contract change that fails 0.7.1 can silently ship when 0.9.0 passes
+        # locally. See spec 2026-09-18-avx-tier2-ios-cards-and-actions Fix Group 6.
+        run: |
+          python3 -m openapi_spec_validator docs/api/avx-findings-actions.openapi.yaml
+
+
+  executor-tests:
+    name: AVX suites (executors + api-avx-* handlers + broker, pytest + pyflakes + mutation battery)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout repository
+        # yamllint disable-line rule:line-length
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
+
+      - name: Set up Python
+        # yamllint disable-line rule:line-length
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065  # v5.6.0
+        with:
+          python-version: "3.13"
+
+      - name: Install test dependencies
+        # requirements-dev.txt is self-sufficient for this suite as of 2026-09-20
+        # and every version in it is exact. Verified by building a clean 3.13 venv
+        # from this file alone and running all three steps below against it. The
+        # api-avx-* handler test suites added 2026-09-24 use the same dependency
+        # set (boto3, pytest, jsonschema — all module-scope imports of the
+        # handler tests) and were verified against this same requirements file.
+        run: pip install --no-input -r requirements-dev.txt
+
+      - name: Run executor test suite
+        # No `|| true`. The three lint jobs above are advisory by design; this job
+        # and `schema-tests` GATE. Group 5 of spec
+        # 2026-09-18-avx-tier2-ios-cards-and-actions spent five review cycles on
+        # defects introduced by the previous cycle's fixes, so an advisory result
+        # here would defeat the point of running it at all.
+        run: python3 -m pytest agents/executors/ -q
+
+      - name: Run api-avx-* handler test suites
+        # Each handler suite runs in its OWN pytest invocation. Running them
+        # together in a single invocation is UNSAFE: every AVX Lambda has an
+        # `import handler` and a `handler.py` at its package root; sys.modules
+        # caches the first one imported, and every subsequent handler test then
+        # binds to the wrong module and silently re-runs the first suite's
+        # tests. Verified 2026-09-24 — a combined invocation collects "700
+        # tests" when the actual sum is 311, because each test_handler.py
+        # resolves to `api-avx-findings/handler.py` after the first import wins.
+        #
+        # Fail-fast: GitHub Actions runs `bash --noprofile --norc -eo pipefail`
+        # for `run:` blocks by default, so the first non-zero pytest exit stops
+        # the step and reddens the job. Every dir must be listed explicitly
+        # rather than looped — an implicit glob discovery would silently swallow
+        # a rename or a new dir. If you add a new `lambdas/api-avx-*/tests/`
+        # dir, add an invocation for it here.
+        #
+        # Why this step exists: as of 2026-09-24, deleting handler.py's
+        # ownership-scope enforcement block or flipping the ios_owner
+        # dispatch-gate default in api-avx-findings both pass every other CI
+        # job silently, because no job exercised the tests that catch those
+        # mutations. Same class of gap on the three peer handlers; audited and
+        # closed in the same pass per backlog row `AVX-findings CI gap` P1
+        # (2026-09-21). See issues/2026-09-24-avx-findings-ci-gap/.
+        #
+        # No `|| true`. Gating.
+        run: |
+          python3 -m pytest lambdas/api-avx-findings/tests/ -q
+          python3 -m pytest lambdas/api-avx-actions/tests/ -q
+          python3 -m pytest lambdas/api-avx-notifications-register-device/tests/ -q
+          python3 -m pytest lambdas/api-avx-dms-event-consumer/tests/ -q
+
+      - name: Run AVX broker test suites
+        # Added 2026-09-24 (spec 2026-09-18-avx-tier2-ios-cards-and-actions,
+        # Fix Group 32 F32.7). agents/supervisor/lambdas/tests/ held every
+        # mutation-verified assertion from four broker review cycles and ran
+        # in no CI job, so deleting any of those guards shipped green. Same
+        # class as a23d8aa, one directory over.
+        #
+        # test_no_direct_sns_publish.py is the broker's sns:Publish monopoly
+        # guard (AST walk over agents/ and lambdas/). It was in no CI job
+        # either, and guards the same property, so it runs here too.
+        #
+        # One pytest invocation per line, for the module-name collision reason
+        # documented in the step above. No `|| true`. Gating.
+        run: |
+          python3 -m pytest agents/supervisor/lambdas/tests/ -q
+          python3 -m pytest tests/architecture/test_no_direct_sns_publish.py -q
+
+      - name: Lint executors (pyflakes)
+        # This exists because review Cycle 4's Critical was an `F821` undefined
+        # name inside an exception handler added by the Cycle 3 fix: the guard
+        # raised `NameError` on every invocation while reading as protection. The
+        # advisory flake8 job above would have caught it and discarded the result.
+        #
+        # `lambdas/` is already covered at the F821/F632/E9 layer by the
+        # `python-lint-errors` gating job above, so it is not duplicated here.
+        # agents/supervisor/lambdas/ (the AVX broker) is not under lambdas/,
+        # so it is added explicitly (F32.7).
+        run: python3 -m pyflakes agents/executors/*.py agents/supervisor/lambdas/*.py
+
+      - name: Mutation battery (39 entries)
+        # Asserts each critical property is pinned by a test that FAILS when the
+        # property breaks — not merely asserted present. Exits non-zero on any
+        # missed, skipped or invalid entry. Mutates sources in place and restores
+        # on exit including SIGINT/SIGTERM; the runner checkout is ephemeral, so a
+        # hard kill cannot leave a mutated tree behind anywhere that matters.
+        #
+        # Scoped to `agents/executors/`. The api-avx-* handler suites' own
+        # mutation-verified assertions are exercised by the pytest step above;
+        # their mutation results are documented in each test_handler.py
+        # docstring (e.g. api-avx-findings/tests/test_handler.py header lists
+        # four mutations run 2026-09-19, all CAUGHT).
+        run: python3 agents/executors/tests/mutation_battery.py

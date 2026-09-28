@@ -1,0 +1,26 @@
+id: vehicle-owner-recall-check-001
+description: "Vehicle owner asks if their vehicle has any open recalls; agent calls retrieve and lookup_vehicle_identity"
+tier: 2
+persona: vehicle_owner
+persona_id: vehicle_owner
+vehicle_id: VEH-1001
+driver_id: drv-vehicle-owner-001
+input:
+  type: text
+  utterance: "Does my vehicle have any open recalls?"
+expected:
+  tool_calls:
+    - name: lookup_vehicle_identity
+      args_contain: {}
+  routing:
+    offers_diy_choice: false
+    safety_critical: false
+  response:
+    # Recall-false-assurance guard (issues/2026-09-25-recall-rule-asserts-no-open-recalls/):
+    # there is no recall catalog, so "no open recalls" is never a correct answer, and
+    # the honest fallback (couldn't find recall information; check with a dealer or
+    # nhtsa.gov/recalls with the VIN) must not be penalised. The first entry is the
+    # Tier 2 mock's scripted reply.
+    must_contain_one_of: ["dealer", "NHTSA", "nhtsa.gov/recalls", "remedy"]
+    must_not_contain: ["I cannot check recalls", "no open recall", "no recall", "no safety recall", "no outstanding recall", "aren't any", "aren’t any", "doesn't have any", "doesn’t have any", "not subject to any recall", "isn't subject to any recall", "isn’t subject to any recall", "clear of recall", "recall-free", "all clear", "no active recall", "hasn't been recalled", "hasn’t been recalled", "has not been recalled", "never been recalled", "never recalled", "isn't recalled", "isn’t recalled", "not been recalled", "not recalled", "wasn't recalled", "wasn’t recalled", "zero open recall", "no open safety recall", "not affected by any open recall", "not affected by any recall", "isn't affected by any recall", "not subject to a recall", "isn't subject to a recall", "isn’t subject to a recall", "isn’t affected by any recall"]
+latency_budget_ms: 5000

@@ -1,0 +1,16 @@
+tool: triage
+id: triage-happy-001
+description: "Triage returns P2 for fixture VIN — mock returns P2 classification"
+tier: 1
+persona: fleet-driver
+vehicle_id: VEH-0025
+driver_id: drv-samantha-carter
+input:
+  type: text
+  input_args:
+    vin: "1FTRX18W6XKB12345"
+expected:
+  tool_output:
+    classification: "P2"
+    sessionId: "vsa-sess-mock000001"
+latency_budget_ms: 1000

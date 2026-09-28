@@ -1,0 +1,84 @@
+# DTC severity table for VSA triage classifier.
+# severity: critical | high | moderate | low
+# safe_to_drive: "yes" | limited | no
+# Curated subset; unknown codes default to {severity: moderate, system: unknown, safe_to_drive: "yes"}.
+# Source of truth: VSA_TRIAGE_CLASSIFIER.md Section 3.
+#
+# P-level produced from (severity, safe_to_drive):
+#   (critical, no)        → P0    (stop driving)
+#   (critical, limited)   → P1
+#   (critical, yes)       → P1
+#   (high, no)            → P0    (stop driving)
+#   (high, limited)       → P1
+#   (high, yes)           → P1
+#   (moderate, no)        → P1
+#   (moderate, limited)   → P2
+#   (moderate, yes)       → P2
+#   (low, no)             → P2
+#   (low, limited)        → P3
+#   (low, yes)            → P3
+#
+# Codes must stay in sync with:
+#   - services/simulation event catalog (CMS repo, seed_vsa_demo_events.py)
+#   - MaintenanceProcessor DTC emission (CMS repo, Flink)
+# When adding a row here, also ensure the simulator/processor emits the
+# same code and the VSA demo event catalog references it.
+#
+# Audit 2026-09-26 (issues/2026-09-26-classifier-grades-fire-and-crash-codes-p2/):
+# every code the CMS event catalog grades P0 or P1 (the more severe of its
+# `severity_hint` and its numeric severity) is listed here at least that severe,
+# plus P0520 and B1419 on their producers' evidence, and every code CVX's
+# response catalog maps to a stop-driving directive is P0. Before the audit the
+# fire and crash codes were missing and classified P2 ("safe to drive"). Guard: scripts/check-dtc-severity-parity.py,
+# run by the classifier build and by CI.
+
+# ── P0 (critical + no → stop driving) ──────────────────────────────────────
+C1234: { severity: critical, system: brakes,         safe_to_drive: "no" }       # Brake system fault
+P0217: { severity: critical, system: powertrain,     safe_to_drive: "no" }       # Coolant over-temp — was "limited" pre-2026-04-30; flipped to match NHTSA "stop driving" guidance and the VSA demo narrative.
+P0700: { severity: high,     system: transmission,   safe_to_drive: "no" }       # Transmission failure (limp mode) — was "limited"; demo bump.
+P0A80: { severity: critical, system: hv_battery,     safe_to_drive: "no" }       # HV battery thermal/replace required (EV) — new for VSA demo.
+B0001_FIRE:  { severity: critical, system: body,          safe_to_drive: "no" }  # Thermal runaway, engine-compartment fire risk (CMS maintenance.thermal_runaway, P0). Synthetic CMS code.
+U3000_CRASH: { severity: critical, system: safety,        safe_to_drive: "no" }  # Collision detected (CMS safety.collision_detected, P0). Synthetic CMS code.
+U3000:       { severity: critical, system: communication, safe_to_drive: "no" }  # Control module internal hardware fault, "stop driving" (CMS diagnostics.dtc.U3000, P0).
+P0520:       { severity: critical, system: powertrain,    safe_to_drive: "no" }  # Measured low oil pressure ("oilPressure < 15.0", CMS Flink processor). Stop the engine. CMS catalog says severity 2; raised by review Cycle 1 C1.
+
+# ── P1 (high + limited / critical + limited) ───────────────────────────────
+P0300: { severity: high,     system: powertrain,     safe_to_drive: "limited" }  # Random/multi misfire — was "yes"; bumped so severe misfire demos as P1 rather than P1 (same result via high+limited; was high+yes → P1, kept stable).
+P0606: { severity: high,     system: powertrain,     safe_to_drive: "limited" }  # PCM processor fault
+C1201: { severity: high,     system: brakes,         safe_to_drive: "limited" }  # Traction control system disabled
+C1241: { severity: high,     system: brakes,         safe_to_drive: "limited" }  # Low brake fluid
+U0100: { severity: high,     system: communication,  safe_to_drive: "limited" }  # Lost comm PCM
+U0121: { severity: high,     system: communication,  safe_to_drive: "limited" }  # Lost comm ABS
+P0340: { severity: high,     system: powertrain,     safe_to_drive: "limited" }  # Camshaft position sensor — new for VSA demo.
+# Added 2026-09-26 to match the CMS event catalog's P1 grade (each was unknown here, so P2).
+B0001: { severity: high,     system: restraints,     safe_to_drive: "limited" }  # Airbag / SRS fault (CMS safety.airbag_warning)
+B109B: { severity: high,     system: restraints,     safe_to_drive: "limited" }  # Occupant classification system fault
+B1115: { severity: high,     system: restraints,     safe_to_drive: "limited" }  # SRS deployment loop circuit fault
+B11D6: { severity: high,     system: restraints,     safe_to_drive: "limited" }  # Side curtain airbag deployment loop fault
+B124D: { severity: high,     system: restraints,     safe_to_drive: "limited" }  # Seat belt pre-tensioner circuit fault
+C004A: { severity: high,     system: steering,       safe_to_drive: "limited" }  # Steering angle sensor circuit malfunction
+C0091: { severity: high,     system: brakes,         safe_to_drive: "limited" }  # Trailer brake connection lost (CMS maintenance.trailer_brake_disconnected)
+C0460: { severity: high,     system: steering,       safe_to_drive: "limited" }  # Electric power steering fault (CMS safety.service_steering)
+C1001: { severity: high,     system: abs,            safe_to_drive: "limited" }  # ABS hydraulic pump motor fault
+C2007: { severity: high,     system: brakes,         safe_to_drive: "limited" }  # Brake pressure differential switch malfunction
+P0093: { severity: high,     system: fuel,           safe_to_drive: "limited" }  # Water in fuel (CMS maintenance.water_in_fuel)
+P0118: { severity: high,     system: cooling,        safe_to_drive: "limited" }  # Coolant temperature sensor circuit high
+P0219: { severity: high,     system: powertrain,     safe_to_drive: "limited" }  # Engine overspeed (CMS maintenance.engine_overspeed; severity 3, no hint)
+P0299: { severity: high,     system: powertrain,     safe_to_drive: "limited" }  # Turbo/supercharger underboost (CMS maintenance.turbo_underboost)
+P0607: { severity: high,     system: powertrain,     safe_to_drive: "limited" }  # Powertrain malfunction (CMS maintenance.powertrain_malfunction)
+U0101: { severity: high,     system: communication,  safe_to_drive: "limited" }  # Lost communication with transmission control module
+U0415: { severity: high,     system: communication,  safe_to_drive: "limited" }  # Invalid data from ABS control module
+B1419: { severity: high,     system: restraints,     safe_to_drive: "limited" }  # Restraints control module fault (OEM1 producer text; the CMS catalog's "headlamp levelling" text is synthetic). Review Cycle 1 W1.
+
+# ── P2 (moderate) ──────────────────────────────────────────────────────────
+P0420: { severity: moderate, system: emissions,      safe_to_drive: "yes" }      # Catalyst efficiency
+P0171: { severity: moderate, system: fuel,           safe_to_drive: "yes" }      # Lean fuel mixture — new for VSA demo.
+C0035: { severity: moderate, system: abs,            safe_to_drive: "yes" }      # LF wheel speed sensor
+C0040: { severity: moderate, system: abs,            safe_to_drive: "yes" }      # RF wheel speed sensor
+U0401: { severity: moderate, system: communication,  safe_to_drive: "yes" }      # Invalid data from ECM
+
+# ── P3 (low) ───────────────────────────────────────────────────────────────
+P0442: { severity: low,      system: emissions,      safe_to_drive: "yes" }      # Small evap leak
+P0562: { severity: low,      system: electrical,     safe_to_drive: "yes" }      # System voltage low (minor) — new for VSA demo.
+B1000: { severity: low,      system: body,           safe_to_drive: "yes" }      # ECU internal
+B1315: { severity: low,      system: body,           safe_to_drive: "yes" }      # Battery voltage low

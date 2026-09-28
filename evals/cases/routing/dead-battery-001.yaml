@@ -1,0 +1,20 @@
+id: dead-battery-001
+description: "Driver reports car won't start, battery seems dead; agent should find service center or escalate for roadside"
+tier: 2
+persona: fleet-driver
+vehicle_id: VEH-0025
+driver_id: drv-samantha-carter
+input:
+  type: text
+  utterance: "car won't start, battery seems dead"
+expected:
+  tool_calls:
+    - name: find_service_center
+      args_contain: {}
+  routing:
+    offers_diy_choice: false
+    safety_critical: false
+  response:
+    must_contain_one_of: ["service center", "roadside", "jump start", "battery", "appointment", "shop"]
+    must_not_contain: ["DIY", "do it yourself", "walk you through"]
+latency_budget_ms: 5000

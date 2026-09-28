@@ -1,0 +1,21 @@
+id: tsb-2024-br-0847-001
+description: "Driver asks about TSB 2024-BR-0847 for brake squeal; knowledge tool must return content from corpora/tsb-recalls/tsb-2024-BR-0847-brake-squeal.md"
+tier: 2
+persona: fleet-driver
+vehicle_id: VEH-0025
+driver_id: drv-samantha-carter
+input:
+  type: text
+  utterance: "can you tell me about TSB 2024-BR-0847?"
+expected:
+  tool_calls:
+    - name: lookup_knowledge
+      args_contain:
+        query: "TSB 2024-BR-0847"
+  routing:
+    offers_diy_choice: false
+    safety_critical: false
+  response:
+    must_contain_one_of: ["brake squeal", "brake pad", "84785432", "noise concern", "warranty", "Customer Satisfaction Program", "Equinox"]
+    must_not_contain: ["I don't have information", "cannot find that TSB"]
+latency_budget_ms: 5000

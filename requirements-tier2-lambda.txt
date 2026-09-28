@@ -1,0 +1,57 @@
+# requirements-tier2-lambda.txt
+#
+# Scoped requirements for the Tier 2 Lambda bundle (CDK bundling: block).
+# This is NOT the AgentCore supervisor requirements file (requirements.txt).
+#
+# Why a separate file:
+#   The repo-root requirements.txt serves the AgentCore text/HTTP supervisor
+#   runtime.  It includes packages the Tier 2 Lambda never needs at runtime:
+#   openapi-spec-validator, websockets, redis, aws_sdk_bedrock_runtime,
+#   requests, python-frontmatter, pyyaml, bedrock-agentcore-starter-toolkit,
+#   and the two bedrock-agentcore preview packages (the Lambda substrate is
+#   plain Strands, not the AgentCore managed harness).  Installing the full
+#   root set adds ~30–40 MB of dead weight and risks pulling in transitive
+#   deps that add shared-lib .so files incompatible with the manylinux
+#   Lambda execution environment.
+#
+#   Group 1's measure_tier2_bundle.sh measured the three-package dependency
+#   wall at 87.2 MB unzipped / 34.5 MB zip — comfortably under the 200 MB
+#   R1 gate.  The full root requirements.txt set has never been measured
+#   against the Lambda budget; this scoped file keeps that measurement valid.
+#
+# Version pins:
+#   All pins are exact (==) per ~/.kiro/steering/dependency-versions.md.
+#   strands-agents==1.39.0 and pydantic==2.13.4 are already pinned in
+#   requirements.txt.  boto3==1.43.6 was pinned there by Fix Group 4 C2
+#   (2026-09-18).  No version changes are introduced by this file.
+#
+# Runtime target: Lambda Runtime.PYTHON_3_12, platform linux/x86_64.
+# The CDK bundling block installs with --platform manylinux2014_x86_64
+# --only-binary=:all: so these must have manylinux wheels for Python 3.12
+# (all three do — verified by measure_tier2_bundle.sh).
+
+# strands-agents: the Strands LLM framework.  Its absence is the root cause
+# of tokens_used=0 — make_strands_agent_fn catches ImportError and falls back
+# to the deterministic path.  Pin matches requirements.txt.
+strands-agents==1.39.0
+
+# boto3: AWS SDK.  Used for DynamoDB, Athena, and CloudWatch calls in the
+# runner.  Pin matches requirements.txt (fixed from >=1.35.0 range in
+# Fix Group 4 C2).
+boto3==1.43.6
+
+# pydantic: used transitively by strands-agents (requires >=2.11.0 via mcp).
+# Pin matches requirements.txt.
+pydantic==2.13.4
+
+
+# redis + pyyaml (spec 2026-09-25-avx-own-vehicle-findings T4.2): the diagnostics
+# component reuses lambdas/shared/cms_client_real.get_active_dtcs (the status rule CVX
+# triage uses) and the triage classifier's _classify_dtcs (the P0 rule) rather than
+# copying either. cms_client_real imports redis at module scope (it never connects
+# here: the Tier 2 Lambda has no VPC path to CMS Redis); the classifier loads its DTC
+# table with yaml. pyyaml 6.0.3 was already in the bundle as a strands dependency and
+# is now declared; redis 5.3.1 is the repo-root pin. Both are pure-Python or have
+# manylinux wheels for 3.12.
+redis==5.3.1
+pyyaml==6.0.3

@@ -1,0 +1,68 @@
+# Bedrock AgentCore configuration for the VSA supervisor.
+# Copy this to .bedrock_agentcore.yaml and fill in your values.
+# Run `agentcore init` to generate execution roles if needed.
+
+default_agent: vsa_supervisor_bidi
+agents:
+  vsa_supervisor:
+    name: vsa_supervisor
+    language: python
+    entrypoint: agents/supervisor/agentcore_app.py
+    deployment_type: direct_code_deploy
+    runtime_type: PYTHON_3_12
+    platform: linux/arm64
+    source_path: .
+    aws:
+      execution_role: arn:aws:iam::YOUR_ACCOUNT_ID:role/YOUR_AGENTCORE_ROLE
+      execution_role_auto_create: false
+      account: 'YOUR_ACCOUNT_ID'
+      region: us-east-1
+      s3_path: s3://bedrock-agentcore-codebuild-sources-YOUR_ACCOUNT_ID-us-east-1
+      network_configuration:
+        network_mode: PUBLIC
+
+  vsa_supervisor_bidi:
+    name: vsa_supervisor_bidi
+    language: python
+    entrypoint: agents/supervisor/bidi_app.py
+    deployment_type: direct_code_deploy
+    runtime_type: PYTHON_3_12
+    platform: linux/arm64
+    source_path: .
+    aws:
+      execution_role: arn:aws:iam::YOUR_ACCOUNT_ID:role/YOUR_AGENTCORE_ROLE
+      execution_role_auto_create: false
+      account: 'YOUR_ACCOUNT_ID'
+      region: us-east-1
+      s3_path: s3://bedrock-agentcore-codebuild-sources-YOUR_ACCOUNT_ID-us-east-1
+      network_configuration:
+        network_mode: PUBLIC
+      protocol_configuration:
+        server_protocol: HTTP
+      observability:
+        enabled: true
+
+  # Staging entry — populated by `make deploy-staging` from CFN outputs of
+  # the `vsa-staging-core` CDK stack. The CLI patches `execution_role` and
+  # `s3_path` automatically; do not hand-edit unless you know what you're
+  # doing. See `.kiro/specs/2026-05-28-agentcore-staging-infra/`.
+  vsa_supervisor_bidi_staging:
+    name: vsa_supervisor_bidi_staging
+    language: python
+    entrypoint: agents/supervisor/bidi_app.py
+    deployment_type: direct_code_deploy
+    runtime_type: PYTHON_3_12
+    platform: linux/arm64
+    source_path: .
+    aws:
+      execution_role: PATCH_FROM_CFN_OUTPUT_AgentCoreExecutionRoleArn
+      execution_role_auto_create: false
+      account: 'YOUR_ACCOUNT_ID'
+      region: us-west-2
+      s3_path: PATCH_FROM_CFN_OUTPUT_AgentCoreS3Bucket
+      network_configuration:
+        network_mode: PUBLIC
+      protocol_configuration:
+        server_protocol: HTTP
+      observability:
+        enabled: true

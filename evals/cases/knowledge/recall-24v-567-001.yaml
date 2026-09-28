@@ -1,0 +1,21 @@
+id: recall-24v-567-001
+description: "Driver asks about recall 24V-567; knowledge tool must return content from corpora/tsb-recalls/recall-24V-567-fuel-pump.md"
+tier: 2
+persona: fleet-driver
+vehicle_id: VEH-0025
+driver_id: drv-samantha-carter
+input:
+  type: text
+  utterance: "what is recall 24V-567 about?"
+expected:
+  tool_calls:
+    - name: lookup_knowledge
+      args_contain:
+        query: "recall 24V-567"
+  routing:
+    offers_diy_choice: false
+    safety_critical: false
+  response:
+    must_contain_one_of: ["fuel pump", "engine stall", "340,000", "free repair", "Equinox", "1.5L", "24V-567"]
+    must_not_contain: ["I don't have information", "cannot find that recall"]
+latency_budget_ms: 5000

@@ -1,0 +1,328 @@
+{
+  "tier": 1,
+  "schema_version": 1,
+  "generated_at": "2026-05-25T19:13:15Z",
+  "cases": [
+    {
+      "id": "book-edge-001",
+      "yaml_path": "evals/cases/tools/book/book-edge-001.yaml",
+      "outcome": "passed",
+      "latency_ms": 85.0,
+      "expected_tool_calls": [
+        "book"
+      ],
+      "actual_tool_calls": [
+        "book"
+      ],
+      "failure_reason": null
+    },
+    {
+      "id": "book-error-001",
+      "yaml_path": "evals/cases/tools/book/book-error-001.yaml",
+      "outcome": "passed",
+      "latency_ms": 85.0,
+      "expected_tool_calls": [
+        "book"
+      ],
+      "actual_tool_calls": [
+        "book"
+      ],
+      "failure_reason": null
+    },
+    {
+      "id": "book-happy-001",
+      "yaml_path": "evals/cases/tools/book/book-happy-001.yaml",
+      "outcome": "passed",
+      "latency_ms": 85.0,
+      "expected_tool_calls": [
+        "book"
+      ],
+      "actual_tool_calls": [
+        "book"
+      ],
+      "failure_reason": null
+    },
+    {
+      "id": "diy-repair-advisor-edge-001",
+      "yaml_path": "evals/cases/tools/diy_repair_advisor/diy-repair-advisor-edge-001.yaml",
+      "outcome": "passed",
+      "latency_ms": 85.0,
+      "expected_tool_calls": [
+        "diy_repair_advisor"
+      ],
+      "actual_tool_calls": [
+        "diy_repair_advisor"
+      ],
+      "failure_reason": null
+    },
+    {
+      "id": "diy-repair-advisor-error-001",
+      "yaml_path": "evals/cases/tools/diy_repair_advisor/diy-repair-advisor-error-001.yaml",
+      "outcome": "passed",
+      "latency_ms": 85.0,
+      "expected_tool_calls": [
+        "diy_repair_advisor"
+      ],
+      "actual_tool_calls": [
+        "diy_repair_advisor"
+      ],
+      "failure_reason": null
+    },
+    {
+      "id": "diy-repair-advisor-happy-001",
+      "yaml_path": "evals/cases/tools/diy_repair_advisor/diy-repair-advisor-happy-001.yaml",
+      "outcome": "passed",
+      "latency_ms": 85.0,
+      "expected_tool_calls": [
+        "diy_repair_advisor"
+      ],
+      "actual_tool_calls": [
+        "diy_repair_advisor"
+      ],
+      "failure_reason": null
+    },
+    {
+      "id": "escalate-edge-001",
+      "yaml_path": "evals/cases/tools/escalate/escalate-edge-001.yaml",
+      "outcome": "passed",
+      "latency_ms": 85.0,
+      "expected_tool_calls": [
+        "escalate"
+      ],
+      "actual_tool_calls": [
+        "escalate"
+      ],
+      "failure_reason": null
+    },
+    {
+      "id": "escalate-error-001",
+      "yaml_path": "evals/cases/tools/escalate/escalate-error-001.yaml",
+      "outcome": "passed",
+      "latency_ms": 85.0,
+      "expected_tool_calls": [
+        "escalate"
+      ],
+      "actual_tool_calls": [
+        "escalate"
+      ],
+      "failure_reason": null
+    },
+    {
+      "id": "escalate-happy-001",
+      "yaml_path": "evals/cases/tools/escalate/escalate-happy-001.yaml",
+      "outcome": "passed",
+      "latency_ms": 85.0,
+      "expected_tool_calls": [
+        "escalate"
+      ],
+      "actual_tool_calls": [
+        "escalate"
+      ],
+      "failure_reason": null
+    },
+    {
+      "id": "find-service-center-edge-001",
+      "yaml_path": "evals/cases/tools/find_service_center/find-service-center-edge-001.yaml",
+      "outcome": "passed",
+      "latency_ms": 85.0,
+      "expected_tool_calls": [
+        "service_network"
+      ],
+      "actual_tool_calls": [
+        "service_network"
+      ],
+      "failure_reason": null
+    },
+    {
+      "id": "find-service-center-error-001",
+      "yaml_path": "evals/cases/tools/find_service_center/find-service-center-error-001.yaml",
+      "outcome": "passed",
+      "latency_ms": 85.0,
+      "expected_tool_calls": [
+        "service_network"
+      ],
+      "actual_tool_calls": [
+        "service_network"
+      ],
+      "failure_reason": null
+    },
+    {
+      "id": "find-service-center-happy-001",
+      "yaml_path": "evals/cases/tools/find_service_center/find-service-center-happy-001.yaml",
+      "outcome": "passed",
+      "latency_ms": 85.0,
+      "expected_tool_calls": [
+        "service_network"
+      ],
+      "actual_tool_calls": [
+        "service_network"
+      ],
+      "failure_reason": null
+    },
+    {
+      "id": "knowledge-edge-001",
+      "yaml_path": "evals/cases/tools/knowledge/knowledge-edge-001.yaml",
+      "outcome": "passed",
+      "latency_ms": 85.0,
+      "expected_tool_calls": [
+        "knowledge"
+      ],
+      "actual_tool_calls": [
+        "knowledge"
+      ],
+      "failure_reason": null
+    },
+    {
+      "id": "knowledge-error-001",
+      "yaml_path": "evals/cases/tools/knowledge/knowledge-error-001.yaml",
+      "outcome": "passed",
+      "latency_ms": 85.0,
+      "expected_tool_calls": [
+        "knowledge"
+      ],
+      "actual_tool_calls": [
+        "knowledge"
+      ],
+      "failure_reason": null
+    },
+    {
+      "id": "knowledge-happy-001",
+      "yaml_path": "evals/cases/tools/knowledge/knowledge-happy-001.yaml",
+      "outcome": "passed",
+      "latency_ms": 85.0,
+      "expected_tool_calls": [
+        "knowledge"
+      ],
+      "actual_tool_calls": [
+        "knowledge"
+      ],
+      "failure_reason": null
+    },
+    {
+      "id": "parts-lookup-edge-001",
+      "yaml_path": "evals/cases/tools/parts_lookup/parts-lookup-edge-001.yaml",
+      "outcome": "passed",
+      "latency_ms": 85.0,
+      "expected_tool_calls": [
+        "parts_lookup"
+      ],
+      "actual_tool_calls": [
+        "parts_lookup"
+      ],
+      "failure_reason": null
+    },
+    {
+      "id": "parts-lookup-error-001",
+      "yaml_path": "evals/cases/tools/parts_lookup/parts-lookup-error-001.yaml",
+      "outcome": "passed",
+      "latency_ms": 85.0,
+      "expected_tool_calls": [
+        "parts_lookup"
+      ],
+      "actual_tool_calls": [
+        "parts_lookup"
+      ],
+      "failure_reason": null
+    },
+    {
+      "id": "parts-lookup-happy-001",
+      "yaml_path": "evals/cases/tools/parts_lookup/parts-lookup-happy-001.yaml",
+      "outcome": "passed",
+      "latency_ms": 85.0,
+      "expected_tool_calls": [
+        "parts_lookup"
+      ],
+      "actual_tool_calls": [
+        "parts_lookup"
+      ],
+      "failure_reason": null
+    },
+    {
+      "id": "triage-edge-001",
+      "yaml_path": "evals/cases/tools/triage/triage-edge-001.yaml",
+      "outcome": "passed",
+      "latency_ms": 85.0,
+      "expected_tool_calls": [
+        "triage"
+      ],
+      "actual_tool_calls": [
+        "triage"
+      ],
+      "failure_reason": null
+    },
+    {
+      "id": "triage-error-001",
+      "yaml_path": "evals/cases/tools/triage/triage-error-001.yaml",
+      "outcome": "passed",
+      "latency_ms": 85.0,
+      "expected_tool_calls": [
+        "triage"
+      ],
+      "actual_tool_calls": [
+        "triage"
+      ],
+      "failure_reason": null
+    },
+    {
+      "id": "triage-happy-001",
+      "yaml_path": "evals/cases/tools/triage/triage-happy-001.yaml",
+      "outcome": "passed",
+      "latency_ms": 85.0,
+      "expected_tool_calls": [
+        "triage"
+      ],
+      "actual_tool_calls": [
+        "triage"
+      ],
+      "failure_reason": null
+    },
+    {
+      "id": "vehicle-identity-edge-001",
+      "yaml_path": "evals/cases/tools/vehicle_identity/vehicle-identity-edge-001.yaml",
+      "outcome": "passed",
+      "latency_ms": 85.0,
+      "expected_tool_calls": [
+        "vehicle_identity"
+      ],
+      "actual_tool_calls": [
+        "vehicle_identity"
+      ],
+      "failure_reason": null
+    },
+    {
+      "id": "vehicle-identity-error-001",
+      "yaml_path": "evals/cases/tools/vehicle_identity/vehicle-identity-error-001.yaml",
+      "outcome": "passed",
+      "latency_ms": 85.0,
+      "expected_tool_calls": [
+        "vehicle_identity"
+      ],
+      "actual_tool_calls": [
+        "vehicle_identity"
+      ],
+      "failure_reason": null
+    },
+    {
+      "id": "vehicle-identity-happy-001",
+      "yaml_path": "evals/cases/tools/vehicle_identity/vehicle-identity-happy-001.yaml",
+      "outcome": "passed",
+      "latency_ms": 85.0,
+      "expected_tool_calls": [
+        "vehicle_identity"
+      ],
+      "actual_tool_calls": [
+        "vehicle_identity"
+      ],
+      "failure_reason": null
+    }
+  ],
+  "summary": {
+    "total": 24,
+    "passed": 24,
+    "failed": 0,
+    "skipped": 0,
+    "latency_p50_ms": 85.0,
+    "latency_p99_ms": 85.0,
+    "duration_ms": 2061.0
+  }
+}

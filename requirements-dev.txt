@@ -1,0 +1,87 @@
+# Repo-root development / test dependencies. NOT deployed.
+#
+# Runtime requirements live in `requirements.txt` (AgentCore supervisor) and
+# `requirements-tier2-lambda.txt` (Tier 2 Lambda bundle). Nothing here ships:
+# adding a linter to either would grow a Lambda artifact for no runtime benefit.
+#
+# Created 2026-09-20 by spec 2026-09-18-avx-tier2-ios-cards-and-actions Group 5.
+# Review Cycle 4 asked for a lint gate to close the class behind its Critical (an
+# `F821` undefined name in an exception handler, which made the handler raise on
+# every invocation while reading as protection). Cycle 5 noted the gate's
+# dependency was undeclared, so the gate was red on any machine but the author's.
+#
+# ---------------------------------------------------------------------------
+# Running the executor test suite from a clean venv
+#
+#   pip install -r requirements-dev.txt
+#   python -m pytest agents/executors/ -q                    # 352 passed
+#   python -m pyflakes agents/executors/*.py                 # silent = clean
+#   python agents/executors/tests/mutation_battery.py         # CAUGHT 39/39
+#
+# THIS FILE IS NOW SELF-SUFFICIENT for that suite. It previously was not: the
+# dependencies were split across this file and `agents/supervisor/requirements-dev.txt`
+# and NEITHER ONE ALONE was enough, while `boto3`, `requests` and `responses` were
+# declared nowhere at the repo root at all:
+#
+#   boto3       imported at module scope by ios_owner.py:40
+#   requests    imported at module scope by dms.py:47, vehicle_command.py:37
+#   responses   imported by tests/test_{dms,registry,vehicle_command}.py
+#
+# All three are declared below. `boto3` and `requests` are also declared in
+# `agents/supervisor/requirements.txt`, but that is a RUNTIME file for a different
+# deployable — installing it to run tests pulls the whole AgentCore stack.
+#
+# Versions are EXACT, per `~/.kiro/steering/dependency-versions.md` ("All
+# dependency versions MUST be pinned to exact versions"), and each is the version
+# the 352-test suite and the 39-entry mutation battery are green against on
+# 2026-09-20, read from `pip freeze` rather than chosen. An earlier revision of
+# this file argued for leaving them unpinned so as not to constrain other
+# packages' tests; that reasoning is superseded — steering requires pins, and an
+# unpinned shared dev dependency is how a suite silently starts testing a
+# different library than the one it was reviewed against.
+#
+# Residual, deliberately not changed here: `agents/supervisor/requirements-dev.txt`
+# still carries `pytest>=8.0.0` and `pytest-asyncio>=0.23.0` as ranges. `pytest`
+# is pinned below so this suite is deterministic regardless, but `pytest-asyncio`
+# is not installed in this venv, so pinning it would mean inventing a version
+# rather than recording a verified one. That file belongs to the supervisor's own
+# test setup; pinning it wants that suite in scope.
+# ---------------------------------------------------------------------------
+
+# Lint gate. FAILS rather than skips when missing — deliberately, because a
+# skipped guard and a passing guard look identical in a summary line.
+pyflakes==3.2.0
+
+# Test runner.
+pytest==8.3.3
+
+# Imported at module scope by the executors under test.
+boto3==1.43.6
+requests==2.34.0
+
+# HTTP mocking used by the dms / registry / vehicle_command tests.
+responses==0.26.3
+
+# Moto for mocking AWS services in rsa-dispatch-consumer tests (F4.1, F4.2, F4.8).
+# moto==5.2.3 is the version already installed in the venv at the time of this spec.
+# 7-day quarantine cannot be independently verified because the version was already
+# present — noted in decisions-fix4-py.md § F4.11 per dependency-versions steering.
+moto[dynamodb]==5.2.3
+
+
+# Contract validation for the AVX findings response boundary.
+# `lambdas/api-avx-findings/tests/test_handler.py::test_vin_scoped_response_with_all_
+# three_standing_attrs_is_schema_valid` validates a stripped Finding against
+# `agents/tier2/schemas/finding.schema.json` itself rather than a restatement of it.
+#
+# Added 2026-09-23 by review Cycle 4 (Suggestion): the test shipped with
+# `pytest.importorskip("jsonschema")` and the dependency declared in no requirements
+# file — so on any machine but the author's it SKIPPED, and a skipped guard and a
+# passing guard look identical in a summary line. That is the same lesson this file's
+# header already records about the pyflakes gate, hit a second time. The
+# `importorskip` has been replaced with a hard import, so a missing dependency now
+# fails loudly instead of quietly removing the check.
+#
+# 4.26.0 is the version installed in this venv and the one the test is green against,
+# read from `importlib.metadata` rather than chosen.
+jsonschema==4.26.0

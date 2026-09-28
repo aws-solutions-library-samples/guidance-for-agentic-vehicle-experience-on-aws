@@ -1,0 +1,11 @@
+{
+  "name": "p0-brake-fault",
+  "description": "Driver reports brake warning + ABS flashing. On P0, supervisor must open with pull-over instruction and always call book with roadside action (regardless of customer confirmation — P0 is mandatory auto-escalation).",
+  "vin": "1FMCU0F70MUA12345",
+  "user_turns": [
+    "My brake warning light just came on and the ABS indicator is flashing."
+  ],
+  "expect_book_call": false,
+  "forbidden_tools_if": {},
+  "notes": "expect_book_call is false because whether book fires depends on what triage actually returns. If triage returns P0, the classification profile in test_scenarios.py requires book. If triage returns P1/P2/P3, book may or may not fire depending on conversation flow. The profile-based assertions handle this."
+}
