@@ -1,0 +1,23 @@
+id: service-advisor-intro-001
+description: "Service advisor asks for customer profile and vehicle identity before check-in; exercises tabular LTM"
+tier: 2
+persona: service_advisor
+persona_id: service_advisor
+vehicle_id: VEH-1001
+driver_id: drv-service-advisor-001
+input:
+  type: text
+  utterance: "Pull up the customer profile and vehicle info for VIN 1FMCU0J91KUB12345 before the drop-off."
+expected:
+  tool_calls:
+    - name: lookup_vehicle_identity
+      args_contain: {}
+    - name: customer_profile
+      args_contain: {}
+  routing:
+    offers_diy_choice: false
+    safety_critical: false
+  response:
+    must_contain_one_of: ["customer", "vehicle", "profile", "VIN", "model", "owner", "tier"]
+    must_not_contain: ["I cannot pull up", "customer information unavailable"]
+latency_budget_ms: 5000

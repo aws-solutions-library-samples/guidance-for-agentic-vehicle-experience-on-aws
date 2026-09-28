@@ -1,0 +1,21 @@
+id: parts-pricing-lookup-001
+description: "Driver asks about brake pad cost for their truck; agent should call parts_lookup tool"
+tier: 2
+persona: fleet-driver
+vehicle_id: VEH-0025
+driver_id: drv-samantha-carter
+input:
+  type: text
+  utterance: "how much would brake pads cost for my truck?"
+expected:
+  tool_calls:
+    - name: lookup_parts
+      args_contain:
+        category: "brakes"
+  routing:
+    offers_diy_choice: false
+    safety_critical: false
+  response:
+    must_contain_one_of: ["brake pad", "cost", "price", "$", "estimate", "parts"]
+    must_not_contain: ["I don't know the price", "cannot provide pricing"]
+latency_budget_ms: 5000

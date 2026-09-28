@@ -1,0 +1,20 @@
+id: vehicle-identity-vin-decode-001
+description: "Driver asks what year and model their truck is; agent should call vehicle_identity tool"
+tier: 2
+persona: fleet-driver
+vehicle_id: VEH-0025
+driver_id: drv-samantha-carter
+input:
+  type: text
+  utterance: "what year and model is my truck?"
+expected:
+  tool_calls:
+    - name: lookup_vehicle_identity
+      args_contain: {}
+  routing:
+    offers_diy_choice: false
+    safety_critical: false
+  response:
+    must_contain_one_of: ["F-150", "Ford", "2022", "2021", "2023", "truck", "model"]
+    must_not_contain: ["VIN", "I don't know", "I'm not sure what vehicle"]
+latency_budget_ms: 5000

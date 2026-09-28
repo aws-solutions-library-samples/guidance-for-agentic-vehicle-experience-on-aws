@@ -1,0 +1,6 @@
+# Dev-only additions on top of requirements.txt.
+# Install with: pip install -r agents/supervisor/requirements.txt \
+#                           -r agents/supervisor/requirements-dev.txt
+
+pytest>=8.0.0
+pytest-asyncio>=0.23.0

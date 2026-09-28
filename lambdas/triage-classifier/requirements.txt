@@ -1,0 +1,20 @@
+# Pinned exact 2026-09-21 (was pyyaml>=6.0, boto3>=1.34, redis>=5.0).
+#
+# scripts/build-triage-classifier.sh does `pip install --target` from this file,
+# so a range meant every bundle rebuild silently resolved to whatever was latest
+# on PyPI that day. That is an unreviewed dependency upgrade per rebuild, and it
+# is exactly how the bidi voice runtime died for 9 days — see
+# issues/2026-09-21-bidi-voice-import-error-unpinned-sdk/ (unpinned
+# aws_sdk_bedrock_runtime resolved to 0.11.0, which renamed a class the
+# importer needed).
+#
+# Versions are the ones installed in .venv and known-good. All three clear the
+# 7-day quarantine in ~/.kiro/steering/dependency-versions.md by a wide margin:
+#   pyyaml 6.0.2  -> 2024-08-06
+#   boto3  1.43.6 -> 2026-05-07
+#   redis  5.3.1  -> 2025-07-25
+#
+# Guarded by tests/architecture/test_requirements_pins_repo_wide.py.
+pyyaml==6.0.2
+boto3==1.43.6
+redis==5.3.1

@@ -1,0 +1,36 @@
+# Dependencies for the diagram-authoring tooling under scripts/.
+#
+# These are DEVELOPER/AUTHORING dependencies, not runtime dependencies. They are
+# deliberately NOT in the repo-root requirements.txt: that file is the AgentCore
+# runtime deployment manifest (the starter toolkit auto-detects it relative to
+# source_path) and everything listed there ships into the runtime image. The
+# diagram scripts never execute in the runtime, so adding them there would bloat
+# every deploy for no benefit.
+#
+# Consumed by:
+#   scripts/drawio_to_pptx.py
+#   scripts/build_cvx_house_style_slide.py
+#   scripts/pptx_icon_extractor.py
+#
+# Install:
+#   python3 -m pip install -r scripts/requirements-diagrams.txt
+#
+# History: these were previously undeclared entirely — the scripts relied on
+# whatever happened to be present in the ambient interpreter. Declared
+# 2026-08-03 while fixing the XXE finding in drawio_to_pptx.py; see
+# issues/2026-08-03-cvx-probe-critical-triage/report.md.
+#
+# Versions are pinned exact per ~/.kiro/steering/dependency-versions.md and
+# match what the diagram tooling was last verified against.
+
+# PPTX read/write. Pulls lxml transitively, but lxml is also imported directly
+# (see below) so it is pinned explicitly rather than left to resolution.
+python-pptx==1.0.2
+
+# Imported directly by drawio_to_pptx.py for OXML element construction
+# (etree.SubElement) against python-pptx's shape tree.
+lxml==6.0.2
+
+# XXE-hardened drop-in for xml.etree.ElementTree. Used by drawio_to_pptx.py to
+# parse `.drawio` source files, which are untrusted input.
+defusedxml==0.7.1

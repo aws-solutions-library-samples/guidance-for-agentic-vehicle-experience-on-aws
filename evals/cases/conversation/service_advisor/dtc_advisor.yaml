@@ -1,0 +1,21 @@
+id: service-advisor-dtc-advisor-001
+description: "Service advisor asks about a DTC code; agent calls knowledge with dtc_guide / tsb_recall category"
+tier: 2
+persona: service_advisor
+persona_id: service_advisor
+vehicle_id: VEH-1001
+driver_id: drv-service-advisor-001
+input:
+  type: text
+  utterance: "The customer came in with a P0300 random misfire code. What should I tell them?"
+expected:
+  tool_calls:
+    - name: knowledge
+      args_contain: {}
+  routing:
+    offers_diy_choice: false
+    safety_critical: false
+  response:
+    must_contain_one_of: ["P0300", "misfire", "cylinder", "spark plug", "ignition", "diagnosis", "DTC"]
+    must_not_contain: ["I cannot look up that code", "unknown DTC"]
+latency_budget_ms: 5000

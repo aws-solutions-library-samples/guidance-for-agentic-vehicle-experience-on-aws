@@ -1,0 +1,23 @@
+id: service-advisor-prior-visit-summary-001
+description: "Service advisor asks what this customer's vehicle was in for last time; exercises interaction_history and service_history LTM"
+tier: 2
+persona: service_advisor
+persona_id: service_advisor
+vehicle_id: VEH-1001
+driver_id: drv-service-advisor-001
+input:
+  type: text
+  utterance: "What was this vehicle in for on its last visit and any prior complaints from the customer?"
+expected:
+  tool_calls:
+    - name: service_history
+      args_contain: {}
+    - name: interaction_history
+      args_contain: {}
+  routing:
+    offers_diy_choice: false
+    safety_critical: false
+  response:
+    must_contain_one_of: ["last visit", "previous", "service", "repair", "complaint", "history", "interaction"]
+    must_not_contain: ["I cannot retrieve service history", "no prior visits"]
+latency_budget_ms: 5000

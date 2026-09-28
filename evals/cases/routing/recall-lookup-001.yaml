@@ -1,0 +1,24 @@
+id: recall-lookup-001
+description: "Driver asks about recalls on their vehicle; agent should call knowledge tool then summarize"
+tier: 2
+persona: fleet-driver
+vehicle_id: VEH-0025
+driver_id: drv-samantha-carter
+input:
+  type: text
+  utterance: "do I have any recalls on my vehicle?"
+expected:
+  tool_calls:
+    - name: lookup_knowledge
+      args_contain:
+        query: "recall"
+  routing:
+    offers_diy_choice: false
+    safety_critical: false
+  response:
+    # Recall-false-assurance guard (issues/2026-09-25-recall-rule-asserts-no-open-recalls/):
+    # no bare "recall" in the accepted list, since it matches "no open recalls" too; the
+    # rejected list is the e2e case's no-recalls stems (review Cycle 21 C1).
+    must_contain_one_of: ["fuel pump", "24V-567", "dealer", "free repair", "NHTSA"]
+    must_not_contain: ["DIY", "do it yourself", "no open recall", "no recall", "no safety recall", "no outstanding recall", "aren't any", "aren’t any", "doesn't have any", "doesn’t have any", "not subject to any recall", "isn't subject to any recall", "isn’t subject to any recall", "clear of recall", "recall-free", "all clear", "no active recall", "hasn't been recalled", "hasn’t been recalled", "has not been recalled", "never been recalled", "never recalled", "isn't recalled", "isn’t recalled", "not been recalled", "not recalled", "wasn't recalled", "wasn’t recalled", "zero open recall", "no open safety recall", "not affected by any open recall", "not affected by any recall", "isn't affected by any recall", "not subject to a recall", "isn't subject to a recall", "isn’t subject to a recall", "isn’t affected by any recall"]
+latency_budget_ms: 5000

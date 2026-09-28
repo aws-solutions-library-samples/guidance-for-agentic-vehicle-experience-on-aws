@@ -1,0 +1,1782 @@
+openapi: "3.1.0"
+info:
+  title: AVX Findings & Actions API
+  version: "1.0.0"
+  description: |
+    Frozen Spec 1a API contract for the `/findings/*` and `/actions/*` HTTP surface.
+    Authored in Spec 1a (`2026-09-18-avx-tier2-ios-cards-and-actions`).
+    **Inherited by Spec 1b and Spec 2 by reference — do not re-declare.**
+
+    Base URL: `${CVX_API_ENDPOINT}` (existing per-stage CVX API Gateway endpoint,
+    e.g. `https://api.staging.vsa.example.com`).
+
+    Authentication: Bearer token — Cognito JWT supplied in `Authorization: Bearer <token>`.
+    The existing API Gateway Cognito JWT authorizer validates the token and forwards claims
+    to the Lambda handler.
+
+    Pagination: list routes return opaque `next_token` (base64-encoded cursor, per existing
+    CVX API conventions). Omit or pass `null` for first page.
+
+    Stub routes: `/findings/fleet/{fleet_id}`, `/findings/dealership/{dealer_id}`,
+    `/findings/district/{district_id}` (and their `/actions/*` equivalents) are **live
+    routes with scope authorizers wired** but their handlers return `200 + empty list`
+    until Spec 3 (fleet) and Spec 2 (dealer / district) light up.
+  contact:
+    name: CVX Platform Team
+
+servers:
+  - url: "{CVX_API_ENDPOINT}"
+    description: Per-stage CVX API Gateway
+    variables:
+      CVX_API_ENDPOINT:
+        default: "https://api.staging.vsa.example.com"
+        description: Stage-specific base URL (set via CDK context `vsaApiEndpoint`).
+
+tags:
+  - name: findings
+    description: Tier 2 agent Findings — read surfaces by scope.
+  - name: actions
+    description: Tier 2 Actions — CRUD + state transitions.
+
+security:
+  - CognitoJwt: []
+
+paths:
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # FINDINGS — read surfaces
+  # ─────────────────────────────────────────────────────────────────────────────
+
+  /findings/me:
+    get:
+      operationId: listFindingsForCaller
+      tags: [findings]
+      summary: List Findings for every scope the caller holds
+      description: |
+        Returns open Findings for whatever the caller is entitled to, chronological descending,
+        merged across scopes. The caller names no scope — the server derives every scope from the
+        caller's verified claims, reads each, and reports which ones it used in `standings`.
+
+        This is the route a **driver** uses. Every other findings route needs a scope identifier in
+        its path, and a driver has none to give: their `sub` is not the owner id of the vehicle they
+        drive. Clients should prefer this route over guessing a path.
+
+        **Scope derivation** (no query or body parameter selects a scope):
+        - `vehicle` — from the verified `custom:vehicleId` claim. One vehicle per driver identity;
+          Findings for other vehicles sold to the same customer are not returned.
+        - `owner` — the caller's `sub` matched against the CMS registry's owner field.
+        - `fleet`, `dealership`, `district` — from the corresponding `custom:*` claims, each only
+          when that pool's claim is attested (see `docs/identity-and-standing-contract.md` § 5.1).
+
+        **No standing is a 200, not a 403**: a caller with no vehicle, no fleet and no dealership
+        gets `200 {"findings": [], "standings": []}`. A 403 would tell a probing caller that some
+        scope exists and was refused.
+
+        Expired Findings are omitted, so a card for a fault that has since cleared does not return.
+      parameters:
+        - $ref: "#/components/parameters/NextToken"
+        - $ref: "#/components/parameters/PageSize"
+        - $ref: "#/components/parameters/SeverityFilter"
+        - $ref: "#/components/parameters/FindingKindFilter"
+      responses:
+        "200":
+          description: |
+            OK. Also returned when the caller holds no standing at all, with both arrays empty.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CallerFindingListResponse"
+              examples:
+                driver_one_vehicle:
+                  summary: A driver with one assigned vehicle
+                  value:
+                    findings:
+                      - finding_id: "FIND-4a9b0c1d-e2f3-4567-89ab-cdef01234567"
+                        finding_kind: "health.diagnostics"
+                        severity: "now"
+                        scope:
+                          vin: "1FTFW1ED5MFB12345"
+                        computed_at: "2026-09-28T17:35:00Z"
+                        expires_at: "2026-09-28T18:05:00Z"
+                    standings: ["vehicle"]
+                    next_token: null
+                    computed_at: "2026-09-28T17:35:00Z"
+                no_standing:
+                  summary: A signed-in caller with no vehicle, fleet or dealership
+                  value:
+                    findings: []
+                    standings: []
+                    next_token: null
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+
+  /findings/vehicle/{vin}:
+    get:
+      operationId: listFindingsByVehicle
+      tags: [findings]
+      summary: List Findings by VIN
+      description: |
+        Returns open Findings scoped to the given VIN, chronological descending.
+
+        **Scope authorizer**: caller must be one of:
+        - `vehicle-owner` group — Cognito `sub` must match the vehicle's registered owner
+        - `fleet-driver` group — fleet membership validated via `custom:fleetIds`
+        - `service-advisor` Cognito group or `custom:role=service-advisor` claim
+        - `technician` Cognito group or `custom:role=technician` claim
+        - `platform-admin` group (cross-scope)
+        - `fleet-operator` group with confirmed fleet membership for this VIN
+
+        Callers who pass auth but fail scope get `403`.
+
+        **Paging for owner-group callers**: an `owner`-group caller reads its own partition and is
+        filtered to the requested VIN afterwards, so a page can come back with **no items and a
+        non-null `next_token`**. That is not the end of the results — keep following the cursor
+        until `next_token` is null. A client that stops at the first empty page will miss Findings.
+      parameters:
+        - $ref: "#/components/parameters/VinPath"
+        - $ref: "#/components/parameters/NextToken"
+        - $ref: "#/components/parameters/PageSize"
+        - $ref: "#/components/parameters/SeverityFilter"
+        - $ref: "#/components/parameters/FindingKindFilter"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FindingListResponse"
+              examples:
+                agent2_tires_finding:
+                  summary: Agent 2 health.tires Finding (LLM path)
+                  value:
+                    findings:
+                      - finding_id: "FIND-4a9b0c1d-e2f3-4567-89ab-cdef01234567"
+                        finding_key: "a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2"
+                        agent_id: "agent-2-vehicle-health"
+                        agent_version: "1.0.0"
+                        scope:
+                          vin: "1FTFW1ED5MFB12345"
+                        severity: "soon"
+                        computed_at: "2026-09-18T02:00:00Z"
+                        expires_at: "2026-09-25T02:00:00Z"
+                        confidence: "high"
+                        finding_kind: "health.tires"
+                        headline: "Front-left tire pressure 24 PSI — 4 PSI below minimum; rotation overdue by 2,400 km"
+                        detail: |
+                          **Tire pressure alert**: The front-left tire is reading 24 PSI, 4 PSI below the
+                          minimum recommended 28 PSI for your F-150. Continued driving at this pressure
+                          increases wear rate and fuel consumption.
+
+                          **Rotation**: Your last rotation was recorded at 38,200 km; you are now at
+                          40,600 km, 2,400 km past the recommended 2,000 km interval.
+
+                          *Based on live ADP telemetry signals as of 2026-09-18.*
+                        evidence:
+                          - kind: "tire_pressure_reading"
+                            source: "adp-staging"
+                            source_ref: "adp/staging/tire_health/snapshot_date=2026-09-18"
+                            value:
+                              position: "front_left"
+                              pressure_psi: 24
+                              min_psi: 28
+                            computed_at: "2026-09-18T01:45:00Z"
+                            provenance: "live"
+                          - kind: "odometer_reading"
+                            source: "adp-staging"
+                            source_ref: "adp/staging/vehicle_telemetry_aggregated/snapshot_date=2026-09-18"
+                            value:
+                              odometer_km: 40600
+                            computed_at: "2026-09-18T01:45:00Z"
+                            provenance: "live"
+                        inputs_hash: "a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2"
+                        tokens_used: 312
+                        cost_usd: 0.00023
+                        audit_trail: []
+                    next_token: null
+                    computed_at: "2026-09-18T02:00:00Z"
+                agent2_deterministic_fallback:
+                  summary: Agent 2 health.brakes Finding (deterministic fallback; tokens_used=0)
+                  value:
+                    findings:
+                      - finding_id: "FIND-bbbb0001-0002-0003-0004-000000000005"
+                        finding_key: "c1c2c3c4c5c6c7c8c9cacbcccdcecfd0d1d2d3d4d5d6d7d8d9dadbdcdddedfe0"
+                        agent_id: "agent-2-vehicle-health"
+                        agent_version: "1.0.0"
+                        scope:
+                          vin: "1FTFW1ED5MFB12345"
+                        severity: "attention"
+                        computed_at: "2026-09-18T02:20:00Z"
+                        expires_at: "2026-09-25T02:20:00Z"
+                        confidence: "medium"
+                        finding_kind: "health.brakes"
+                        headline: "Rear brake pads at 18% — service visit recommended within 30 days"
+                        detail: "Rear brake pad thickness is 18%, below the 20% attention threshold. Schedule inspection within 30 days."
+                        evidence:
+                          - kind: "brake_pad_thickness"
+                            source: "adp-staging"
+                            source_ref: "adp/staging/tire_health/snapshot_date=2026-09-18"
+                            value:
+                              position: "rear"
+                              thickness_pct: 18
+                            computed_at: "2026-09-18T02:05:00Z"
+                            provenance: "live"
+                        inputs_hash: "c1c2c3c4c5c6c7c8c9cacbcccdcecfd0d1d2d3d4d5d6d7d8d9dadbdcdddedfe0"
+                        tokens_used: 0
+                        cost_usd: 0.0
+                        audit_trail: []
+                    next_token: null
+                    computed_at: "2026-09-18T02:20:00Z"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+
+  /findings/owner/{owner_id}:
+    get:
+      operationId: listFindingsByOwner
+      tags: [findings]
+      summary: List Findings by owner (self-read)
+      description: |
+        Owner self-read. Returns all open Findings across all vehicles the owner holds.
+
+        **Scope authorizer**: caller `sub` must equal `owner_id`, OR the caller's
+        `custom:customerId` must equal `owner_id` (only when the stage attests the
+        claim is not client-writable, `AVX_CUSTOMER_ID_CLAIM_TRUSTED=true`), OR
+        caller is `platform-admin`. `owner_id` is a Cognito `sub` for owner-scoped
+        Findings and the CMS party of record (`CUST-XXXXXXXX`) for VIN-scoped
+        Findings; see `docs/identity-and-standing-contract.md` § 3. `consumer` and
+        `vehicle_owner` Cognito groups are accepted. Fleet memberships are not
+        required.
+      parameters:
+        - $ref: "#/components/parameters/OwnerIdPath"
+        - $ref: "#/components/parameters/NextToken"
+        - $ref: "#/components/parameters/PageSize"
+        - $ref: "#/components/parameters/SeverityFilter"
+        - $ref: "#/components/parameters/FindingKindFilter"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FindingListResponse"
+              examples:
+                owner_multi_vin:
+                  summary: Owner with two vehicles, one finding each
+                  value:
+                    findings:
+                      - finding_id: "FIND-aaaa0001-0002-0003-0004-000000000001"
+                        finding_key: "a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2"
+                        agent_id: "agent-2-vehicle-health"
+                        agent_version: "1.0.0"
+                        scope:
+                          vin: "1FTFW1ED5MFB12345"
+                        severity: "soon"
+                        computed_at: "2026-09-18T02:00:00Z"
+                        expires_at: "2026-09-25T02:00:00Z"
+                        confidence: "high"
+                        finding_kind: "health.tires"
+                        headline: "Front-left tire pressure 24 PSI — 4 PSI below minimum"
+                        detail: "See full detail via GET /findings/vehicle/1FTFW1ED5MFB12345"
+                        evidence:
+                          - kind: "tire_pressure_reading"
+                            source: "adp-staging"
+                            source_ref: "adp/staging/tire_health/snapshot_date=2026-09-18"
+                            value:
+                              position: "front_left"
+                              pressure_psi: 24
+                            computed_at: "2026-09-18T01:45:00Z"
+                            provenance: "live"
+                        inputs_hash: "a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2"
+                        tokens_used: 312
+                        cost_usd: 0.00023
+                        audit_trail: []
+                    next_token: null
+                    computed_at: "2026-09-18T02:00:00Z"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+
+  /findings/owner-fleet/{owner_id}:
+    get:
+      operationId: listFindingsByOwnerFleet
+      tags: [findings]
+      summary: List Findings for small-business fleet owned by owner
+      description: |
+        Small-business fleet-owner scope. Returns Findings across all VINs in fleets
+        this owner manages.
+
+        **Scope authorizer**: caller `sub`, or the caller's trusted
+        `custom:customerId` (see `listFindingsByOwner`), must equal `owner_id`, OR
+        caller is `platform-admin`. A `fleet-operator` is admitted only when it holds
+        the owner's fleet; this route has no fleet context to resolve that against,
+        so a `fleet-operator` that is not the owner is denied (fails closed).
+      parameters:
+        - $ref: "#/components/parameters/OwnerIdPath"
+        - $ref: "#/components/parameters/NextToken"
+        - $ref: "#/components/parameters/PageSize"
+        - $ref: "#/components/parameters/SeverityFilter"
+        - $ref: "#/components/parameters/FindingKindFilter"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FindingListResponse"
+              examples:
+                owner_fleet_findings:
+                  summary: Fleet owner sees two vehicles' findings
+                  value:
+                    findings:
+                      - finding_id: "FIND-cccc0001-0002-0003-0004-000000000001"
+                        finding_key: "f0f1f2f3f4f5f6f7f8f9fafbfcfdfeff00010203040506070809101112131415"
+                        agent_id: "agent-2-vehicle-health"
+                        agent_version: "1.0.0"
+                        scope:
+                          fleet_id: "FLEET-meridian-01"
+                        severity: "attention"
+                        computed_at: "2026-09-18T02:00:00Z"
+                        expires_at: "2026-09-25T02:00:00Z"
+                        confidence: "medium"
+                        finding_kind: "health.brakes"
+                        headline: "3 vehicles in fleet FLEET-meridian-01 have brake pads below 20%"
+                        detail: "Fleet-aggregate brake finding for 3 of 8 vehicles."
+                        evidence:
+                          - kind: "brake_pad_thickness"
+                            source: "adp-staging"
+                            source_ref: "adp/staging/tire_health/snapshot_date=2026-09-18"
+                            vin: "1FTFW1ED5MFB12345"
+                            value:
+                              position: "rear"
+                              thickness_pct: 17
+                            computed_at: "2026-09-18T02:05:00Z"
+                            provenance: "live"
+                          - kind: "brake_pad_thickness"
+                            source: "adp-staging"
+                            source_ref: "adp/staging/tire_health/snapshot_date=2026-09-18"
+                            vin: "2T1BURHE0JC000001"
+                            value:
+                              position: "rear"
+                              thickness_pct: 19
+                            computed_at: "2026-09-18T02:05:00Z"
+                            provenance: "live"
+                        inputs_hash: "f0f1f2f3f4f5f6f7f8f9fafbfcfdfeff00010203040506070809101112131415"
+                        tokens_used: 278
+                        cost_usd: 0.00019
+                        audit_trail: []
+                    next_token: null
+                    computed_at: "2026-09-18T02:00:00Z"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+
+  /findings/fleet/{fleet_id}:
+    get:
+      # Machine-readable scope predicate (Fix Group 6 Critical). The guard in
+      # tests/schemas/test_finding_action_schemas.py reads THIS, not the prose
+      # description below: a substring test over English cannot distinguish an
+      # assertion from its negation, which is why the prose guard failed three
+      # review cycles. Prose is retained for human readers only.
+      # Fix Group 7 W3: removed bypass for fleet routes — platform-admin is an
+      # alternative for the GROUP requirement only; the membership predicate still
+      # applies. The prose says "AND hold fleet membership" with no bypass clause.
+      x-scope-predicate:
+        param: fleet_id
+        mechanism: "`fleet-operator` or `platform-admin` Cognito group AND fleet membership for `fleet_id` verified via CMS `_lib/fleet_membership.py`"
+      operationId: listFindingsByFleet
+      tags: [findings]
+      summary: "[STUB] List Findings for a fleet (fleet-manager scope)"
+      description: |
+        Fleet-manager scope. **STUB in Spec 1a — returns `200` with empty list.**
+        Route is registered; scope authorizer is wired. Full implementation ships in Spec 3.
+
+        **Scope authorizer** (wired now, enforced now):
+        Caller must hold `fleet-operator` or `platform-admin` Cognito group AND hold
+        fleet membership for `fleet_id` per `fleet_membership.py`.
+
+        Returns empty list until Spec 3 lights up the fleet-aggregate Findings agent.
+      parameters:
+        - $ref: "#/components/parameters/FleetIdPath"
+        - $ref: "#/components/parameters/NextToken"
+        - $ref: "#/components/parameters/PageSize"
+      responses:
+        "200":
+          description: OK — empty list until Spec 3 ships
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FindingListResponse"
+              examples:
+                stub_empty:
+                  summary: Stub response (always empty until Spec 3)
+                  value:
+                    findings: []
+                    next_token: null
+                    computed_at: "2026-09-18T02:00:00Z"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+
+  /findings/dealership/{dealer_id}:
+    get:
+      # Machine-readable scope predicate (Fix Group 6 Critical). The guard in
+      # tests/schemas/test_finding_action_schemas.py reads THIS, not the prose
+      # description below: a substring test over English cannot distinguish an
+      # assertion from its negation, which is why the prose guard failed three
+      # review cycles. Prose is retained for human readers only.
+      x-scope-predicate:
+        param: dealer_id
+        mechanism: "`dealer-admin` Cognito group AND a DMS dealership role scoped to `dealer_id`"
+        bypass: [platform-admin]
+      operationId: listFindingsByDealership
+      tags: [findings]
+      summary: "[STUB] List Findings for a dealership (dealer scope)"
+      description: |
+        Dealer scope. **STUB in Spec 1a — returns `200` with empty list.**
+        Route is registered; scope authorizer is wired. Full implementation ships in Spec 2.
+
+        **Scope authorizer** (wired now, enforced now):
+        Caller must hold `dealer-admin` Cognito group AND hold a DMS dealership role for
+        `dealer_id`. `platform-admin` bypasses.
+
+        Returns empty list until Spec 2 lights up the dealer-scoped Findings writer.
+      parameters:
+        - $ref: "#/components/parameters/DealerIdPath"
+        - $ref: "#/components/parameters/NextToken"
+        - $ref: "#/components/parameters/PageSize"
+      responses:
+        "200":
+          description: OK — empty list until Spec 2 ships
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FindingListResponse"
+              examples:
+                stub_empty:
+                  summary: Stub response (always empty until Spec 2)
+                  value:
+                    findings: []
+                    next_token: null
+                    computed_at: "2026-09-18T02:00:00Z"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+
+  /findings/district/{district_id}:
+    get:
+      # Machine-readable scope predicate (Fix Group 6 Critical). The guard in
+      # tests/schemas/test_finding_action_schemas.py reads THIS, not the prose
+      # description below: a substring test over English cannot distinguish an
+      # assertion from its negation, which is why the prose guard failed three
+      # review cycles. Prose is retained for human readers only.
+      x-scope-predicate:
+        param: district_id
+        mechanism: "`district-manager` Cognito group AND district membership for `district_id` via the `custom:districtIds` claim"
+        bypass: [platform-admin]
+      operationId: listFindingsByDistrict
+      tags: [findings]
+      summary: "[STUB] List Findings for a district (district scope)"
+      description: |
+        District scope. **STUB in Spec 1a — returns `200` with empty list.**
+        Route is registered; scope authorizer is wired. Full implementation ships in Spec 2.
+
+        **Scope authorizer** (wired now, enforced now):
+        Caller must hold `district-manager` Cognito group **AND** hold district membership
+        for `district_id`. `platform-admin` bypasses the membership predicate only.
+
+        The membership predicate is REQUIRED, not optional. Group membership alone is not
+        sufficient authorization: `district-manager` is a role, not a scope, so gating on the
+        group alone lets any district manager enumerate every district's Findings. This
+        mirrors the predicates the sibling scope routes already carry — `fleet` binds via
+        `fleet_membership.py`, `dealership` binds the caller's dealership to `dealer_id` —
+        and closes the inconsistency found by security review Cycle 1 W2. Spec 2 MUST ship
+        the district-membership lookup (claim or membership table) when it lights this route
+        up; a stub handler returning an empty list must not be read as permission to defer it.
+
+        Returns empty list until Spec 2 lights up district aggregation.
+      parameters:
+        - $ref: "#/components/parameters/DistrictIdPath"
+        - $ref: "#/components/parameters/NextToken"
+        - $ref: "#/components/parameters/PageSize"
+      responses:
+        "200":
+          description: OK — empty list until Spec 2 ships
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FindingListResponse"
+              examples:
+                stub_empty:
+                  summary: Stub response (always empty until Spec 2)
+                  value:
+                    findings: []
+                    next_token: null
+                    computed_at: "2026-09-18T02:00:00Z"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # FINDINGS → approve (create an Action)
+  # ─────────────────────────────────────────────────────────────────────────────
+
+  /findings/{finding_id}/approve:
+    post:
+      operationId: approveFinding
+      tags: [actions]
+      summary: Approve a Finding — creates an Action
+      description: |
+        Creates an Action from a Finding. The executor for `target_system` is called
+        synchronously and its result advances the Action (Addendum D5): a success
+        status (`in_progress` / `executed` / `completed`) with `target_ref` populated;
+        `declined` when the target refused the work; `failed` when retries were
+        exhausted or the executor erred, which also fires the D5 escalation. The row
+        stays `pending_execution` only if dispatch could not run at all, and the
+        response is then a 500 naming the `action_id`. A repeated approve (same
+        Finding, `action_kind` and caller) returns the existing Action without
+        dispatching again, provided it names the same `target_system` and
+        `parameters`; otherwise it is a 409.
+
+        `target_system: dms` requires a caller in the `fleet-operator` or
+        `platform-admin` group (the callers DMS's repair-order API admits; others get
+        a 403 before anything is written), a VIN-scoped Finding, and
+        `parameters.dealer_id` (a DMS rooftop). `parameters.vehicle_vin` is set from
+        the Finding's own scope; a different caller-supplied value is a 400.
+
+        **Scope authorizer**: caller must be the owner of the Finding's scope OR hold
+        `service-advisor` / `fleet-operator` / `platform-admin` group.
+
+        Evidence from the Finding is copied onto the Action at approval time.
+      parameters:
+        - $ref: "#/components/parameters/FindingIdPath"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ApproveFindingRequest"
+            examples:
+              book_dms_visit:
+                summary: Book combined service visit via DMS executor
+                value:
+                  target_system: "dms"
+                  action_kind: "book_combined_visit"
+                  parameters:
+                    dealer_id: "dealer-atlanta"
+                    center_id: "SC-ATL-101"
+                    preferred_slot: "2026-09-25T10:00:00Z"
+                    symptom_note: "Tire pressure low and rotation overdue"
+              acknowledge_only:
+                summary: Acknowledge a routine finding
+                value:
+                  target_system: "none"
+                  action_kind: "acknowledge_only"
+                  parameters: {}
+      responses:
+        "200":
+          description: |
+            Action created and its executor dispatched, with the D5 result recorded; or
+            the existing Action for a repeated approve. (Documented as 201 before
+            v2.3; the handler has always returned 200.)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Action"
+              examples:
+                dms_action_in_progress:
+                  summary: DMS accepted the booking synchronously; the RO is Draft
+                  value:
+                    action_id: "AVX-ACT-11111111-2222-3333-4444-555555555555"
+                    finding_id: "FIND-4a9b0c1d-e2f3-4567-89ab-cdef01234567"
+                    created_by: "owner-USER-FLEETOP-1"
+                    created_at: "2026-09-18T09:14:00Z"
+                    updated_at: "2026-09-18T09:14:01Z"
+                    target_system: "dms"
+                    target_ref: "3f5c1c2e-8a4b-5d6e-9f70-1a2b3c4d5e6f"
+                    status: "in_progress"
+                    action_kind: "book_combined_visit"
+                    parameters:
+                      dealer_id: "dealer-atlanta"
+                      vehicle_vin: "1MRDN0000000000015"
+                      center_id: "SC-ATL-101"
+                      preferred_slot: "2026-09-25T10:00:00Z"
+                      symptom_note: "Tire pressure low and rotation overdue"
+                    evidence:
+                      - kind: "tire_pressure_reading"
+                        source: "adp-staging"
+                        source_ref: "adp/staging/tire_health/snapshot_date=2026-09-18"
+                        value:
+                          position: "front_left"
+                          pressure_psi: 24
+                        computed_at: "2026-09-18T01:45:00Z"
+                        provenance: "live"
+                    audit_trail:
+                      - at: "2026-09-18T09:14:01Z"
+                        by: "executor-dms"
+                        from_status: "pending_execution"
+                        to_status: "in_progress"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          description: |
+            Conflict — an Action already exists for this Finding, `action_kind` and
+            caller, with a different `target_system` or `parameters`.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # ACTIONS — read surfaces (mirror of findings scope surface)
+  # ─────────────────────────────────────────────────────────────────────────────
+
+  /actions/vehicle/{vin}:
+    get:
+      operationId: listActionsByVehicle
+      tags: [actions]
+      summary: List Actions by VIN
+      description: |
+        Same scope authorizer as `GET /findings/vehicle/{vin}`. Returns Actions whose
+        originating Finding had a `vin` scope matching this VIN.
+      parameters:
+        - $ref: "#/components/parameters/VinPath"
+        - $ref: "#/components/parameters/NextToken"
+        - $ref: "#/components/parameters/PageSize"
+        - $ref: "#/components/parameters/StatusFilter"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ActionListResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+
+  /actions/owner/{owner_id}:
+    get:
+      operationId: listActionsByOwner
+      tags: [actions]
+      summary: List Actions by owner (includes ios-owner reverse-direction Actions)
+      description: |
+        Owner self-read for Actions. Returns Actions the owner has approved (outbound)
+        **plus** Actions proposed to this owner by a dealer via the `ios-owner` executor
+        (reverse direction — Spec 2 writes these; Spec 1a ships the reading end).
+
+        **Scope authorizer**: same as `GET /findings/owner/{owner_id}`.
+
+        The `audit_trail` on each Action reflects all state changes and is used by the
+        iOS AVX Cards tab to surface staleness (parent PRD § M5).
+      parameters:
+        - $ref: "#/components/parameters/OwnerIdPath"
+        - $ref: "#/components/parameters/NextToken"
+        - $ref: "#/components/parameters/PageSize"
+        - $ref: "#/components/parameters/StatusFilter"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ActionListResponse"
+              examples:
+                owner_action_in_progress:
+                  summary: DMS RO in-progress after booking
+                  value:
+                    actions:
+                      - action_id: "AVX-ACT-11111111-2222-3333-4444-555555555555"
+                        finding_id: "FIND-4a9b0c1d-e2f3-4567-89ab-cdef01234567"
+                        created_by: "owner-USER-12345"
+                        created_at: "2026-09-18T09:14:00Z"
+                        target_system: "dms"
+                        target_ref: "DMS-RO-9001"
+                        status: "in_progress"
+                        action_kind: "book_combined_visit"
+                        parameters:
+                          center_id: "SC-ATL-101"
+                          preferred_slot: "2026-09-25T10:00:00Z"
+                          symptom_note: "Tire pressure low and rotation overdue"
+                        evidence:
+                          - kind: "tire_pressure_reading"
+                            source: "adp-staging"
+                            source_ref: "adp/staging/tire_health/snapshot_date=2026-09-18"
+                            value:
+                              position: "front_left"
+                              pressure_psi: 24
+                            computed_at: "2026-09-18T01:45:00Z"
+                            provenance: "live"
+                        audit_trail:
+                          - at: "2026-09-18T09:14:00Z"
+                            by: "owner-USER-12345"
+                            from_status: "pending_execution"
+                            to_status: "executed"
+                          - at: "2026-09-18T14:32:00Z"
+                            by: "dms-system"
+                            from_status: "executed"
+                            to_status: "in_progress"
+                            note: "Technician assigned at SC-ATL-101"
+                    next_token: null
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+
+  /actions/owner-fleet/{owner_id}:
+    get:
+      operationId: listActionsByOwnerFleet
+      tags: [actions]
+      summary: List Actions for a small-business fleet owner
+      description: |
+        Same scope authorizer as `GET /findings/owner-fleet/{owner_id}`. Returns Actions
+        whose originating Finding had a `fleet_id` scope for a fleet this owner owns.
+
+        In Spec 1a scope: the `fleet_owner` persona approves fleet-scoped Findings
+        (Addendum D1 — one `scope.fleet_id` Finding per (fleet, finding_kind) carrying
+        per-VIN `evidence[]`), so the resulting Actions need a listable read surface at
+        the same scope. This route is LIVE in Spec 1a, not a stub.
+      parameters:
+        - $ref: "#/components/parameters/OwnerIdPath"
+        - $ref: "#/components/parameters/NextToken"
+        - $ref: "#/components/parameters/PageSize"
+        - $ref: "#/components/parameters/StatusFilter"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ActionListResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+
+  /actions/fleet/{fleet_id}:
+    get:
+      # Machine-readable scope predicate (Fix Group 6 Critical). The guard in
+      # tests/schemas/test_finding_action_schemas.py reads THIS, not the prose
+      # description below: a substring test over English cannot distinguish an
+      # assertion from its negation, which is why the prose guard failed three
+      # review cycles. Prose is retained for human readers only.
+      # Fix Group 7 W3: removed bypass for fleet routes — platform-admin is an
+      # alternative for the GROUP requirement only; the membership predicate still
+      # applies. The prose says "AND hold fleet membership" with no bypass clause.
+      x-scope-predicate:
+        param: fleet_id
+        mechanism: "`fleet-operator` or `platform-admin` Cognito group AND fleet membership for `fleet_id` verified via CMS `_lib/fleet_membership.py`"
+      operationId: listActionsByFleet
+      tags: [actions]
+      summary: "[STUB] List Actions for a fleet (fleet-manager scope)"
+      description: |
+        Fleet-manager scope. **STUB in Spec 1a — returns `200` with empty list.**
+        Route is registered; scope authorizer is wired. Full implementation ships in Spec 3.
+
+        **Scope authorizer** (wired now, enforced now):
+        Same as `GET /findings/fleet/{fleet_id}` — caller must hold `fleet-operator` or
+        `platform-admin` Cognito group AND hold fleet membership for `fleet_id` per
+        `fleet_membership.py`.
+      parameters:
+        - $ref: "#/components/parameters/FleetIdPath"
+        - $ref: "#/components/parameters/NextToken"
+        - $ref: "#/components/parameters/PageSize"
+        - $ref: "#/components/parameters/StatusFilter"
+      responses:
+        "200":
+          description: OK — empty list until Spec 3 ships
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ActionListResponse"
+              examples:
+                stub_empty:
+                  summary: Stub response (always empty until Spec 3)
+                  value:
+                    actions: []
+                    next_token: null
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+
+  /actions/dealership/{dealer_id}:
+    get:
+      # Machine-readable scope predicate (Fix Group 6 Critical). The guard in
+      # tests/schemas/test_finding_action_schemas.py reads THIS, not the prose
+      # description below: a substring test over English cannot distinguish an
+      # assertion from its negation, which is why the prose guard failed three
+      # review cycles. Prose is retained for human readers only.
+      x-scope-predicate:
+        param: dealer_id
+        mechanism: "`dealer-admin` Cognito group AND a DMS dealership role scoped to `dealer_id`"
+        bypass: [platform-admin]
+      operationId: listActionsByDealership
+      tags: [actions]
+      summary: "[STUB] List Actions for a dealership (dealer scope)"
+      description: |
+        Dealer scope. **STUB in Spec 1a — returns `200` with empty list.**
+        Route is registered; scope authorizer is wired. Full implementation ships in Spec 2.
+
+        **Scope authorizer** (wired now, enforced now):
+        Same as `GET /findings/dealership/{dealer_id}`.
+
+        Spec 2 lights this up for the dealer-facing Action queue, including the
+        `ios-owner` reverse direction (dealer proposes an Action that surfaces on the
+        owner's iOS feed). Note that the owner-side read of those same Actions is served
+        by `GET /actions/owner/{owner_id}`, not by a separate `ios-owner` route.
+      parameters:
+        - $ref: "#/components/parameters/DealerIdPath"
+        - $ref: "#/components/parameters/NextToken"
+        - $ref: "#/components/parameters/PageSize"
+        - $ref: "#/components/parameters/StatusFilter"
+      responses:
+        "200":
+          description: OK — empty list until Spec 2 ships
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ActionListResponse"
+              examples:
+                stub_empty:
+                  summary: Stub response (always empty until Spec 2)
+                  value:
+                    actions: []
+                    next_token: null
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+
+  /actions/district/{district_id}:
+    get:
+      # Machine-readable scope predicate (Fix Group 6 Critical). The guard in
+      # tests/schemas/test_finding_action_schemas.py reads THIS, not the prose
+      # description below: a substring test over English cannot distinguish an
+      # assertion from its negation, which is why the prose guard failed three
+      # review cycles. Prose is retained for human readers only.
+      x-scope-predicate:
+        param: district_id
+        mechanism: "`district-manager` Cognito group AND district membership for `district_id` via the `custom:districtIds` claim"
+        bypass: [platform-admin]
+      operationId: listActionsByDistrict
+      tags: [actions]
+      summary: "[STUB] List Actions for a district (district-manager scope)"
+      description: |
+        District-manager scope. **STUB in Spec 1a — returns `200` with empty list.**
+        Route is registered; scope authorizer is wired. Full implementation ships in Spec 2.
+
+        **Scope authorizer** (wired now, enforced now):
+        Same as `GET /findings/district/{district_id}` — `district-manager` group **AND**
+        district membership for `district_id`; `platform-admin` bypasses the membership
+        predicate only. See that route for why the membership predicate is required rather
+        than optional (security review Cycle 1 W2).
+      parameters:
+        - $ref: "#/components/parameters/DistrictIdPath"
+        - $ref: "#/components/parameters/NextToken"
+        - $ref: "#/components/parameters/PageSize"
+        - $ref: "#/components/parameters/StatusFilter"
+      responses:
+        "200":
+          description: OK — empty list until Spec 2 ships
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ActionListResponse"
+              examples:
+                stub_empty:
+                  summary: Stub response (always empty until Spec 2)
+                  value:
+                    actions: []
+                    next_token: null
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # ACTIONS — state transitions
+  # ─────────────────────────────────────────────────────────────────────────────
+
+  /actions/{action_id}:
+    patch:
+      operationId: updateAction
+      tags: [actions]
+      summary: State transition on an Action
+      description: |
+        Applies a state transition to an Action. Valid transitions depend on `target_system`:
+
+        | Caller role | Allowed transitions |
+        |---|---|
+        | `dealer` / `service-advisor` | `executed` → `in_progress`, `in_progress` → `completed`, `in_progress` → `declined` |
+        | `vehicle-owner` / `consumer` | `pending_execution` → `cancelled`, `executed` → `cancelled` |
+        | `platform-admin` | Any transition (no-op audit trail entry added) |
+
+        Invalid transitions return `422`. All transitions are appended to `audit_trail[]`.
+
+        **Scope authorizer**: caller must be the original `created_by` actor OR hold a
+        dealer/service-advisor role with scope on the Action's originating Finding.
+        `platform-admin` bypasses.
+      parameters:
+        - $ref: "#/components/parameters/ActionIdPath"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateActionRequest"
+            examples:
+              dealer_accept:
+                summary: Dealer marks RO in-progress
+                value:
+                  status: "in_progress"
+                  note: "Technician assigned — RO SC-ATL-101-20260918"
+              owner_cancel:
+                summary: Owner cancels a pending action
+                value:
+                  status: "cancelled"
+                  note: "Changed my mind — will use a different service center"
+      responses:
+        "200":
+          description: Updated Action
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Action"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "422":
+          description: Unprocessable — invalid state transition
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              examples:
+                invalid_transition:
+                  value:
+                    error: "INVALID_TRANSITION"
+                    message: "Cannot transition from 'completed' to 'cancelled'"
+                    request_id: "req-abc123"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+
+  /actions/{action_id}/dismiss:
+    post:
+      operationId: dismissAction
+      tags: [actions]
+      summary: Dismiss an Action — feeds broker feedback table
+      description: |
+        Dismisses an Action and writes a dismissal event to the broker feedback table.
+        The feedback is consumed by the Tier 2 agent loop for future suppression of
+        low-signal Findings (parent PRD § M12).
+
+        **Scope authorizer**: caller must be the `created_by` owner of the Action.
+        Dealer/service-advisor may not dismiss an owner-originated Action.
+        `platform-admin` bypasses.
+
+        Dismissal is a terminal state — a dismissed Action cannot be re-opened.
+      parameters:
+        - $ref: "#/components/parameters/ActionIdPath"
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DismissActionRequest"
+            examples:
+              dismiss_with_reason:
+                value:
+                  reason: "already_handled"
+                  note: "Fixed tire pressure myself at a gas station"
+      responses:
+        "200":
+          description: Action dismissed; feedback row written
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Action"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "422":
+          description: Unprocessable — Action is already in a terminal state
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+
+# =============================================================================
+# Components
+# =============================================================================
+
+components:
+
+  securitySchemes:
+    CognitoJwt:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: |
+        Cognito JWT issued by the per-stage CVX Cognito User Pool.
+        Claims used by the scope authorizer:
+        - `sub` — caller's user ID
+        - `cognito:groups` — comma-separated Cognito group names
+          (e.g. `platform-admin`, `fleet-operator`, `fleet-driver`,
+          `vehicle-owner`, `dealer`, `district-manager`)
+        - `custom:role` — optional role override claim
+          (e.g. `service-advisor`, `technician`)
+        - `custom:fleetIds` — JSON-encoded array of fleet IDs the caller belongs to
+
+  parameters:
+
+    VinPath:
+      name: vin
+      in: path
+      required: true
+      schema:
+        type: string
+        pattern: "^[A-HJ-NPR-Z0-9]{17}$"
+        example: "1FTFW1ED5MFB12345"
+      description: 17-character ISO 3779 VIN.
+
+    OwnerIdPath:
+      name: owner_id
+      in: path
+      required: true
+      schema:
+        type: string
+        example: "USER-12345"
+      description: Owner user identifier.
+
+    FleetIdPath:
+      name: fleet_id
+      in: path
+      required: true
+      schema:
+        type: string
+        example: "FLEET-meridian-01"
+      description: Fleet identifier.
+
+    DealerIdPath:
+      name: dealer_id
+      in: path
+      required: true
+      schema:
+        type: string
+        example: "DEALER-meridian-atl-101"
+      description: Dealership identifier.
+
+    DistrictIdPath:
+      name: district_id
+      in: path
+      required: true
+      schema:
+        type: string
+        example: "DISTRICT-southeast-01"
+      description: District identifier.
+
+    FindingIdPath:
+      name: finding_id
+      in: path
+      required: true
+      schema:
+        type: string
+        pattern: "^FIND-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+        example: "FIND-4a9b0c1d-e2f3-4567-89ab-cdef01234567"
+      description: Finding identifier.
+
+    ActionIdPath:
+      name: action_id
+      in: path
+      required: true
+      schema:
+        type: string
+        pattern: "^AVX-ACT-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+        example: "AVX-ACT-11111111-2222-3333-4444-555555555555"
+      description: Action identifier.
+
+    NextToken:
+      name: next_token
+      in: query
+      required: false
+      schema:
+        type: string
+        nullable: true
+      description: |
+        Opaque base64-encoded pagination cursor returned by a prior list response.
+        Omit or pass null/empty string for the first page.
+
+    PageSize:
+      name: page_size
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 20
+      description: Maximum items per page. Default 20; max 100.
+
+    SeverityFilter:
+      name: severity
+      in: query
+      required: false
+      schema:
+        type: string
+        enum: ["p0", "attention", "soon", "routine", "informational"]
+      description: Filter results to a single severity level.
+
+    FindingKindFilter:
+      name: finding_kind
+      in: query
+      required: false
+      schema:
+        type: string
+      description: "Filter by finding_kind prefix (e.g. 'health' matches health.tires, health.brakes, health.battery, health.diagnostics)."
+
+    StatusFilter:
+      name: status
+      in: query
+      required: false
+      schema:
+        type: string
+        enum:
+          - "pending_execution"
+          - "executed"
+          - "in_progress"
+          - "completed"
+          - "cancelled"
+          - "declined"
+          - "dismissed"
+          - "failed"
+      description: |
+        Filter by Action status. MUST enumerate every value of `Action.status` —
+        `dismissed` (Addendum D4) and `failed` (Addendum D5) included. A filter that
+        omits a valid status makes those Actions unfilterable through the API and, with
+        API Gateway request validation enabled, returns 400 on a legitimate query.
+        Pinned against `action.schema.json` by
+        `TestApiContractStatusEnumParity` in tests/schemas/test_finding_action_schemas.py.
+
+  schemas:
+
+    Finding:
+      type: object
+      description: |
+        AVX Tier 2 Finding. Frozen in Spec 1a Group 1.
+        Authoritative schema: `agents/tier2/schemas/finding.schema.json`.
+      required:
+        - finding_id
+        - finding_key
+        - agent_id
+        - agent_version
+        - scope
+        - severity
+        - computed_at
+        - expires_at
+        - confidence
+        - finding_kind
+        - headline
+        - detail
+        - evidence
+        - inputs_hash
+        - tokens_used
+        - cost_usd
+        - audit_trail
+      properties:
+        finding_id:
+          type: string
+          pattern: "^FIND-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+          description: Stable UUID. Preserved across in-place updates (Addendum D2).
+        finding_key:
+          type: string
+          pattern: "^[0-9a-f]{64}$"
+          description: |
+            SHA-256 of canonicalised (agent_id, scope_field, scope_value, finding_kind).
+            Stable identity of an open condition. The writer uses this GSI to decide
+            UpdateItem (persistent condition) vs PutItem (new condition). Addendum D2.
+        agent_id:
+          type: string
+          enum:
+            - "agent-2-vehicle-health"
+            - "agent-1-lite-energy"
+            - "agent-3-ownership-cost"
+            - "agent-4-lite-concierge"
+        agent_version:
+          type: string
+          pattern: "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+        scope:
+          $ref: "#/components/schemas/FindingScope"
+        severity:
+          type: string
+          enum: ["p0", "attention", "soon", "routine", "informational"]
+        computed_at:
+          type: string
+          format: date-time
+        expires_at:
+          type: string
+          format: date-time
+          description: computed_at + agent freshness TTL. Extended in-place on re-emit (D2).
+        confidence:
+          type: string
+          enum: ["low", "medium", "high"]
+        finding_kind:
+          type: string
+          enum:
+            - "health.tires"
+            - "health.brakes"
+            - "health.battery"
+            - "health.diagnostics"
+            - "energy.charging"
+            - "energy.cost"
+            - "coverage.warranty"
+            - "coverage.recall"
+            - "loyalty.points"
+            - "loyalty.expiry"
+            - "concierge.appointment"
+            - "concierge.service"
+        headline:
+          type: string
+          maxLength: 120
+        detail:
+          type: string
+        evidence:
+          type: array
+          items:
+            $ref: "#/components/schemas/EvidenceEntry"
+        inputs_hash:
+          type: string
+          pattern: "^[0-9a-f]{64}$"
+          description: |
+            SHA-256 of canonicalised input rows. Role (Addendum D2): retry-safety within
+            a single agent execution attempt. Cross-run idempotency is finding_key-based.
+        tokens_used:
+          type: integer
+          minimum: 0
+        cost_usd:
+          type: number
+          minimum: 0.0
+        disclosure_txt:
+          type: string
+          nullable: true
+          description: |
+            Verbatim disclosure copy, populated only when the finding surfaces a monetary
+            figure (PRD § M8). Not present for Spec 1a Agent 2 health findings.
+            For monetary `finding_kind` values (coverage.warranty, coverage.recall,
+            energy.cost, loyalty.points, loyalty.expiry), this field is REQUIRED and
+            must be non-empty — enforced by the `if/then` constraint below (contract v2.2
+            security S1 via allOf in the JSON Schema authoritative version).
+        audit_trail:
+          type: array
+          items:
+            $ref: "#/components/schemas/FindingAuditEntry"
+          description: |
+            In-place update history (Addendum D2). Appended on each UpdateItem (re-emit)
+            so persistence history is reconstructable from the Finding alone.
+      if:
+        properties:
+          finding_kind:
+            enum:
+              - "coverage.warranty"
+              - "coverage.recall"
+              - "energy.cost"
+              - "loyalty.points"
+              - "loyalty.expiry"
+        required: [finding_kind]
+      then:
+        required: [disclosure_txt]
+        properties:
+          disclosure_txt:
+            type: string
+            minLength: 1
+            description: |
+              Required and non-empty for monetary finding_kind values. Verbatim disclosure
+              copy per parent PRD § M8, § M14 and the deterministic-seam rule in
+              ~/.kiro/steering/agentic-tiers.md. Contract v2.2 security S1.
+
+    FindingScope:
+      type: object
+      description: Exactly one field populated. Zero or >1 populated fields = schema bug.
+      properties:
+        vin:
+          type: string
+          pattern: "^[A-HJ-NPR-Z0-9]{17}$"
+        owner_id:
+          type: string
+        fleet_id:
+          type: string
+        dealership_id:
+          type: string
+        district_id:
+          type: string
+      minProperties: 1
+      maxProperties: 1
+
+    FindingListResponse:
+      type: object
+      required: [findings, computed_at]
+      properties:
+        findings:
+          type: array
+          items:
+            $ref: "#/components/schemas/Finding"
+        next_token:
+          type: string
+          nullable: true
+          description: Opaque base64 cursor; null on last page.
+        computed_at:
+          type: string
+          format: date-time
+          description: |
+            Timestamp of the most-recent Tier 2 agent run that produced any item in this
+            response. Callers surface this as staleness context per PRD § M5.
+
+    CallerFindingListResponse:
+      description: |
+        `FindingListResponse` plus the scopes the server actually used. Only `GET /findings/me`
+        returns this shape; the scope-named routes return `FindingListResponse`.
+      allOf:
+        - $ref: "#/components/schemas/FindingListResponse"
+        - type: object
+          required: [standings]
+          properties:
+            standings:
+              type: array
+              description: |
+                The scopes the server derived from the caller's claims and read. Empty when the
+                caller holds none, which is a 200. Clients must not infer standing themselves.
+              items:
+                type: string
+                enum: [vehicle, owner, fleet, dealership, district]
+
+    Action:
+      type: object
+      description: |
+        AVX Tier 2 Action. Frozen in Spec 1a Group 1.
+        Authoritative schema: `agents/tier2/schemas/action.schema.json`.
+      required:
+        - action_id
+        - finding_id
+        - created_by
+        - created_at
+        - updated_at
+        - target_system
+        - status
+        - action_kind
+        - parameters
+        - evidence
+        - audit_trail
+      properties:
+        action_id:
+          type: string
+          pattern: "^AVX-ACT-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+        finding_id:
+          type: string
+          pattern: "^FIND-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+        created_by:
+          type: string
+          description: "Pattern: owner-{id} | dealer-{id} | fleet-manager-{id}"
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+          description: |
+            ISO-8601 UTC timestamp of the most recent state change on this Action.
+            Set equal to `created_at` on creation; updated on every status transition.
+            Callers surface this as staleness context per parent PRD § M5.
+            Contract Addendum C2 (review Cycle 1 C2).
+        target_system:
+          type: string
+          enum: ["dms", "vehicle-command", "retail", "none", "chat", "ios-owner"]
+        target_ref:
+          type: string
+          nullable: true
+          description: Populated by executor on successful dispatch. Null before execution completes.
+        status:
+          type: string
+          enum:
+            - "pending_execution"
+            - "executed"
+            - "in_progress"
+            - "completed"
+            - "cancelled"
+            - "declined"
+            - "dismissed"
+            - "failed"
+          description: |
+            `dismissed` — owner tapped Dismiss (terminal, distinct from `cancelled`
+            and `declined`). Addendum D4.
+            `failed` — executor exhausted retries on transient downstream failure
+            (terminal, distinct from `declined` which is a 4xx refusal). Addendum D5.
+        action_kind:
+          type: string
+          enum:
+            - "book_combined_visit"
+            - "schedule_inspection"
+            - "update_charging_schedule"
+            - "file_warranty_pre"
+            - "surface_recall"
+            - "acknowledge_only"
+        parameters:
+          type: object
+          description: Executor-specific parameters.
+        evidence:
+          type: array
+          items:
+            $ref: "#/components/schemas/EvidenceEntry"
+          description: |
+            COPY of Finding evidence[] at approval time. Immutable — later Finding
+            re-runs do NOT retroactively mutate this copy.
+        audit_trail:
+          type: array
+          items:
+            $ref: "#/components/schemas/ActionAuditEntry"
+
+    ActionListResponse:
+      type: object
+      required: [actions]
+      properties:
+        actions:
+          type: array
+          items:
+            $ref: "#/components/schemas/Action"
+        next_token:
+          type: string
+          nullable: true
+          description: Opaque base64 cursor; null on last page.
+
+    EvidenceEntry:
+      type: object
+      required: [kind, source, source_ref, value, computed_at, provenance]
+      properties:
+        kind:
+          type: string
+          description: Category of evidence (e.g. 'adp.tires.prediction', 'dms.warranty.verdict').
+        source:
+          type: string
+          description: System that produced this evidence entry.
+        source_ref:
+          type: string
+          description: Opaque reference to the source record (e.g. Athena query ID, DMS RO number).
+        value:
+          description: Evidence value. Scalar or JSON object.
+        computed_at:
+          type: string
+          format: date-time
+        provenance:
+          type: string
+          enum: ["live", "mocked", "absent"]
+          description: |
+            live = real data; mocked = partner seam substitute (PRD § M14);
+            absent = expected but unavailable.
+            Spec 1a Agent 2 always emits provenance="live". The field exists
+            because Spec 1b Agent 3 will emit provenance="mocked" for partner comp seams.
+        vin:
+          type: string
+          nullable: true
+          description: |
+            Optional per-VIN attribution for fleet_id-scoped Findings (Addendum D1).
+            Copied onto Action evidence at approval time.
+
+    FindingAuditEntry:
+      type: object
+      description: |
+        In-place Finding update history entry (Addendum D2). Appended on re-emit.
+      required: [at, agent_version, inputs_hash, from_expires_at, to_expires_at]
+      properties:
+        at:
+          type: string
+          format: date-time
+        agent_version:
+          type: string
+          pattern: "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+        inputs_hash:
+          type: string
+          pattern: "^[0-9a-f]{64}$"
+        from_expires_at:
+          type: string
+          format: date-time
+        to_expires_at:
+          type: string
+          format: date-time
+        note:
+          type: string
+          nullable: true
+
+    ActionAuditEntry:
+      type: object
+      description: Action state-transition record.
+      required: [at, by, from_status, to_status]
+      properties:
+        at:
+          type: string
+          format: date-time
+        by:
+          type: string
+        from_status:
+          type: string
+          enum:
+            - "pending_execution"
+            - "executed"
+            - "in_progress"
+            - "completed"
+            - "cancelled"
+            - "declined"
+            - "dismissed"
+            - "failed"
+        to_status:
+          type: string
+          enum:
+            - "pending_execution"
+            - "executed"
+            - "in_progress"
+            - "completed"
+            - "cancelled"
+            - "declined"
+            - "dismissed"
+            - "failed"
+        note:
+          type: string
+          nullable: true
+        failure_kind:
+          type: string
+          enum: ["target_refused", "executor_exhausted_retries", "executor_terminal_error"]
+          nullable: true
+          description: |
+            Required when to_status is 'declined' (target_refused) or 'failed'
+            (executor_exhausted_retries | executor_terminal_error). Addendum D5.
+        retry_count:
+          type: integer
+          minimum: 0
+          nullable: true
+          description: Number of retry attempts before the terminal 'failed' status. Addendum D5.
+
+    ApproveFindingRequest:
+      type: object
+      description: |
+        Body for `POST /findings/{finding_id}/approve` — the path by which the **holder of
+        the Finding's scope** approves work on their own Finding.
+
+        **`ios-owner` is NOT an accepted `target_system` on this route.** It is the
+        reverse-direction, dealer-to-owner proposal channel. The machine-readable constraint
+        below (`oneOf` branches keyed on who may originate each target class) makes this
+        unrepresentable rather than relying on handler-side prose (security review Cycle 1
+        W1; contract v2.2). The two cases:
+
+        - **Non-ios-owner executors** (`dms`, `vehicle-command`, `retail`, `none`, `chat`):
+          any caller who holds the Finding's scope (vehicle-owner, fleet-operator,
+          service-advisor, etc.) may approve Actions to these targets.
+
+        - **`ios-owner`** (reverse-direction, dealer-to-owner channel): valid on an `Action`
+          object and served by `GET /actions/owner/{owner_id}`; originated exclusively via
+          Spec 2's `POST /actions` extension by a caller holding the `dealer` role scoped to
+          the Finding's owner. Callers without that role cannot originate `ios-owner` Actions
+          through ANY route in Spec 1a, only receive them. This is a channel-policy boundary:
+          the broker owns the decision to reach a customer; the approve route does not.
+
+        Handler-side per-target authorization is still required and is NOT replaced by this
+        schema constraint: a valid `target_system` here does not imply the caller may use it
+        (e.g., a service-advisor may not approve `vehicle-command` actions without additional
+        role validation).
+      oneOf:
+        - description: |
+            Non-ios-owner approval (any scope-holder). `target_system` must be one of the
+            five non-reverse-direction executors. `ios-owner` is unrepresentable on this
+            branch — the schema constraint is machine-readable, not prose.
+          required: [target_system, action_kind, parameters]
+          properties:
+            target_system:
+              type: string
+              enum: ["dms", "vehicle-command", "retail", "none", "chat"]
+              description: |
+                Executor target. `ios-owner` excluded — see schema description. The full
+                6-value set lives on `Action.target_system`, because an Action with
+                `target_system: ios-owner` is valid; it just cannot originate here.
+            action_kind:
+              type: string
+              enum:
+                - "book_combined_visit"
+                - "schedule_inspection"
+                - "update_charging_schedule"
+                - "file_warranty_pre"
+                - "surface_recall"
+                - "acknowledge_only"
+            parameters:
+              type: object
+              description: Executor-specific parameters; shape varies by target_system + action_kind.
+
+    UpdateActionRequest:
+      type: object
+      required: [status]
+      properties:
+        status:
+          type: string
+          enum:
+            - "in_progress"
+            - "completed"
+            - "cancelled"
+            - "declined"
+          description: Target status after the transition. (dismissed is via POST /dismiss; failed is executor-driven.)
+        note:
+          type: string
+          description: Optional audit note appended to audit_trail[].
+
+    DismissActionRequest:
+      type: object
+      properties:
+        reason:
+          type: string
+          enum:
+            - "already_handled"
+            - "not_applicable"
+            - "too_frequent"
+            - "other"
+          description: Dismissal reason; written to broker feedback table.
+        note:
+          type: string
+          description: Optional freeform note.
+
+    ErrorResponse:
+      type: object
+      required: [error, message]
+      properties:
+        error:
+          type: string
+          description: Machine-readable error code.
+          example: "SCOPE_FORBIDDEN"
+        message:
+          type: string
+          description: Human-readable error description.
+          example: "Caller sub does not match the requested owner_id."
+        request_id:
+          type: string
+          description: CloudWatch request ID for log correlation.
+
+  responses:
+    BadRequest:
+      description: "400 Bad Request — malformed input"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+          examples:
+            bad_vin:
+              value:
+                error: "INVALID_VIN"
+                message: "VIN must be exactly 17 characters matching [A-HJ-NPR-Z0-9]{17}."
+
+    Unauthorized:
+      description: "401 Unauthorized — missing or invalid Bearer token"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+          examples:
+            missing_token:
+              value:
+                error: "UNAUTHORIZED"
+                message: "Authorization header is missing or token is invalid."
+
+    Forbidden:
+      description: "403 Forbidden — authenticated but insufficient scope"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+          examples:
+            wrong_scope:
+              value:
+                error: "SCOPE_FORBIDDEN"
+                message: "Caller does not hold a group or claim that permits access to this scope."
+
+    NotFound:
+      description: "404 Not Found"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+          examples:
+            finding_not_found:
+              value:
+                error: "NOT_FOUND"
+                message: "Finding FIND-00000000-0000-0000-0000-000000000000 does not exist."
+
+    InternalServerError:
+      description: "500 Internal Server Error"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+          examples:
+            generic:
+              value:
+                error: "INTERNAL_ERROR"
+                message: "An unexpected error occurred."
+                request_id: "req-abc123"
+

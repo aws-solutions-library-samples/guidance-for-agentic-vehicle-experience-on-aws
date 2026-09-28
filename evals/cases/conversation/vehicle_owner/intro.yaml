@@ -1,0 +1,21 @@
+id: vehicle-owner-intro-001
+description: "Vehicle owner asks what their vehicle is; agent calls vehicle_identity to retrieve make/model/year"
+tier: 2
+persona: vehicle_owner
+persona_id: vehicle_owner
+vehicle_id: VEH-1001
+driver_id: drv-vehicle-owner-001
+input:
+  type: text
+  utterance: "What vehicle do I own?"
+expected:
+  tool_calls:
+    - name: lookup_vehicle_identity
+      args_contain: {}
+  routing:
+    offers_diy_choice: false
+    safety_critical: false
+  response:
+    must_contain_one_of: ["vehicle", "make", "model", "year", "VIN", "Ford", "truck"]
+    must_not_contain: ["I don't know", "I cannot find your vehicle"]
+latency_budget_ms: 5000

@@ -1,0 +1,22 @@
+id: dtc-p0299-001
+description: "Driver reports check engine light and sluggish feel; agent should triage then find service center or book"
+tier: 2
+persona: fleet-driver
+vehicle_id: VEH-0025
+driver_id: drv-samantha-carter
+input:
+  type: text
+  utterance: "check engine light is on, feels sluggish"
+expected:
+  tool_calls:
+    - name: triage
+      args_contain: {}
+    - name: find_service_center
+      args_contain: {}
+  routing:
+    offers_diy_choice: false
+    safety_critical: false
+  response:
+    must_contain_one_of: ["turbocharger", "boost pressure", "sluggish", "service center", "appointment", "P0299"]
+    must_not_contain: ["do it yourself", "DIY", "walk you through"]
+latency_budget_ms: 5000

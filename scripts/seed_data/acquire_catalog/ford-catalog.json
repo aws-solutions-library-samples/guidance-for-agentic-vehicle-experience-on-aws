@@ -1,0 +1,650 @@
+{
+  "tenantId": "ford",
+  "catalogVersion": "genericmoto-2026-07",
+  "items": [
+    {
+      "itemKey": "META#catalogVersion",
+      "value": "genericmoto-2026-07",
+      "tenantId": "ford"
+    },
+    {
+      "displayName": "Commuter",
+      "tenantId": "ford",
+      "itemKey": "CAT#commuter",
+      "displayOrder": 1,
+      "categoryKey": "CAT#commuter",
+      "iconKey": "categories/commuter.svg",
+      "description": "Practical everyday urban and suburban riding with comfort and economy."
+    },
+    {
+      "displayName": "Adventure",
+      "tenantId": "ford",
+      "itemKey": "CAT#adventure",
+      "displayOrder": 2,
+      "categoryKey": "CAT#adventure",
+      "iconKey": "categories/adventure.svg",
+      "description": "Capable on road and off, built for riders who explore beyond the commute."
+    },
+    {
+      "displayName": "Electric",
+      "tenantId": "ford",
+      "itemKey": "CAT#electric",
+      "displayOrder": 3,
+      "categoryKey": "CAT#electric",
+      "iconKey": "categories/electric.svg",
+      "description": "Zero-emission urban and short-range mobility with instant torque."
+    },
+    {
+      "displayName": "Meridian 300",
+      "tagline": "The everyday commuter, refined.",
+      "basePrice": 94000,
+      "tenantId": "ford",
+      "itemKey": "MODEL#commuter#meridian-300",
+      "heroImageKey": "commuter/meridian-300/hero.jpg",
+      "categoryKey": "CAT#commuter",
+      "displayOrder": 1,
+      "specs": {
+        "power_hp": 24,
+        "torque_nm": 28,
+        "kerbWeight_kg": 152,
+        "fuelTank_l": 12,
+        "topSpeed_kph": 130
+      }
+    },
+    {
+      "displayName": "Dawnrider 150",
+      "tagline": "Light, nimble, and fuel-efficient city transit.",
+      "basePrice": 62000,
+      "tenantId": "ford",
+      "itemKey": "MODEL#commuter#dawnrider-150",
+      "heroImageKey": "commuter/dawnrider-150/hero.jpg",
+      "categoryKey": "CAT#commuter",
+      "displayOrder": 2,
+      "specs": {
+        "power_hp": 14,
+        "torque_nm": 14,
+        "kerbWeight_kg": 118,
+        "fuelTank_l": 9,
+        "topSpeed_kph": 110
+      }
+    },
+    {
+      "displayName": "Model-A450",
+      "tagline": "Conquer every terrain with confidence.",
+      "tenantId": "ford",
+      "basePrice": 145000,
+      "itemKey": "MODEL#adventure#model-a450",
+      "heroImageKey": "adventure/model-a450/hero.jpg",
+      "specs": {
+        "power_hp": 40,
+        "torque_nm": 42,
+        "kerbWeight_kg": 189,
+        "fuelTank_l": 18,
+        "topSpeed_kph": 160
+      },
+      "displayOrder": 1,
+      "categoryKey": "CAT#adventure"
+    },
+    {
+      "displayName": "Model-B650",
+      "tagline": "Long-haul dual-sport capability.",
+      "tenantId": "ford",
+      "basePrice": 275000,
+      "itemKey": "MODEL#adventure#model-b650",
+      "heroImageKey": "adventure/model-b650/hero.jpg",
+      "specs": {
+        "power_hp": 65,
+        "torque_nm": 60,
+        "kerbWeight_kg": 218,
+        "fuelTank_l": 22,
+        "topSpeed_kph": 190
+      },
+      "displayOrder": 2,
+      "categoryKey": "CAT#adventure"
+    },
+    {
+      "displayName": "Model-C120e",
+      "tagline": "Zero-emission urban mobility with smart connectivity.",
+      "basePrice": 108993,
+      "tenantId": "ford",
+      "itemKey": "MODEL#electric#model-c120e",
+      "heroImageKey": "electric/model-c120e/hero.jpg",
+      "categoryKey": "CAT#electric",
+      "displayOrder": 1,
+      "specs": {
+        "range_km": 120,
+        "chargeTime_min": 75,
+        "motorPower_kw": 8,
+        "kerbWeight_kg": 108,
+        "topSpeed_kph": 90
+      }
+    },
+    {
+      "displayName": "Model-D200e",
+      "tagline": "Extended range electric for the serious commuter.",
+      "basePrice": 158834,
+      "tenantId": "ford",
+      "itemKey": "MODEL#electric#model-d200e",
+      "heroImageKey": "electric/model-d200e/hero.jpg",
+      "categoryKey": "CAT#electric",
+      "displayOrder": 2,
+      "specs": {
+        "range_km": 200,
+        "chargeTime_min": 60,
+        "motorPower_kw": 15,
+        "kerbWeight_kg": 132,
+        "topSpeed_kph": 110
+      }
+    },
+    {
+      "itemKey": "VAR#commuter#meridian-300#standard",
+      "displayName": "Standard",
+      "specDeltas": {
+        "trimLevel": "base"
+      },
+      "displayOrder": 1,
+      "priceDelta": 0,
+      "tenantId": "ford"
+    },
+    {
+      "itemKey": "VAR#commuter#meridian-300#touring",
+      "displayName": "Touring",
+      "specDeltas": {
+        "includedAccessories": [
+          "windshield-sport"
+        ],
+        "trimLevel": "touring"
+      },
+      "displayOrder": 2,
+      "priceDelta": 9000,
+      "tenantId": "ford"
+    },
+    {
+      "itemKey": "VAR#commuter#dawnrider-150#standard",
+      "displayName": "Standard",
+      "specDeltas": {
+        "trimLevel": "base"
+      },
+      "displayOrder": 1,
+      "priceDelta": 0,
+      "tenantId": "ford"
+    },
+    {
+      "itemKey": "VAR#commuter#dawnrider-150#sport",
+      "displayName": "Sport",
+      "specDeltas": {
+        "trimLevel": "sport",
+        "color_options": "extended"
+      },
+      "displayOrder": 2,
+      "priceDelta": 5000,
+      "tenantId": "ford"
+    },
+    {
+      "itemKey": "VAR#adventure#model-a450#standard",
+      "displayName": "Standard",
+      "specDeltas": {
+        "trimLevel": "base"
+      },
+      "displayOrder": 1,
+      "priceDelta": 0,
+      "tenantId": "ford"
+    },
+    {
+      "itemKey": "VAR#adventure#model-a450#rally",
+      "displayName": "Rally",
+      "specDeltas": {
+        "protection": "engine-bash-plate-included",
+        "trimLevel": "rally"
+      },
+      "displayOrder": 2,
+      "priceDelta": 16000,
+      "tenantId": "ford"
+    },
+    {
+      "itemKey": "VAR#adventure#model-b650#standard",
+      "displayName": "Standard",
+      "specDeltas": {
+        "trimLevel": "base"
+      },
+      "displayOrder": 1,
+      "priceDelta": 0,
+      "tenantId": "ford"
+    },
+    {
+      "itemKey": "VAR#adventure#model-b650#expedition",
+      "displayName": "Expedition",
+      "specDeltas": {
+        "panniers": "hard-case-included",
+        "trimLevel": "expedition"
+      },
+      "displayOrder": 2,
+      "priceDelta": 24000,
+      "tenantId": "ford"
+    },
+    {
+      "itemKey": "VAR#electric#model-c120e#standard",
+      "displayName": "Standard",
+      "specDeltas": {
+        "trimLevel": "base"
+      },
+      "displayOrder": 1,
+      "priceDelta": 0,
+      "tenantId": "ford"
+    },
+    {
+      "itemKey": "VAR#electric#model-c120e#connect",
+      "displayName": "Connect",
+      "specDeltas": {
+        "connectivity": "advanced-telematics",
+        "trimLevel": "connect"
+      },
+      "displayOrder": 2,
+      "priceDelta": 10000,
+      "tenantId": "ford"
+    },
+    {
+      "itemKey": "VAR#electric#model-d200e#standard",
+      "displayName": "Standard",
+      "specDeltas": {
+        "trimLevel": "base"
+      },
+      "displayOrder": 1,
+      "priceDelta": 0,
+      "tenantId": "ford"
+    },
+    {
+      "itemKey": "VAR#electric#model-d200e#pro",
+      "displayName": "Pro",
+      "specDeltas": {
+        "charging": "fast-charge-dc",
+        "trimLevel": "pro"
+      },
+      "displayOrder": 2,
+      "priceDelta": 14000,
+      "tenantId": "ford"
+    },
+    {
+      "hexSwatch": "#1A1A1A",
+      "displayName": "Midnight Black",
+      "swatchImageKey": "commuter/meridian-300/standard/midnight-black-swatch.jpg",
+      "tenantId": "ford",
+      "vehicleImageKey": "commuter/meridian-300/standard/midnight-black-vehicle.jpg",
+      "itemKey": "COLOR#commuter#meridian-300#standard#midnight-black",
+      "displayOrder": 1,
+      "priceDelta": 0
+    },
+    {
+      "hexSwatch": "#F5F5F0",
+      "displayName": "Glacier White",
+      "swatchImageKey": "commuter/meridian-300/standard/glacier-white-swatch.jpg",
+      "tenantId": "ford",
+      "vehicleImageKey": "commuter/meridian-300/standard/glacier-white-vehicle.jpg",
+      "itemKey": "COLOR#commuter#meridian-300#standard#glacier-white",
+      "displayOrder": 2,
+      "priceDelta": 0
+    },
+    {
+      "hexSwatch": "#C8102E",
+      "displayName": "Racing Red",
+      "swatchImageKey": "commuter/meridian-300/standard/racing-red-swatch.jpg",
+      "tenantId": "ford",
+      "vehicleImageKey": "commuter/meridian-300/standard/racing-red-vehicle.jpg",
+      "itemKey": "COLOR#commuter#meridian-300#standard#racing-red",
+      "displayOrder": 3,
+      "priceDelta": 4000
+    },
+    {
+      "hexSwatch": "#0047AB",
+      "displayName": "Cobalt Blue",
+      "swatchImageKey": "commuter/dawnrider-150/standard/cobalt-blue-swatch.jpg",
+      "tenantId": "ford",
+      "vehicleImageKey": "commuter/dawnrider-150/standard/cobalt-blue-vehicle.jpg",
+      "itemKey": "COLOR#commuter#dawnrider-150#standard#cobalt-blue",
+      "displayOrder": 1,
+      "priceDelta": 0
+    },
+    {
+      "hexSwatch": "#5C5C5C",
+      "displayName": "Matte Grey",
+      "swatchImageKey": "commuter/dawnrider-150/standard/matte-grey-swatch.jpg",
+      "tenantId": "ford",
+      "vehicleImageKey": "commuter/dawnrider-150/standard/matte-grey-vehicle.jpg",
+      "itemKey": "COLOR#commuter#dawnrider-150#standard#matte-grey",
+      "displayOrder": 2,
+      "priceDelta": 0
+    },
+    {
+      "hexSwatch": "#FF6B35",
+      "displayName": "Sunset Orange",
+      "swatchImageKey": "commuter/dawnrider-150/standard/sunset-orange-swatch.jpg",
+      "tenantId": "ford",
+      "vehicleImageKey": "commuter/dawnrider-150/standard/sunset-orange-vehicle.jpg",
+      "itemKey": "COLOR#commuter#dawnrider-150#standard#sunset-orange",
+      "displayOrder": 3,
+      "priceDelta": 3000
+    },
+    {
+      "hexSwatch": "#C19A6B",
+      "displayName": "Desert Tan",
+      "swatchImageKey": "adventure/model-a450/standard/desert-tan-swatch.jpg",
+      "tenantId": "ford",
+      "vehicleImageKey": "adventure/model-a450/standard/desert-tan-vehicle.jpg",
+      "itemKey": "COLOR#adventure#model-a450#standard#desert-tan",
+      "displayOrder": 1,
+      "priceDelta": 0
+    },
+    {
+      "hexSwatch": "#2D6A2D",
+      "displayName": "Forest Green",
+      "swatchImageKey": "adventure/model-a450/standard/forest-green-swatch.jpg",
+      "tenantId": "ford",
+      "vehicleImageKey": "adventure/model-a450/standard/forest-green-vehicle.jpg",
+      "itemKey": "COLOR#adventure#model-a450#standard#forest-green",
+      "displayOrder": 2,
+      "priceDelta": 0
+    },
+    {
+      "hexSwatch": "#7D7D7D",
+      "displayName": "Stone Grey",
+      "swatchImageKey": "adventure/model-a450/standard/stone-grey-swatch.jpg",
+      "tenantId": "ford",
+      "vehicleImageKey": "adventure/model-a450/standard/stone-grey-vehicle.jpg",
+      "itemKey": "COLOR#adventure#model-a450#standard#stone-grey",
+      "displayOrder": 3,
+      "priceDelta": 0
+    },
+    {
+      "hexSwatch": "#EDEDED",
+      "displayName": "Alpine White",
+      "swatchImageKey": "adventure/model-b650/standard/alpine-white-swatch.jpg",
+      "tenantId": "ford",
+      "vehicleImageKey": "adventure/model-b650/standard/alpine-white-vehicle.jpg",
+      "itemKey": "COLOR#adventure#model-b650#standard#alpine-white",
+      "displayOrder": 1,
+      "priceDelta": 0
+    },
+    {
+      "hexSwatch": "#2B2B2B",
+      "displayName": "Charcoal Black",
+      "swatchImageKey": "adventure/model-b650/standard/charcoal-black-swatch.jpg",
+      "tenantId": "ford",
+      "vehicleImageKey": "adventure/model-b650/standard/charcoal-black-vehicle.jpg",
+      "itemKey": "COLOR#adventure#model-b650#standard#charcoal-black",
+      "displayOrder": 2,
+      "priceDelta": 0
+    },
+    {
+      "hexSwatch": "#B22222",
+      "displayName": "Lava Red",
+      "swatchImageKey": "adventure/model-b650/standard/lava-red-swatch.jpg",
+      "tenantId": "ford",
+      "vehicleImageKey": "adventure/model-b650/standard/lava-red-vehicle.jpg",
+      "itemKey": "COLOR#adventure#model-b650#standard#lava-red",
+      "displayOrder": 3,
+      "priceDelta": 5000
+    },
+    {
+      "hexSwatch": "#F8F0E3",
+      "displayName": "Pearl Ivory",
+      "swatchImageKey": "electric/model-c120e/standard/pearl-ivory-swatch.jpg",
+      "tenantId": "ford",
+      "vehicleImageKey": "electric/model-c120e/standard/pearl-ivory-vehicle.jpg",
+      "itemKey": "COLOR#electric#model-c120e#standard#pearl-ivory",
+      "displayOrder": 1,
+      "priceDelta": 0
+    },
+    {
+      "hexSwatch": "#6BAED6",
+      "displayName": "Sky Blue",
+      "swatchImageKey": "electric/model-c120e/standard/sky-blue-swatch.jpg",
+      "tenantId": "ford",
+      "vehicleImageKey": "electric/model-c120e/standard/sky-blue-vehicle.jpg",
+      "itemKey": "COLOR#electric#model-c120e#standard#sky-blue",
+      "displayOrder": 2,
+      "priceDelta": 0
+    },
+    {
+      "hexSwatch": "#474747",
+      "displayName": "Graphite",
+      "swatchImageKey": "electric/model-c120e/standard/graphite-swatch.jpg",
+      "tenantId": "ford",
+      "vehicleImageKey": "electric/model-c120e/standard/graphite-vehicle.jpg",
+      "itemKey": "COLOR#electric#model-c120e#standard#graphite",
+      "displayOrder": 3,
+      "priceDelta": 0
+    },
+    {
+      "hexSwatch": "#003153",
+      "displayName": "Midnight Blue",
+      "swatchImageKey": "electric/model-d200e/standard/midnight-blue-swatch.jpg",
+      "tenantId": "ford",
+      "vehicleImageKey": "electric/model-d200e/standard/midnight-blue-vehicle.jpg",
+      "itemKey": "COLOR#electric#model-d200e#standard#midnight-blue",
+      "displayOrder": 1,
+      "priceDelta": 0
+    },
+    {
+      "hexSwatch": "#1C1C1C",
+      "displayName": "Matte Black",
+      "swatchImageKey": "electric/model-d200e/standard/matte-black-swatch.jpg",
+      "tenantId": "ford",
+      "vehicleImageKey": "electric/model-d200e/standard/matte-black-vehicle.jpg",
+      "itemKey": "COLOR#electric#model-d200e#standard#matte-black",
+      "displayOrder": 2,
+      "priceDelta": 0
+    },
+    {
+      "hexSwatch": "#3CB371",
+      "displayName": "Aurora Green",
+      "swatchImageKey": "electric/model-d200e/standard/aurora-green-swatch.jpg",
+      "tenantId": "ford",
+      "vehicleImageKey": "electric/model-d200e/standard/aurora-green-vehicle.jpg",
+      "itemKey": "COLOR#electric#model-d200e#standard#aurora-green",
+      "displayOrder": 3,
+      "priceDelta": 4000
+    },
+    {
+      "displayName": "45L Top Box",
+      "imageKey": "accessories/top-box-45l.jpg",
+      "tenantId": "ford",
+      "category": "storage",
+      "itemKey": "ACC#top-box-45l",
+      "price": 4000,
+      "description": "Lockable rear top-case with helmet capacity and integrated LED tail light."
+    },
+    {
+      "displayName": "Touring Engine Guard",
+      "imageKey": "accessories/engine-guard-touring.jpg",
+      "tenantId": "ford",
+      "category": "protection",
+      "itemKey": "ACC#engine-guard-touring",
+      "price": 1600,
+      "description": "Powder-coated steel crash protection bar for the engine block."
+    },
+    {
+      "displayName": "Sport Windshield",
+      "imageKey": "accessories/windshield-sport.jpg",
+      "tenantId": "ford",
+      "category": "comfort",
+      "itemKey": "ACC#windshield-sport",
+      "price": 1800,
+      "description": "Aerodynamic tinted windshield reducing fatigue on longer rides."
+    },
+    {
+      "displayName": "Soft Pannier Set (pair)",
+      "imageKey": "accessories/pannier-set-soft.jpg",
+      "tenantId": "ford",
+      "category": "storage",
+      "itemKey": "ACC#pannier-set-soft",
+      "price": 3000,
+      "description": "Lightweight 20L per-side waterproof soft panniers with quick-release mounts."
+    },
+    {
+      "displayName": "Wireless Phone Mount",
+      "imageKey": "accessories/phone-mount-wireless.jpg",
+      "tenantId": "ford",
+      "category": "technology",
+      "itemKey": "ACC#phone-mount-wireless",
+      "price": 1200,
+      "description": "Vibration-dampened handlebar mount with 15W wireless charging pad."
+    },
+    {
+      "displayName": "Heated Grips",
+      "imageKey": "accessories/heated-grips.jpg",
+      "tenantId": "ford",
+      "category": "comfort",
+      "itemKey": "ACC#heated-grips",
+      "price": 2400,
+      "description": "OEM-integrated heated grip set with three temperature levels."
+    },
+    {
+      "displayName": "Rear Luggage Rack",
+      "imageKey": "accessories/luggage-rack-rear.jpg",
+      "tenantId": "ford",
+      "category": "storage",
+      "itemKey": "ACC#luggage-rack-rear",
+      "price": 1400,
+      "description": "Steel mounting rack with 15 kg load rating, compatible with soft and hard cases."
+    },
+    {
+      "displayName": "Aluminium Bash Plate",
+      "imageKey": "accessories/bashplate-aluminium.jpg",
+      "tenantId": "ford",
+      "category": "protection",
+      "itemKey": "ACC#bashplate-aluminium",
+      "price": 2800,
+      "description": "3mm anodised aluminium underbelly protection for off-road and light trail use."
+    },
+    {
+      "itemKey": "ACC-COMPAT#top-box-45l#commuter#meridian-300",
+      "tenantId": "ford",
+      "notes": "Fits standard luggage rack. Compatible with all variants."
+    },
+    {
+      "itemKey": "ACC-COMPAT#top-box-45l#commuter#dawnrider-150",
+      "tenantId": "ford",
+      "notes": "Requires optional rear rack (ACC#luggage-rack-rear). Compatible with all variants."
+    },
+    {
+      "itemKey": "ACC-COMPAT#top-box-45l#adventure#model-a450",
+      "tenantId": "ford",
+      "notes": "Fits integrated sub-frame mount. All variants compatible."
+    },
+    {
+      "itemKey": "ACC-COMPAT#engine-guard-touring#commuter#meridian-300",
+      "tenantId": "ford",
+      "notes": "Bolt-on fit. Standard and Touring variants only."
+    },
+    {
+      "itemKey": "ACC-COMPAT#engine-guard-touring#adventure#model-a450",
+      "tenantId": "ford",
+      "notes": "Compatible with all variants. Rally variant ships with extended protection."
+    },
+    {
+      "itemKey": "ACC-COMPAT#engine-guard-touring#adventure#model-b650",
+      "tenantId": "ford",
+      "notes": "Compatible with all variants."
+    },
+    {
+      "itemKey": "ACC-COMPAT#windshield-sport#commuter#meridian-300",
+      "tenantId": "ford",
+      "notes": "Sport and Standard variants. Not compatible with Touring (has integrated screen)."
+    },
+    {
+      "itemKey": "ACC-COMPAT#windshield-sport#adventure#model-a450",
+      "tenantId": "ford",
+      "notes": "Standard variant only."
+    },
+    {
+      "itemKey": "ACC-COMPAT#pannier-set-soft#adventure#model-a450",
+      "tenantId": "ford",
+      "notes": "All variants. Use with rear rack for best fit."
+    },
+    {
+      "itemKey": "ACC-COMPAT#pannier-set-soft#adventure#model-b650",
+      "tenantId": "ford",
+      "notes": "All variants. Expedition variant includes hard panniers; soft set is an alternative."
+    },
+    {
+      "itemKey": "ACC-COMPAT#phone-mount-wireless#commuter#meridian-300",
+      "tenantId": "ford",
+      "notes": "All variants. Handlebar diameter 22mm standard."
+    },
+    {
+      "itemKey": "ACC-COMPAT#phone-mount-wireless#commuter#dawnrider-150",
+      "tenantId": "ford",
+      "notes": "All variants."
+    },
+    {
+      "itemKey": "ACC-COMPAT#phone-mount-wireless#electric#model-c120e",
+      "tenantId": "ford",
+      "notes": "All variants. Connects to vehicle power rail."
+    },
+    {
+      "itemKey": "ACC-COMPAT#phone-mount-wireless#electric#model-d200e",
+      "tenantId": "ford",
+      "notes": "All variants."
+    },
+    {
+      "itemKey": "ACC-COMPAT#heated-grips#commuter#meridian-300",
+      "tenantId": "ford",
+      "notes": "All variants."
+    },
+    {
+      "itemKey": "ACC-COMPAT#heated-grips#adventure#model-b650",
+      "tenantId": "ford",
+      "notes": "All variants."
+    },
+    {
+      "itemKey": "ACC-COMPAT#luggage-rack-rear#commuter#dawnrider-150",
+      "tenantId": "ford",
+      "notes": "Required for top-box fitment. All variants."
+    },
+    {
+      "itemKey": "ACC-COMPAT#luggage-rack-rear#commuter#meridian-300",
+      "tenantId": "ford",
+      "notes": "Optional upgrade rack for heavier loads."
+    },
+    {
+      "itemKey": "ACC-COMPAT#bashplate-aluminium#adventure#model-a450",
+      "tenantId": "ford",
+      "notes": "Standard variant. Rally variant ships with steel bash plate; aluminium is an upgrade."
+    },
+    {
+      "itemKey": "ACC-COMPAT#bashplate-aluminium#adventure#model-b650",
+      "tenantId": "ford",
+      "notes": "All variants."
+    },
+    {
+      "itemKey": "ACC-COMPAT#heated-grips#electric#model-c120e",
+      "tenantId": "ford",
+      "notes": "All variants. Grips draw from vehicle battery; minor range impact."
+    },
+    {
+      "itemKey": "ACC-COMPAT#windshield-sport#electric#model-c120e",
+      "tenantId": "ford",
+      "notes": "Standard and Connect variants."
+    },
+    {
+      "itemKey": "ACC-COMPAT#luggage-rack-rear#electric#model-c120e",
+      "tenantId": "ford",
+      "notes": "All variants. 10 kg load rating on this model."
+    },
+    {
+      "itemKey": "ACC-COMPAT#heated-grips#electric#model-d200e",
+      "tenantId": "ford",
+      "notes": "All variants."
+    },
+    {
+      "itemKey": "ACC-COMPAT#windshield-sport#electric#model-d200e",
+      "tenantId": "ford",
+      "notes": "Standard variant."
+    },
+    {
+      "itemKey": "ACC-COMPAT#luggage-rack-rear#electric#model-d200e",
+      "tenantId": "ford",
+      "notes": "All variants. Compatible with soft pannier set."
+    }
+  ]
+}

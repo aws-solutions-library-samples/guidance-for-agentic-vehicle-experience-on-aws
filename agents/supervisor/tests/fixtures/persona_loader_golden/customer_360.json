@@ -1,0 +1,35 @@
+[
+  {
+    "customer_id": "cust-fixture-001",
+    "snapshot_date": "2026-06-01",
+    "customer_segment": "fleet",
+    "lifetime_value_usd": "85000.00",
+    "vehicles_owned_count": "3",
+    "health_score": "78",
+    "churn_probability": "0.12",
+    "total_charging_sessions_30d": "12",
+    "total_kwh_consumed_30d": "660.0"
+  },
+  {
+    "customer_id": "cust-fixture-002",
+    "snapshot_date": "2026-06-01",
+    "customer_segment": "enthusiast",
+    "lifetime_value_usd": "42000.00",
+    "vehicles_owned_count": "1",
+    "health_score": "90",
+    "churn_probability": "0.05",
+    "total_charging_sessions_30d": "20",
+    "total_kwh_consumed_30d": "980.0"
+  },
+  {
+    "customer_id": "cust-fixture-003",
+    "snapshot_date": "2026-06-01",
+    "customer_segment": "commercial",
+    "lifetime_value_usd": "120000.00",
+    "vehicles_owned_count": "8",
+    "health_score": "62",
+    "churn_probability": "0.28",
+    "total_charging_sessions_30d": "45",
+    "total_kwh_consumed_30d": "2100.0"
+  }
+]

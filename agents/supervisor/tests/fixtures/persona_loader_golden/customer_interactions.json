@@ -1,0 +1,35 @@
+[
+  {
+    "interaction_id": "int-001",
+    "customer_id": "cust-fixture-001",
+    "interaction_date": "2026-06-05",
+    "channel": "mobile_app",
+    "interaction_type": "support_request",
+    "outcome": "resolved",
+    "duration_seconds": "420",
+    "sentiment_score": "0.6",
+    "csat_score": "4"
+  },
+  {
+    "interaction_id": "int-002",
+    "customer_id": "cust-fixture-001",
+    "interaction_date": "2026-05-18",
+    "channel": "call_center",
+    "interaction_type": "billing_inquiry",
+    "outcome": "resolved",
+    "duration_seconds": "300",
+    "sentiment_score": "0.3",
+    "csat_score": "3"
+  },
+  {
+    "interaction_id": "int-003",
+    "customer_id": "cust-fixture-001",
+    "interaction_date": "2026-04-30",
+    "channel": "service_center",
+    "interaction_type": "service_scheduling",
+    "outcome": "completed",
+    "duration_seconds": "600",
+    "sentiment_score": "0.8",
+    "csat_score": "5"
+  }
+]

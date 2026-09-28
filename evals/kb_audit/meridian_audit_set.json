@@ -1,0 +1,293 @@
+{
+  "description": "Retrieval audit set for the Zone 2 Meridian four-wheeler KB corpus. Each prompt must return the expected document as the top hit with score >= 0.55. Run with --dry-run before any document exists; run with --stage staging after ingestion to gate the corpus.",
+  "threshold": 0.55,
+  "prompts": [
+    {
+      "id": "lineup-001",
+      "category": "meridian_lineup_narrative",
+      "prompt": "Tell me about the Windrose compact SUV \u2014 who is it for and what makes it different",
+      "expected_doc": "corpora/meridian_lineup_narrative/01-windrose.md",
+      "notes": "Windrose entry/urban compact SUV positioning"
+    },
+    {
+      "id": "lineup-002",
+      "category": "meridian_lineup_narrative",
+      "prompt": "What is the Trailwind and what kind of driver is it designed for",
+      "expected_doc": "corpora/meridian_lineup_narrative/02-trailwind.md",
+      "notes": "Trailwind mid SUV adventure positioning"
+    },
+    {
+      "id": "lineup-003",
+      "category": "meridian_lineup_narrative",
+      "prompt": "Does the Crestwind have a third row of seats and how many passengers does it carry",
+      "expected_doc": "corpora/meridian_lineup_narrative/03-crestwind.md",
+      "notes": "Crestwind large three-row SUV \u2014 third-row differentiator"
+    },
+    {
+      "id": "lineup-004",
+      "category": "meridian_lineup_narrative",
+      "prompt": "Tell me about the Azimuth sedan \u2014 range, powertrain, and executive features",
+      "expected_doc": "corpora/meridian_lineup_narrative/04-azimuth.md",
+      "notes": "Azimuth sedan executive positioning"
+    },
+    {
+      "id": "lineup-005",
+      "category": "meridian_lineup_narrative",
+      "prompt": "Compare the Meridian lineup \u2014 which model has the longest electric range",
+      "expected_doc": "corpora/meridian_lineup_narrative/04-azimuth.md",
+      "notes": "Cross-lineup range comparison \u2014 Azimuth sedan expected to lead on range"
+    },
+    {
+      "id": "lineup-006",
+      "category": "meridian_lineup_narrative",
+      "prompt": "I have a family with three kids and need an SUV \u2014 which Meridian model should I consider",
+      "expected_doc": "corpora/meridian_lineup_narrative/03-crestwind.md",
+      "notes": "Family buyer routing to Crestwind three-row"
+    },
+    {
+      "id": "lineup-007",
+      "category": "meridian_lineup_narrative",
+      "prompt": "What electric powertrain options does the Trailwind adventure SUV offer",
+      "expected_doc": "corpora/meridian_lineup_narrative/02-trailwind.md",
+      "notes": "Trailwind powertrain and range details"
+    },
+    {
+      "id": "ive-001",
+      "category": "meridian_ive_package",
+      "prompt": "What does the family IVE package include and how does it personalize the vehicle",
+      "expected_doc": "corpora/meridian_ive_package/01-family.md",
+      "notes": "Family IVE package personalization details"
+    },
+    {
+      "id": "ive-002",
+      "category": "meridian_ive_package",
+      "prompt": "Tell me about the executive in-vehicle experience package \u2014 what premium features does it configure",
+      "expected_doc": "corpora/meridian_ive_package/02-executive.md",
+      "notes": "Executive IVE package premium configuration"
+    },
+    {
+      "id": "ive-003",
+      "category": "meridian_ive_package",
+      "prompt": "What is the adventure IVE package and what off-road or outdoor features does it activate",
+      "expected_doc": "corpora/meridian_ive_package/03-adventure.md",
+      "notes": "Adventure IVE package outdoor/trail features"
+    },
+    {
+      "id": "ive-004",
+      "category": "meridian_ive_package",
+      "prompt": "What does the entry-urban in-vehicle experience package set up for city driving",
+      "expected_doc": "corpora/meridian_ive_package/04-entry-urban.md",
+      "notes": "Entry-urban IVE package city driving configuration"
+    },
+    {
+      "id": "ive-005",
+      "category": "meridian_ive_package",
+      "prompt": "How does the NFC key card deliver my chosen IVE package when I pick up my vehicle",
+      "expected_doc": "corpora/meridian_ive_package/01-family.md",
+      "notes": "NFC personalization delivery mechanism \u2014 family package is first doc, any IVE doc is acceptable"
+    },
+    {
+      "id": "mfg-001",
+      "category": "vehicle_manufacturing",
+      "prompt": "what happens when a vehicle order is placed and confirmed",
+      "expected_doc": "corpora/vehicle_manufacturing/01-order-placed.md",
+      "notes": "orderPlaced stage \u2014 mirrors _STAGE_QUERIES['orderPlaced'] exactly"
+    },
+    {
+      "id": "mfg-002",
+      "category": "vehicle_manufacturing",
+      "prompt": "what happens after payment is received for a vehicle order",
+      "expected_doc": "corpora/vehicle_manufacturing/02-payment-received.md",
+      "notes": "paymentReceived stage \u2014 mirrors _STAGE_QUERIES['paymentReceived'] exactly"
+    },
+    {
+      "id": "mfg-003",
+      "category": "vehicle_manufacturing",
+      "prompt": "how is a vehicle order assigned to a manufacturing plant",
+      "expected_doc": "corpora/vehicle_manufacturing/03-assigned-to-plant.md",
+      "notes": "assignedToPlant stage \u2014 mirrors _STAGE_QUERIES['assignedToPlant'] exactly"
+    },
+    {
+      "id": "mfg-004",
+      "category": "vehicle_manufacturing",
+      "prompt": "what happens during sub-assembly stage of vehicle manufacturing",
+      "expected_doc": "corpora/vehicle_manufacturing/04-sub-assembly.md",
+      "notes": "subAssembly stage \u2014 mirrors _STAGE_QUERIES['subAssembly'] exactly"
+    },
+    {
+      "id": "mfg-005",
+      "category": "vehicle_manufacturing",
+      "prompt": "what happens during the paint stage of vehicle manufacturing",
+      "expected_doc": "corpora/vehicle_manufacturing/05-paint.md",
+      "notes": "paint stage \u2014 mirrors _STAGE_QUERIES['paint'] exactly"
+    },
+    {
+      "id": "mfg-006",
+      "category": "vehicle_manufacturing",
+      "prompt": "what happens during final assembly of a vehicle",
+      "expected_doc": "corpora/vehicle_manufacturing/06-final-assembly.md",
+      "notes": "finalAssembly stage \u2014 mirrors _STAGE_QUERIES['finalAssembly'] exactly"
+    },
+    {
+      "id": "mfg-007",
+      "category": "vehicle_manufacturing",
+      "prompt": "what quality control checks happen before a vehicle is shipped",
+      "expected_doc": "corpora/vehicle_manufacturing/07-quality-control.md",
+      "notes": "qualityControl stage \u2014 mirrors _STAGE_QUERIES['qualityControl'] exactly"
+    },
+    {
+      "id": "mfg-008",
+      "category": "vehicle_manufacturing",
+      "prompt": "what happens when a vehicle is shipped from the factory",
+      "expected_doc": "corpora/vehicle_manufacturing/08-shipped.md",
+      "notes": "shipped stage \u2014 mirrors _STAGE_QUERIES['shipped'] exactly"
+    },
+    {
+      "id": "mfg-009",
+      "category": "vehicle_manufacturing",
+      "prompt": "what happens when a vehicle arrives at the dealer for pre-delivery inspection",
+      "expected_doc": "corpora/vehicle_manufacturing/09-at-dealer.md",
+      "notes": "atDealer stage \u2014 mirrors _STAGE_QUERIES['atDealer'] exactly"
+    },
+    {
+      "id": "mfg-010",
+      "category": "vehicle_manufacturing",
+      "prompt": "what steps happen before a vehicle is ready for customer delivery",
+      "expected_doc": "corpora/vehicle_manufacturing/10-ready-for-delivery.md",
+      "notes": "readyForDelivery stage \u2014 mirrors _STAGE_QUERIES['readyForDelivery'] exactly"
+    },
+    {
+      "id": "mfg-011",
+      "category": "vehicle_manufacturing",
+      "prompt": "how long does it typically take to build a car from order to delivery and what is the normal cadence",
+      "expected_doc": "corpora/vehicle_manufacturing/A-typical-cadence.md",
+      "notes": "A-typical-cadence \u2014 overall build timeline"
+    },
+    {
+      "id": "mfg-012",
+      "category": "vehicle_manufacturing",
+      "prompt": "what visibility signals or updates does a customer receive during vehicle production",
+      "expected_doc": "corpora/vehicle_manufacturing/B-visibility-signals.md",
+      "notes": "B-visibility-signals \u2014 customer-facing status updates"
+    },
+    {
+      "id": "owner-001",
+      "category": "meridian_owner_manual",
+      "prompt": "What safety systems does the Meridian vehicle have and how do the automatic emergency features work",
+      "expected_doc": "corpora/meridian_owner_manual/01-safety-systems.md",
+      "notes": "Safety systems owner manual page"
+    },
+    {
+      "id": "owner-002",
+      "category": "meridian_owner_manual",
+      "prompt": "What does the Meridian warranty cover and for how long",
+      "expected_doc": "corpora/meridian_owner_manual/02-warranty.md",
+      "notes": "Warranty coverage owner manual page"
+    },
+    {
+      "id": "owner-003",
+      "category": "meridian_owner_manual",
+      "prompt": "When is the first service due on my Meridian and what does it include",
+      "expected_doc": "corpora/meridian_owner_manual/03-first-service.md",
+      "notes": "First service schedule owner manual page"
+    },
+    {
+      "id": "owner-004",
+      "category": "meridian_owner_manual",
+      "prompt": "How do I set up the connected features and over-the-air updates on my Meridian",
+      "expected_doc": "corpora/meridian_owner_manual/04-connected-features.md",
+      "notes": "Connected features and OTA updates owner manual page"
+    },
+    {
+      "id": "mfg-body",
+      "category": "vehicle_manufacturing",
+      "prompt": "what is body-in-white and how does the car body get welded together before paint",
+      "expected_doc": "corpora/vehicle_manufacturing/04-sub-assembly.md",
+      "notes": "Body-in-white vocabulary \u2014 sub-assembly stage"
+    },
+    {
+      "id": "mfg-marriage",
+      "category": "vehicle_manufacturing",
+      "prompt": "what is the marriage point in car manufacturing where the body meets the chassis",
+      "expected_doc": "corpora/vehicle_manufacturing/06-final-assembly.md",
+      "notes": "Marriage point vocabulary \u2014 final assembly stage"
+    },
+    {
+      "id": "mfg-eol",
+      "category": "vehicle_manufacturing",
+      "prompt": "what is end-of-line testing and how does a vehicle pass before leaving the factory",
+      "expected_doc": "corpora/vehicle_manufacturing/07-quality-control.md",
+      "notes": "End-of-line testing vocabulary \u2014 quality control stage"
+    },
+    {
+      "id": "vsg-001",
+      "category": "vehicle_shopping_guide",
+      "prompt": "I need help picking the right type of vehicle for my daily commute \u2014 what should I consider first",
+      "expected_doc": "corpora/vehicle_shopping_guide/01-how-to-pick-a-vehicle.md",
+      "notes": "Use-case to segment mapping \u2014 commuter use case routing"
+    },
+    {
+      "id": "vsg-002",
+      "category": "vehicle_shopping_guide",
+      "prompt": "What is the difference between an SUV and a sedan and which one is better for a family",
+      "expected_doc": "corpora/vehicle_shopping_guide/02-suv-vs-sedan.md",
+      "notes": "Segment education \u2014 SUV vs sedan comparison"
+    },
+    {
+      "id": "vsg-003",
+      "category": "vehicle_shopping_guide",
+      "prompt": "Should I buy a hybrid, a fully electric BEV, or stick with a regular gas engine car",
+      "expected_doc": "corpora/vehicle_shopping_guide/03-ice-vs-hybrid-vs-bev.md",
+      "notes": "Powertrain tradeoffs \u2014 ICE vs hybrid vs BEV decision"
+    },
+    {
+      "id": "vsg-004",
+      "category": "vehicle_shopping_guide",
+      "prompt": "What do trim levels mean and how do I decide which option package is worth paying for",
+      "expected_doc": "corpora/vehicle_shopping_guide/04-trim-and-option-packages.md",
+      "notes": "Interior grade, feature bundling, price ladder"
+    },
+    {
+      "id": "vsg-005",
+      "category": "vehicle_shopping_guide",
+      "prompt": "How do I read a vehicle specification sheet \u2014 what do the numbers for range kWh and cargo volume mean",
+      "expected_doc": "corpora/vehicle_shopping_guide/05-reading-a-vehicle-spec-sheet.md",
+      "notes": "Spec sheet literacy \u2014 range, kWh, DC fast-charge, cargo, curb weight"
+    },
+    {
+      "id": "vsg-006",
+      "category": "vehicle_shopping_guide",
+      "prompt": "What should I pay attention to during a test drive and what should I be feeling for",
+      "expected_doc": "corpora/vehicle_shopping_guide/06-test-drive-best-practices.md",
+      "notes": "Test drive checklist and what to evaluate"
+    },
+    {
+      "id": "vsg-007",
+      "category": "vehicle_shopping_guide",
+      "prompt": "Is it better to lease or finance a car and how do I stack EV incentives on top of a loan",
+      "expected_doc": "corpora/vehicle_shopping_guide/07-buying-with-financing.md",
+      "notes": "Lease vs finance, incentive stacking, disclosure literacy"
+    },
+    {
+      "id": "vsg-008",
+      "category": "vehicle_shopping_guide",
+      "prompt": "What is the difference between making a reservation, placing a pre-order, and ordering a vehicle",
+      "expected_doc": "corpora/vehicle_shopping_guide/08-reservation-vs-preorder-vs-order.md",
+      "notes": "Reservation vs pre-order vs order distinction"
+    },
+    {
+      "id": "vsg-009",
+      "category": "vehicle_shopping_guide",
+      "prompt": "What should I check when I go to pick up my new vehicle at the dealer",
+      "expected_doc": "corpora/vehicle_shopping_guide/09-what-to-look-for-at-delivery.md",
+      "notes": "PDI, VIN check, walk-through at delivery"
+    },
+    {
+      "id": "vsg-010",
+      "category": "vehicle_shopping_guide",
+      "prompt": "When is my first scheduled service due and what does the warranty cover on my new vehicle",
+      "expected_doc": "corpora/vehicle_shopping_guide/10-first-service-warranty-and-connected-features.md",
+      "notes": "Post-purchase primer \u2014 first service, warranty, connected features"
+    }
+  ]
+}
