@@ -148,5 +148,5 @@ openapi-spec-validator==0.7.1
 # ~/.kiro/steering/dependency-versions.md is satisfied with wide margin:
 # PyJWT 2.12.1 released 2026-03-13 (194d), cryptography 48.0.0 2026-05-04 (142d).
 # Before changing either, run tests/architecture/test_bidi_runtime_deps_pinned.py.
-PyJWT[crypto]==2.12.1
+PyJWT[crypto]==2.15.0
 cryptography==48.0.0
