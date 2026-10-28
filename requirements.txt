@@ -58,7 +58,7 @@ bedrock-agentcore==1.9.1
 # A critical fix for Nova Sonic v2 (PR #2188, merged 2026-04-24 in upstream)
 # is in the 1.39.0 release — bidi_app.py's local monkey-patch can stay for
 # safety but is no longer strictly required.
-strands-agents==1.39.0
+strands-agents==1.48.0
 boto3==1.43.6
 # requests pinned exact 2026-09-21 (was `>=2.32.0`). Same reasoning as the
 # aws_sdk_bedrock_runtime incident below: a range is an unreviewed dependency
@@ -68,7 +68,7 @@ boto3==1.43.6
 requests==2.34.0
 # pydantic bumped to 2.13.4 (latest stable as of 2026-05-27, locally tested,
 # known-compatible with the rest of the stack).
-# Required to resolve with strands-agents==1.39.0, which transitively
+# Required to resolve with strands-agents==1.48.0, which transitively
 # requires pydantic>=2.11.0 via mcp>=1.23.0.
 pydantic==2.13.4
 # python-frontmatter pinned exact 2026-09-21 (was `>=1.1.0`). 1.1.0 is both the
@@ -91,7 +91,7 @@ python-frontmatter==1.1.0
 # 0.x packages make breaking changes between minors; a range here is not a
 # convenience, it is an unreviewed dependency upgrade on every redeploy.
 # 0.6.0 is the version already installed locally and verified against
-# strands-agents==1.39.0 (nova_sonic imports, BidiNovaSonicModel resolves).
+# strands-agents==1.48.0 (nova_sonic imports, BidiNovaSonicModel resolves).
 # Before changing it, run tests/architecture/test_bidi_runtime_deps_pinned.py.
 # See issues/2026-09-21-bidi-voice-import-error-unpinned-sdk/.
 aws_sdk_bedrock_runtime==0.6.0
@@ -125,7 +125,7 @@ openapi-spec-validator==0.7.1
 # of ranges that nothing in this repo controls, verified 2026-09-23 by reading
 # installed distribution metadata:
 #
-#   strands-agents==1.39.0 -> mcp>=1.23.0,<2.0.0 -> pyjwt[crypto]>=2.10.1
+#   strands-agents==1.48.0 -> mcp>=1.23.0,<2.0.0 -> pyjwt[crypto]>=2.10.1
 #                                                      -> cryptography>=3.4.0
 #
 # So the hazard is not absence, it is drift — the same shape as the

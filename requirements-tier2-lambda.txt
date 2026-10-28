@@ -21,7 +21,7 @@
 #
 # Version pins:
 #   All pins are exact (==) per ~/.kiro/steering/dependency-versions.md.
-#   strands-agents==1.39.0 and pydantic==2.13.4 are already pinned in
+#   strands-agents==1.48.0 and pydantic==2.13.4 are already pinned in
 #   requirements.txt.  boto3==1.43.6 was pinned there by Fix Group 4 C2
 #   (2026-09-18).  No version changes are introduced by this file.
 #
@@ -33,7 +33,7 @@
 # strands-agents: the Strands LLM framework.  Its absence is the root cause
 # of tokens_used=0 — make_strands_agent_fn catches ImportError and falls back
 # to the deterministic path.  Pin matches requirements.txt.
-strands-agents==1.39.0
+strands-agents==1.48.0
 
 # boto3: AWS SDK.  Used for DynamoDB, Athena, and CloudWatch calls in the
 # runner.  Pin matches requirements.txt (fixed from >=1.35.0 range in
