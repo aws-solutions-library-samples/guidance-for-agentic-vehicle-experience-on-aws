@@ -22,4 +22,4 @@ redis==5.3.1
 # took the newest PyJWT on each build (2.15.0 deployed 2026-09-27, four days after its
 # release). Pinned 2026-10-01 to the repo root's version, uploaded 2026-03-13
 # (issues/2026-10-01-triage-and-authorizer-bundles-ship-unpinned-pyjwt/).
-PyJWT==2.12.1
+PyJWT==2.15.0
