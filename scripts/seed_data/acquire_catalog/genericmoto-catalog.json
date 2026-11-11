@@ -1,0 +1,625 @@
+{
+  "tenantId": "genericmoto-demo",
+  "catalogVersion": "genericmoto-2026-07",
+  "items": [
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "META#catalogVersion",
+      "value": "genericmoto-2026-07"
+    },
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "CAT#commuter",
+      "categoryKey": "CAT#commuter",
+      "displayName": "Commuter",
+      "description": "Practical everyday urban and suburban riding with comfort and economy.",
+      "iconKey": "categories/commuter.svg",
+      "displayOrder": 1
+    },
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "CAT#adventure",
+      "categoryKey": "CAT#adventure",
+      "displayName": "Adventure",
+      "description": "Capable on road and off, built for riders who explore beyond the commute.",
+      "iconKey": "categories/adventure.svg",
+      "displayOrder": 2
+    },
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "CAT#electric",
+      "categoryKey": "CAT#electric",
+      "displayName": "Electric",
+      "description": "Zero-emission urban and short-range mobility with instant torque.",
+      "iconKey": "categories/electric.svg",
+      "displayOrder": 3
+    },
+
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "MODEL#commuter#meridian-300",
+      "categoryKey": "CAT#commuter",
+      "displayName": "Meridian 300",
+      "tagline": "The everyday commuter, refined.",
+      "basePrice": 4599.00,
+      "specs": {
+        "power_hp": 24,
+        "torque_nm": 28,
+        "kerbWeight_kg": 152,
+        "fuelTank_l": 12,
+        "topSpeed_kph": 130
+      },
+      "heroImageKey": "commuter/meridian-300/hero.jpg",
+      "displayOrder": 1
+    },
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "MODEL#commuter#dawnrider-150",
+      "categoryKey": "CAT#commuter",
+      "displayName": "Dawnrider 150",
+      "tagline": "Light, nimble, and fuel-efficient city transit.",
+      "basePrice": 2899.00,
+      "specs": {
+        "power_hp": 14,
+        "torque_nm": 14,
+        "kerbWeight_kg": 118,
+        "fuelTank_l": 9,
+        "topSpeed_kph": 110
+      },
+      "heroImageKey": "commuter/dawnrider-150/hero.jpg",
+      "displayOrder": 2
+    },
+
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "MODEL#adventure#model-a450",
+      "categoryKey": "CAT#adventure",
+      "displayName": "Model-A450",
+      "tagline": "Conquer every terrain with confidence.",
+      "basePrice": 7299.00,
+      "specs": {
+        "power_hp": 40,
+        "torque_nm": 42,
+        "kerbWeight_kg": 189,
+        "fuelTank_l": 18,
+        "topSpeed_kph": 160
+      },
+      "heroImageKey": "adventure/model-a450/hero.jpg",
+      "displayOrder": 1
+    },
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "MODEL#adventure#model-b650",
+      "categoryKey": "CAT#adventure",
+      "displayName": "Model-B650",
+      "tagline": "Long-haul dual-sport capability.",
+      "basePrice": 10499.00,
+      "specs": {
+        "power_hp": 65,
+        "torque_nm": 60,
+        "kerbWeight_kg": 218,
+        "fuelTank_l": 22,
+        "topSpeed_kph": 190
+      },
+      "heroImageKey": "adventure/model-b650/hero.jpg",
+      "displayOrder": 2
+    },
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "MODEL#electric#model-c120e",
+      "categoryKey": "CAT#electric",
+      "displayName": "Model-C120e",
+      "tagline": "Zero-emission urban mobility with smart connectivity.",
+      "basePrice": 5499.00,
+      "specs": {
+        "range_km": 120,
+        "chargeTime_min": 75,
+        "motorPower_kw": 8,
+        "kerbWeight_kg": 108,
+        "topSpeed_kph": 90
+      },
+      "heroImageKey": "electric/model-c120e/hero.jpg",
+      "displayOrder": 1
+    },
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "MODEL#electric#model-d200e",
+      "categoryKey": "CAT#electric",
+      "displayName": "Model-D200e",
+      "tagline": "Extended range electric for the serious commuter.",
+      "basePrice": 7999.00,
+      "specs": {
+        "range_km": 200,
+        "chargeTime_min": 60,
+        "motorPower_kw": 15,
+        "kerbWeight_kg": 132,
+        "topSpeed_kph": 110
+      },
+      "heroImageKey": "electric/model-d200e/hero.jpg",
+      "displayOrder": 2
+    },
+
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "VAR#commuter#meridian-300#standard",
+      "displayName": "Standard",
+      "priceDelta": 0.00,
+      "specDeltas": { "trimLevel": "base" },
+      "displayOrder": 1
+    },
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "VAR#commuter#meridian-300#touring",
+      "displayName": "Touring",
+      "priceDelta": 450.00,
+      "specDeltas": { "trimLevel": "touring", "includedAccessories": ["windshield-sport"] },
+      "displayOrder": 2
+    },
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "VAR#commuter#dawnrider-150#standard",
+      "displayName": "Standard",
+      "priceDelta": 0.00,
+      "specDeltas": { "trimLevel": "base" },
+      "displayOrder": 1
+    },
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "VAR#commuter#dawnrider-150#sport",
+      "displayName": "Sport",
+      "priceDelta": 250.00,
+      "specDeltas": { "trimLevel": "sport", "color_options": "extended" },
+      "displayOrder": 2
+    },
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "VAR#adventure#model-a450#standard",
+      "displayName": "Standard",
+      "priceDelta": 0.00,
+      "specDeltas": { "trimLevel": "base" },
+      "displayOrder": 1
+    },
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "VAR#adventure#model-a450#rally",
+      "displayName": "Rally",
+      "priceDelta": 800.00,
+      "specDeltas": { "trimLevel": "rally", "protection": "engine-bash-plate-included" },
+      "displayOrder": 2
+    },
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "VAR#adventure#model-b650#standard",
+      "displayName": "Standard",
+      "priceDelta": 0.00,
+      "specDeltas": { "trimLevel": "base" },
+      "displayOrder": 1
+    },
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "VAR#adventure#model-b650#expedition",
+      "displayName": "Expedition",
+      "priceDelta": 1200.00,
+      "specDeltas": { "trimLevel": "expedition", "panniers": "hard-case-included" },
+      "displayOrder": 2
+    },
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "VAR#electric#model-c120e#standard",
+      "displayName": "Standard",
+      "priceDelta": 0.00,
+      "specDeltas": { "trimLevel": "base" },
+      "displayOrder": 1
+    },
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "VAR#electric#model-c120e#connect",
+      "displayName": "Connect",
+      "priceDelta": 500.00,
+      "specDeltas": { "trimLevel": "connect", "connectivity": "advanced-telematics" },
+      "displayOrder": 2
+    },
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "VAR#electric#model-d200e#standard",
+      "displayName": "Standard",
+      "priceDelta": 0.00,
+      "specDeltas": { "trimLevel": "base" },
+      "displayOrder": 1
+    },
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "VAR#electric#model-d200e#pro",
+      "displayName": "Pro",
+      "priceDelta": 700.00,
+      "specDeltas": { "trimLevel": "pro", "charging": "fast-charge-dc" },
+      "displayOrder": 2
+    },
+
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "COLOR#commuter#meridian-300#standard#midnight-black",
+      "displayName": "Midnight Black",
+      "hexSwatch": "#1A1A1A",
+      "swatchImageKey": "commuter/meridian-300/standard/midnight-black-swatch.jpg",
+      "vehicleImageKey": "commuter/meridian-300/standard/midnight-black-vehicle.jpg",
+      "priceDelta": 0.00,
+      "displayOrder": 1
+    },
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "COLOR#commuter#meridian-300#standard#glacier-white",
+      "displayName": "Glacier White",
+      "hexSwatch": "#F5F5F0",
+      "swatchImageKey": "commuter/meridian-300/standard/glacier-white-swatch.jpg",
+      "vehicleImageKey": "commuter/meridian-300/standard/glacier-white-vehicle.jpg",
+      "priceDelta": 0.00,
+      "displayOrder": 2
+    },
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "COLOR#commuter#meridian-300#standard#racing-red",
+      "displayName": "Racing Red",
+      "hexSwatch": "#C8102E",
+      "swatchImageKey": "commuter/meridian-300/standard/racing-red-swatch.jpg",
+      "vehicleImageKey": "commuter/meridian-300/standard/racing-red-vehicle.jpg",
+      "priceDelta": 200.00,
+      "displayOrder": 3
+    },
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "COLOR#commuter#dawnrider-150#standard#cobalt-blue",
+      "displayName": "Cobalt Blue",
+      "hexSwatch": "#0047AB",
+      "swatchImageKey": "commuter/dawnrider-150/standard/cobalt-blue-swatch.jpg",
+      "vehicleImageKey": "commuter/dawnrider-150/standard/cobalt-blue-vehicle.jpg",
+      "priceDelta": 0.00,
+      "displayOrder": 1
+    },
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "COLOR#commuter#dawnrider-150#standard#matte-grey",
+      "displayName": "Matte Grey",
+      "hexSwatch": "#5C5C5C",
+      "swatchImageKey": "commuter/dawnrider-150/standard/matte-grey-swatch.jpg",
+      "vehicleImageKey": "commuter/dawnrider-150/standard/matte-grey-vehicle.jpg",
+      "priceDelta": 0.00,
+      "displayOrder": 2
+    },
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "COLOR#commuter#dawnrider-150#standard#sunset-orange",
+      "displayName": "Sunset Orange",
+      "hexSwatch": "#FF6B35",
+      "swatchImageKey": "commuter/dawnrider-150/standard/sunset-orange-swatch.jpg",
+      "vehicleImageKey": "commuter/dawnrider-150/standard/sunset-orange-vehicle.jpg",
+      "priceDelta": 150.00,
+      "displayOrder": 3
+    },
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "COLOR#adventure#model-a450#standard#desert-tan",
+      "displayName": "Desert Tan",
+      "hexSwatch": "#C19A6B",
+      "swatchImageKey": "adventure/model-a450/standard/desert-tan-swatch.jpg",
+      "vehicleImageKey": "adventure/model-a450/standard/desert-tan-vehicle.jpg",
+      "priceDelta": 0.00,
+      "displayOrder": 1
+    },
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "COLOR#adventure#model-a450#standard#forest-green",
+      "displayName": "Forest Green",
+      "hexSwatch": "#2D6A2D",
+      "swatchImageKey": "adventure/model-a450/standard/forest-green-swatch.jpg",
+      "vehicleImageKey": "adventure/model-a450/standard/forest-green-vehicle.jpg",
+      "priceDelta": 0.00,
+      "displayOrder": 2
+    },
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "COLOR#adventure#model-a450#standard#stone-grey",
+      "displayName": "Stone Grey",
+      "hexSwatch": "#7D7D7D",
+      "swatchImageKey": "adventure/model-a450/standard/stone-grey-swatch.jpg",
+      "vehicleImageKey": "adventure/model-a450/standard/stone-grey-vehicle.jpg",
+      "priceDelta": 0.00,
+      "displayOrder": 3
+    },
+
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "COLOR#adventure#model-b650#standard#alpine-white",
+      "displayName": "Alpine White",
+      "hexSwatch": "#EDEDED",
+      "swatchImageKey": "adventure/model-b650/standard/alpine-white-swatch.jpg",
+      "vehicleImageKey": "adventure/model-b650/standard/alpine-white-vehicle.jpg",
+      "priceDelta": 0.00,
+      "displayOrder": 1
+    },
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "COLOR#adventure#model-b650#standard#charcoal-black",
+      "displayName": "Charcoal Black",
+      "hexSwatch": "#2B2B2B",
+      "swatchImageKey": "adventure/model-b650/standard/charcoal-black-swatch.jpg",
+      "vehicleImageKey": "adventure/model-b650/standard/charcoal-black-vehicle.jpg",
+      "priceDelta": 0.00,
+      "displayOrder": 2
+    },
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "COLOR#adventure#model-b650#standard#lava-red",
+      "displayName": "Lava Red",
+      "hexSwatch": "#B22222",
+      "swatchImageKey": "adventure/model-b650/standard/lava-red-swatch.jpg",
+      "vehicleImageKey": "adventure/model-b650/standard/lava-red-vehicle.jpg",
+      "priceDelta": 250.00,
+      "displayOrder": 3
+    },
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "COLOR#electric#model-c120e#standard#pearl-ivory",
+      "displayName": "Pearl Ivory",
+      "hexSwatch": "#F8F0E3",
+      "swatchImageKey": "electric/model-c120e/standard/pearl-ivory-swatch.jpg",
+      "vehicleImageKey": "electric/model-c120e/standard/pearl-ivory-vehicle.jpg",
+      "priceDelta": 0.00,
+      "displayOrder": 1
+    },
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "COLOR#electric#model-c120e#standard#sky-blue",
+      "displayName": "Sky Blue",
+      "hexSwatch": "#6BAED6",
+      "swatchImageKey": "electric/model-c120e/standard/sky-blue-swatch.jpg",
+      "vehicleImageKey": "electric/model-c120e/standard/sky-blue-vehicle.jpg",
+      "priceDelta": 0.00,
+      "displayOrder": 2
+    },
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "COLOR#electric#model-c120e#standard#graphite",
+      "displayName": "Graphite",
+      "hexSwatch": "#474747",
+      "swatchImageKey": "electric/model-c120e/standard/graphite-swatch.jpg",
+      "vehicleImageKey": "electric/model-c120e/standard/graphite-vehicle.jpg",
+      "priceDelta": 0.00,
+      "displayOrder": 3
+    },
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "COLOR#electric#model-d200e#standard#midnight-blue",
+      "displayName": "Midnight Blue",
+      "hexSwatch": "#003153",
+      "swatchImageKey": "electric/model-d200e/standard/midnight-blue-swatch.jpg",
+      "vehicleImageKey": "electric/model-d200e/standard/midnight-blue-vehicle.jpg",
+      "priceDelta": 0.00,
+      "displayOrder": 1
+    },
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "COLOR#electric#model-d200e#standard#matte-black",
+      "displayName": "Matte Black",
+      "hexSwatch": "#1C1C1C",
+      "swatchImageKey": "electric/model-d200e/standard/matte-black-swatch.jpg",
+      "vehicleImageKey": "electric/model-d200e/standard/matte-black-vehicle.jpg",
+      "priceDelta": 0.00,
+      "displayOrder": 2
+    },
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "COLOR#electric#model-d200e#standard#aurora-green",
+      "displayName": "Aurora Green",
+      "hexSwatch": "#3CB371",
+      "swatchImageKey": "electric/model-d200e/standard/aurora-green-swatch.jpg",
+      "vehicleImageKey": "electric/model-d200e/standard/aurora-green-vehicle.jpg",
+      "priceDelta": 200.00,
+      "displayOrder": 3
+    },
+
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "ACC#top-box-45l",
+      "displayName": "45L Top Box",
+      "description": "Lockable rear top-case with helmet capacity and integrated LED tail light.",
+      "price": 199.00,
+      "imageKey": "accessories/top-box-45l.jpg",
+      "category": "storage"
+    },
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "ACC#engine-guard-touring",
+      "displayName": "Touring Engine Guard",
+      "description": "Powder-coated steel crash protection bar for the engine block.",
+      "price": 79.00,
+      "imageKey": "accessories/engine-guard-touring.jpg",
+      "category": "protection"
+    },
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "ACC#windshield-sport",
+      "displayName": "Sport Windshield",
+      "description": "Aerodynamic tinted windshield reducing fatigue on longer rides.",
+      "price": 89.00,
+      "imageKey": "accessories/windshield-sport.jpg",
+      "category": "comfort"
+    },
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "ACC#pannier-set-soft",
+      "displayName": "Soft Pannier Set (pair)",
+      "description": "Lightweight 20L per-side waterproof soft panniers with quick-release mounts.",
+      "price": 149.00,
+      "imageKey": "accessories/pannier-set-soft.jpg",
+      "category": "storage"
+    },
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "ACC#phone-mount-wireless",
+      "displayName": "Wireless Phone Mount",
+      "description": "Vibration-dampened handlebar mount with 15W wireless charging pad.",
+      "price": 59.00,
+      "imageKey": "accessories/phone-mount-wireless.jpg",
+      "category": "technology"
+    },
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "ACC#heated-grips",
+      "displayName": "Heated Grips",
+      "description": "OEM-integrated heated grip set with three temperature levels.",
+      "price": 119.00,
+      "imageKey": "accessories/heated-grips.jpg",
+      "category": "comfort"
+    },
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "ACC#luggage-rack-rear",
+      "displayName": "Rear Luggage Rack",
+      "description": "Steel mounting rack with 15 kg load rating, compatible with soft and hard cases.",
+      "price": 69.00,
+      "imageKey": "accessories/luggage-rack-rear.jpg",
+      "category": "storage"
+    },
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "ACC#bashplate-aluminium",
+      "displayName": "Aluminium Bash Plate",
+      "description": "3mm anodised aluminium underbelly protection for off-road and light trail use.",
+      "price": 139.00,
+      "imageKey": "accessories/bashplate-aluminium.jpg",
+      "category": "protection"
+    },
+
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "ACC-COMPAT#top-box-45l#commuter#meridian-300",
+      "notes": "Fits standard luggage rack. Compatible with all variants."
+    },
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "ACC-COMPAT#top-box-45l#commuter#dawnrider-150",
+      "notes": "Requires optional rear rack (ACC#luggage-rack-rear). Compatible with all variants."
+    },
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "ACC-COMPAT#top-box-45l#adventure#model-a450",
+      "notes": "Fits integrated sub-frame mount. All variants compatible."
+    },
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "ACC-COMPAT#engine-guard-touring#commuter#meridian-300",
+      "notes": "Bolt-on fit. Standard and Touring variants only."
+    },
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "ACC-COMPAT#engine-guard-touring#adventure#model-a450",
+      "notes": "Compatible with all variants. Rally variant ships with extended protection."
+    },
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "ACC-COMPAT#engine-guard-touring#adventure#model-b650",
+      "notes": "Compatible with all variants."
+    },
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "ACC-COMPAT#windshield-sport#commuter#meridian-300",
+      "notes": "Sport and Standard variants. Not compatible with Touring (has integrated screen)."
+    },
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "ACC-COMPAT#windshield-sport#adventure#model-a450",
+      "notes": "Standard variant only."
+    },
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "ACC-COMPAT#pannier-set-soft#adventure#model-a450",
+      "notes": "All variants. Use with rear rack for best fit."
+    },
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "ACC-COMPAT#pannier-set-soft#adventure#model-b650",
+      "notes": "All variants. Expedition variant includes hard panniers; soft set is an alternative."
+    },
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "ACC-COMPAT#phone-mount-wireless#commuter#meridian-300",
+      "notes": "All variants. Handlebar diameter 22mm standard."
+    },
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "ACC-COMPAT#phone-mount-wireless#commuter#dawnrider-150",
+      "notes": "All variants."
+    },
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "ACC-COMPAT#phone-mount-wireless#electric#model-c120e",
+      "notes": "All variants. Connects to vehicle power rail."
+    },
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "ACC-COMPAT#phone-mount-wireless#electric#model-d200e",
+      "notes": "All variants."
+    },
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "ACC-COMPAT#heated-grips#commuter#meridian-300",
+      "notes": "All variants."
+    },
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "ACC-COMPAT#heated-grips#adventure#model-b650",
+      "notes": "All variants."
+    },
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "ACC-COMPAT#luggage-rack-rear#commuter#dawnrider-150",
+      "notes": "Required for top-box fitment. All variants."
+    },
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "ACC-COMPAT#luggage-rack-rear#commuter#meridian-300",
+      "notes": "Optional upgrade rack for heavier loads."
+    },
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "ACC-COMPAT#bashplate-aluminium#adventure#model-a450",
+      "notes": "Standard variant. Rally variant ships with steel bash plate; aluminium is an upgrade."
+    },
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "ACC-COMPAT#bashplate-aluminium#adventure#model-b650",
+      "notes": "All variants."
+    },
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "ACC-COMPAT#heated-grips#electric#model-c120e",
+      "notes": "All variants. Grips draw from vehicle battery; minor range impact."
+    },
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "ACC-COMPAT#windshield-sport#electric#model-c120e",
+      "notes": "Standard and Connect variants."
+    },
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "ACC-COMPAT#luggage-rack-rear#electric#model-c120e",
+      "notes": "All variants. 10 kg load rating on this model."
+    },
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "ACC-COMPAT#heated-grips#electric#model-d200e",
+      "notes": "All variants."
+    },
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "ACC-COMPAT#windshield-sport#electric#model-d200e",
+      "notes": "Standard variant."
+    },
+    {
+      "tenantId": "genericmoto-demo",
+      "itemKey": "ACC-COMPAT#luggage-rack-rear#electric#model-d200e",
+      "notes": "All variants. Compatible with soft pannier set."
+    }
+  ]
+}

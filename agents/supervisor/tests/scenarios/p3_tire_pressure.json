@@ -1,0 +1,13 @@
+{
+  "name": "p3-tire-pressure-dip",
+  "description": "Driver asks about a mild tire pressure alert. Supervisor must call triage first and narrate appropriately for whatever classification comes back. Test is classification-aware; assertions come from _CLASSIFICATION_PROFILES in test_scenarios.py.",
+  "vin": "1FMCU0F70MUA12345",
+  "user_turns": [
+    "Got a tire pressure alert — am I good?"
+  ],
+  "expect_book_call": false,
+  "forbidden_tools_if": {
+    "P3": ["book"]
+  },
+  "notes": "Per supervisor rule 6: on P3 Monitor, do NOT create a ticket unless the caller insists. This scenario has a single turn where the caller does not insist, so book must not fire on P3. On P0/P1/P2 book may legitimately fire."
+}

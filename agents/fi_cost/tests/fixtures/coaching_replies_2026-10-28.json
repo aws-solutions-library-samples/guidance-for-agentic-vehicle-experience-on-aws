@@ -1,0 +1,679 @@
+{
+ "source": "issues/2026-10-10-cost-guardrail-blocks-replies/2026-10-28-p157-evidence/",
+ "guardrail": "8wge4n0s9zzm DRAFT (personal-advice, STANDARD, us.guardrail.v1:0)",
+ "data_month": "2026-09",
+ "cars": [
+  {
+   "vin": "MRDAZ01S1RR01XH1U",
+   "group_on_10_28": "blocked_twice",
+   "inputs_hash_matched_live": true,
+   "old_prompt": {
+    "playbook": "1.0.0",
+    "cause": "efficiency",
+    "action": "driver_coaching",
+    "headline": "Energy anomaly: vehicle uses 46% more kWh/100mi than cohort \u2014 driver coaching recommended",
+    "detail": "This vehicle consumed 40.3 kWh/100mi vs. the cohort median of 27.5 kWh/100mi (+46%), driving a $49.74 energy cost excess over cohort and $35.94 above both baselines. Charging mix and rate are near-cohort: public share (75.0% vs. 75.0%), DC-fast share (73.4% vs. 75.5%), and mean price per kWh ($0.383 vs. $0.389) are all closely aligned. The anomaly is consumption-driven, not tariff-driven. Recommend driver coaching to address aggressive acceleration, high-speed driving, or climate control use.",
+    "guardrail_action": "NONE"
+   },
+   "new_prompt": {
+    "playbook": "1.1.0",
+    "cause": "efficiency",
+    "action": "driver_coaching",
+    "headline": "Energy-only anomaly: vehicle uses 46% more kWh/100 mi than cohort \u2014 enrol in eco-driving programme",
+    "detail": "This vehicle consumed 40.3 kWh/100 mi vs. the cohort median of 27.5 kWh/100 mi (+46%), driving $49.74 in excess energy cost this month. Charging mix (public share 75.0% vs. cohort 75.0%; DC-fast share 73.4% vs. 75.5%) and mean price per kWh ($0.383 vs. $0.388) are both in line with the cohort, ruling out rate or mix causes. The excess is almost entirely attributable to higher energy consumption per mile. Recommended action: enrol this vehicle in the fleet's eco-driving programme.",
+    "valid": true,
+    "guardrail_action": "NONE",
+    "attempts": 1,
+    "attempt_1_guardrail_action": "NONE"
+   }
+  },
+  {
+   "vin": "MRDAZ01S0PC00KJS4",
+   "group_on_10_28": "passed_first",
+   "inputs_hash_matched_live": true,
+   "old_prompt": {
+    "playbook": "1.0.0",
+    "cause": "efficiency",
+    "action": "driver_coaching",
+    "headline": "Energy anomaly: vehicle uses 37.4 kWh/100mi vs cohort 27.5 \u2014 efficiency gap driving $43.77 excess",
+    "detail": "This vehicle consumed 37.4 kWh/100mi in Sep 2026, vs the cohort median of 27.5 kWh/100mi \u2014 a 36% efficiency gap that is the primary driver of the $43.77 energy cost excess (energy ratios: 1.42\u00d7 cohort, 1.30\u00d7 own history). Public charging share (75.0%) is in line with cohort (75.0%), so charging mix is not the cause. Mean price per kWh (0.405) is only slightly above cohort (0.388). Recommended action: driver coaching to reduce energy consumption per mile.",
+    "guardrail_action": "NONE"
+   },
+   "new_prompt": {
+    "playbook": "1.1.0",
+    "cause": "efficiency",
+    "action": "driver_coaching",
+    "headline": "Energy anomaly: vehicle consumes 37.4 kWh/100 mi vs cohort 27.5 kWh/100 mi \u2014 enrol in eco-driving programme",
+    "detail": "This vehicle's energy consumption is 37.4 kWh/100 mi, 36% above the cohort median of 27.5 kWh/100 mi. Energy cost exceeds the cohort baseline by 42% and the vehicle's own 6-month baseline by 30%, contributing ~$43.77 excess spend this month. Charging mix (public share 75.0%) is in line with the cohort (75.0%), and the mean price per kWh ($0.405) only marginally exceeds the cohort ($0.388), so the primary driver is consumption rate rather than tariff or mix. Recommended action: enrol this vehicle in the fleet's eco-driving programme.",
+    "valid": true,
+    "guardrail_action": "NONE",
+    "attempts": 1,
+    "attempt_1_guardrail_action": "NONE"
+   }
+  },
+  {
+   "vin": "MRDAZ01S0SC02G9VM",
+   "group_on_10_28": "blocked_twice",
+   "inputs_hash_matched_live": true,
+   "old_prompt": {
+    "playbook": "1.0.0",
+    "cause": "efficiency",
+    "action": "driver_coaching",
+    "headline": "Energy anomaly: vehicle consumes 54% more kWh/100mi than cohort \u2014 driver coaching recommended",
+    "detail": "This vehicle used 42.46 kWh/100mi vs. a cohort median of 27.52 kWh/100mi (+54%), which is the primary driver of the $44.59 energy cost excess. Charging rate is not the issue \u2014 the vehicle's mean price per kWh (\u00a30.371) is actually slightly below the cohort (\u00a30.388), and public share (75%) matches the cohort exactly. The excess stems from inefficient energy consumption, likely due to driving behaviour. Recommended action: schedule driver coaching to address aggressive acceleration, excessive idling, or climate-control usage.",
+    "guardrail_action": "NONE"
+   },
+   "new_prompt": {
+    "playbook": "1.1.0",
+    "cause": "efficiency",
+    "action": "driver_coaching",
+    "headline": "Energy anomaly: vehicle consumes 42.5 kWh/100mi vs cohort 27.5 \u2014 enrol in eco-driving programme",
+    "detail": "Energy flag (2026-09): this vehicle used 42.5 kWh/100 mi, 54% above the cohort median of 27.5 kWh/100 mi, driving ~$54 excess energy cost. Energy cost ratios are 1.37\u00d7 own baseline and 1.48\u00d7 cohort baseline. Charging rate is not the cause \u2014 mean price per kWh (\u00a30.371) is slightly below the cohort (\u00a30.389), and public share (75%) is in line with the cohort (75%). The excess is attributable to elevated energy consumption per mile. Recommended action: enrol this vehicle in the fleet's eco-driving programme.",
+    "valid": true,
+    "guardrail_action": "NONE",
+    "attempts": 1,
+    "attempt_1_guardrail_action": "NONE"
+   }
+  },
+  {
+   "vin": "MRDAZ01S0SC02DR11",
+   "group_on_10_28": "blocked_twice",
+   "inputs_hash_matched_live": true,
+   "old_prompt": {
+    "playbook": "1.0.0",
+    "cause": "efficiency",
+    "action": "driver_coaching",
+    "headline": "Energy anomaly: vehicle uses 21% more kWh/100mi than cohort \u2014 driver coaching recommended",
+    "detail": "This vehicle consumed 33.29 kWh/100mi vs. the cohort median of 27.52 kWh/100mi (+21%), driving $43 in excess energy cost this month (energy ratios: 1.28\u00d7 own baseline, 1.31\u00d7 cohort). While DC fast-charge share is elevated (94.8% vs. cohort 75.5%), the primary driver is above-average energy consumption per mile rather than rate or mix differences alone. Recommended action: driver coaching on efficient acceleration, regenerative braking use, and route planning to reduce per-mile energy draw.",
+    "guardrail_action": "NONE"
+   },
+   "new_prompt": {
+    "playbook": "1.1.0",
+    "cause": "efficiency",
+    "action": "driver_coaching",
+    "headline": "Energy anomaly: vehicle uses 21% more kWh/100mi than cohort \u2014 enrol in eco-driving programme",
+    "detail": "Energy-only flag (Sep 2026). This vehicle consumed 33.3 kWh/100mi vs cohort median of 27.5 kWh/100mi (+21%), driving $40 excess energy cost. DC fast-charge share is 94.8% vs cohort 75.5%, contributing to higher per-kWh cost (\u00a30.42 vs \u00a30.39). Public charging share is in line with cohort (~75%). The excess is primarily efficiency-driven. Recommended action: enrol this vehicle in the fleet's eco-driving programme.",
+    "valid": true,
+    "guardrail_action": "NONE",
+    "attempts": 2,
+    "attempt_1_guardrail_action": null
+   }
+  },
+  {
+   "vin": "MRDAZ01S0RR01XPB4",
+   "group_on_10_28": "blocked_once",
+   "inputs_hash_matched_live": true,
+   "old_prompt": {
+    "playbook": "1.0.0",
+    "cause": "efficiency",
+    "action": "driver_coaching",
+    "headline": "Energy-only anomaly: vehicle uses 21% more kWh/100mi than cohort \u2014 driver coaching recommended",
+    "detail": "This vehicle consumed 33.4 kWh/100mi vs. a cohort median of 27.5 kWh/100mi (+21%), the primary driver of $28.94 in excess energy cost. Public charging share (75.0%) matches the cohort (75.0%), and while DC-fast share is elevated (84.9% vs. 75.5%), the mean price per kWh ($0.413 vs. $0.388) is only modestly above cohort. The dominant cause is reduced energy efficiency, not charging mix or rate. Recommend driver coaching on acceleration, speed management, and climate use.",
+    "guardrail_action": "GUARDRAIL_INTERVENED"
+   },
+   "new_prompt": {
+    "playbook": "1.1.0",
+    "cause": "efficiency",
+    "action": "driver_coaching",
+    "headline": "Energy anomaly: vehicle uses 21% more kWh/100mi than cohort \u2014 enrol in eco-driving programme",
+    "detail": "This vehicle's energy consumption is 33.4 kWh/100mi vs. the cohort median of 27.5 kWh/100mi (+21%), the primary driver of a $28.94 energy cost excess. While public charging share (75.0%) is in line with cohort (75.0%), DC fast charging (84.9% vs. cohort 69.6%) and peak share (45.4% vs. 20.4%) are elevated, but the kWh/mile gap is the dominant factor. Recommended action: enrol this vehicle in the fleet's eco-driving programme.",
+    "valid": true,
+    "guardrail_action": "NONE",
+    "attempts": 1,
+    "attempt_1_guardrail_action": "NONE"
+   }
+  },
+  {
+   "vin": "MRDAZ01S0RC01C8ZR",
+   "group_on_10_28": "passed_first",
+   "inputs_hash_matched_live": true,
+   "old_prompt": {
+    "playbook": "1.0.0",
+    "cause": "efficiency",
+    "action": "driver_coaching",
+    "headline": "Energy anomaly: vehicle uses 20.9% more kWh/100mi than cohort \u2014 driver coaching recommended",
+    "detail": "This vehicle consumed 33.3 kWh/100mi vs. a cohort median of 27.5 kWh/100mi (+20.9%), which is the primary driver of the $26.28 energy cost excess (energy ratio vs. cohort: 1.27x, vs. own history: 1.23x). Price per kWh is modestly above cohort ($0.408 vs. $0.389), and DC-fast share is elevated (86.5% vs. 75.5%), but the efficiency gap is the dominant factor. Recommended action: driver coaching on smooth acceleration, speed management, and pre-conditioning to reduce kWh consumption per mile.",
+    "guardrail_action": "GUARDRAIL_INTERVENED"
+   },
+   "new_prompt": {
+    "playbook": "1.1.0",
+    "cause": "efficiency",
+    "action": "driver_coaching",
+    "headline": "Energy anomaly: above-cohort kWh/100mi is the primary driver of $26 excess energy cost in 2026-09",
+    "detail": "This vehicle consumed 33.3 kWh/100mi vs. a cohort median of 27.5 kWh/100mi (+20.9%), making efficiency the dominant cause of the $26.28 energy cost excess. Charging price is modestly above cohort ($0.408 vs $0.388/kWh), and DC-fast share (86.5%) exceeds the cohort (75.5%), but the kWh/mile gap accounts for the majority of excess. Recommended action: enrol this vehicle in the fleet's eco-driving programme.",
+    "valid": true,
+    "guardrail_action": "NONE",
+    "attempts": 1,
+    "attempt_1_guardrail_action": "NONE"
+   }
+  },
+  {
+   "vin": "MRDAZ01S1TC03NL5L",
+   "group_on_10_28": "blocked_twice",
+   "inputs_hash_matched_live": true,
+   "old_prompt": {
+    "playbook": "1.0.0",
+    "cause": "efficiency",
+    "action": "driver_coaching",
+    "headline": "Energy anomaly: vehicle consumes 39% more kWh/100mi than cohort \u2014 driver coaching recommended",
+    "detail": "This vehicle used 38.4 kWh/100mi vs. a cohort median of 27.5 kWh/100mi (+39.4%), driving $47 in excess energy cost above cohort. Charging mix is not the cause: public share (75.0%) and DC-fast share (75.0%) are nearly identical to cohort (75.0% / 75.5%), and mean price per kWh ($0.387) closely matches the cohort ($0.388). The excess is attributable to poor energy efficiency, likely driving style. Recommended action: driver coaching on efficient driving techniques (smooth acceleration/braking, speed management).",
+    "guardrail_action": "GUARDRAIL_INTERVENED"
+   },
+   "new_prompt": {
+    "playbook": "1.1.0",
+    "cause": "efficiency",
+    "action": "driver_coaching",
+    "headline": "Energy anomaly: vehicle uses 39.4% more kWh/100 mi than cohort \u2014 enrol in eco-driving programme",
+    "detail": "Energy cost is $47.24 above cohort median (ratio: 1.39\u00d7) and 1.24\u00d7 own 6-month baseline, exceeding the $32.42 excess threshold. The primary driver is high energy consumption: 38.4 kWh/100 mi vs. cohort median of 27.5 kWh/100 mi (+39.4%). Charging mix and rate are near-identical to the cohort (public share 75.0% vs. 75.0%; mean price $0.387 vs. $0.388/kWh), ruling those out as causes. Recommended action: enrol this vehicle in the fleet's eco-driving programme.",
+    "valid": true,
+    "guardrail_action": "NONE",
+    "attempts": 1,
+    "attempt_1_guardrail_action": "NONE"
+   }
+  },
+  {
+   "vin": "MRDAZ01S1SC02GAEU",
+   "group_on_10_28": "passed_first",
+   "inputs_hash_matched_live": true,
+   "old_prompt": {
+    "playbook": "1.0.0",
+    "cause": "efficiency",
+    "action": "driver_coaching",
+    "headline": "Energy anomaly: vehicle uses 32% more kWh/100mi than cohort \u2014 driver coaching recommended",
+    "detail": "This vehicle consumed 36.4 kWh/100mi vs. the cohort median of 27.5 kWh/100mi (+32%), driving a $44.33 energy cost excess vs. cohort and 21% above its own 6-month baseline. Charging rate is only marginally elevated ($0.407 vs. $0.388/kWh) and public share matches the cohort (~75%), so neither charging mix nor rate explains the bulk of the excess. The primary driver is abnormally high energy consumption per mile. Recommended action: driver coaching on efficient driving habits (smooth acceleration, speed management).",
+    "guardrail_action": "GUARDRAIL_INTERVENED"
+   },
+   "new_prompt": {
+    "playbook": "1.1.0",
+    "cause": "efficiency",
+    "action": "driver_coaching",
+    "headline": "Energy anomaly: vehicle uses 32% more kWh/100 mi than cohort \u2014 enrol in eco-driving programme",
+    "detail": "This vehicle consumed 36.4 kWh/100 mi vs. the cohort median of 27.5 kWh/100 mi (+32%), driving a $27.53 energy cost excess. Charging mix is not the differentiator: public share (75.0%) matches the cohort (75.0%) and this vehicle's price per kWh ($0.407) is only marginally above the cohort ($0.388). The dominant signal is elevated energy consumption. Recommended action: enrol this vehicle in the fleet's eco-driving programme.",
+    "valid": true,
+    "guardrail_action": "NONE",
+    "attempts": 1,
+    "attempt_1_guardrail_action": "NONE"
+   }
+  },
+  {
+   "vin": "MRDAZ01S0SC02G14V",
+   "group_on_10_28": "blocked_twice",
+   "inputs_hash_matched_live": true,
+   "old_prompt": {
+    "playbook": "1.0.0",
+    "cause": "efficiency",
+    "action": "driver_coaching",
+    "headline": "Energy anomaly: vehicle consumes 29% more kWh/100mi than cohort \u2014 driver coaching recommended",
+    "detail": "This vehicle used 35.49 kWh/100mi vs. a cohort median of 27.52 kWh/100mi (+29%), driving $31.52 in excess energy cost. Charging mix is not the cause \u2014 public share (75.0%) and DC fast share (74.4%) are virtually identical to cohort (75.0% / 75.5%), and mean price per kWh ($0.386) matches the cohort ($0.388). The elevated energy spend is attributable to poor energy efficiency, likely reflecting driving behaviour. Recommend driver coaching to address habits such as harsh acceleration and high-speed driving.",
+    "guardrail_action": "NONE"
+   },
+   "new_prompt": {
+    "playbook": "1.1.0",
+    "cause": "efficiency",
+    "action": "driver_coaching",
+    "headline": "Energy anomaly: vehicle uses 29% more kWh/100 mi than cohort \u2014 enrol in eco-driving programme",
+    "detail": "This vehicle consumed 35.49 kWh/100 mi vs. the cohort median of 27.52 kWh/100 mi (+29%), accounting for ~$31.52 excess energy cost in 2026-09. Charging mix and rate are closely aligned with the cohort (public share 75.0% vs. 75.0%; mean price $0.386/kWh vs. $0.388/kWh), ruling out rate or mix as the primary driver. The excess cost is driven by above-average energy consumption per mile. Recommended action: enrol this vehicle in the fleet's eco-driving programme.",
+    "valid": true,
+    "guardrail_action": "NONE",
+    "attempts": 1,
+    "attempt_1_guardrail_action": "NONE"
+   }
+  },
+  {
+   "vin": "MRDAZ01S0RC018KZL",
+   "group_on_10_28": "blocked_twice",
+   "inputs_hash_matched_live": true,
+   "old_prompt": {
+    "playbook": "1.0.0",
+    "cause": "efficiency",
+    "action": "driver_coaching",
+    "headline": "Energy anomaly: vehicle uses 29% more kWh/100 mi than cohort \u2014 driver coaching recommended",
+    "detail": "This vehicle consumed 35.64 kWh/100 mi vs. the cohort median of 27.52 kWh/100 mi (+29.5%), driving a $25.85 energy cost excess. Charging mix and per-kWh price are not the culprit: public share (75.0%) and DC-fast share (74.9%) are virtually identical to cohort, and mean price per kWh ($0.390) closely matches the cohort ($0.388). The excess is attributable to poor energy efficiency \u2014 likely aggressive driving behaviour. Recommended action: driver coaching on smooth acceleration and regenerative braking.",
+    "guardrail_action": "GUARDRAIL_INTERVENED"
+   },
+   "new_prompt": {
+    "playbook": "1.1.0",
+    "cause": "efficiency",
+    "action": "driver_coaching",
+    "headline": "Energy anomaly: vehicle uses 29.5% more kWh/100mi than cohort \u2014 enrol in eco-driving programme",
+    "detail": "This vehicle consumed 35.6 kWh/100mi vs. the cohort median of 27.5 kWh/100mi (+29.5%), driving a $32 energy cost excess and an energy cost ratio 1.30\u00d7 the cohort. Charging mix is not a factor \u2014 public share (75.0%) and mean price per kWh ($0.390) are nearly identical to cohort ($0.388). The excess is attributable to above-average energy consumption per mile. Recommended action: enrol this vehicle in the fleet's eco-driving programme.",
+    "valid": true,
+    "guardrail_action": "NONE",
+    "attempts": 1,
+    "attempt_1_guardrail_action": "NONE"
+   }
+  },
+  {
+   "vin": "MRDAZ01S2NC0068R7",
+   "group_on_10_28": "passed_first",
+   "inputs_hash_matched_live": true,
+   "old_prompt": {
+    "playbook": "1.0.0",
+    "cause": "efficiency",
+    "action": "driver_coaching",
+    "headline": "Energy anomaly: vehicle uses 31.6% more kWh/100mi than cohort \u2014 driver coaching recommended",
+    "detail": "Vehicle consumes 36.2 kWh/100mi vs. cohort median of 27.5 kWh/100mi (+31.6%), making efficiency the dominant driver of the $41.40 energy cost excess. Energy cost is 1.40\u00d7 the cohort baseline and 1.29\u00d7 the vehicle's own 6-month mean. While price per kWh is modestly above cohort (0.413 vs. 0.388) and DC-fast share is elevated (85% vs. 76%), the per-mile consumption gap is the primary cause. Recommend driver coaching on regenerative braking and smooth acceleration to reduce kWh/mile.",
+    "guardrail_action": "GUARDRAIL_INTERVENED"
+   },
+   "new_prompt": {
+    "playbook": "1.1.0",
+    "cause": "efficiency",
+    "action": "driver_coaching",
+    "headline": "Energy-only anomaly: vehicle consumes 31.6% more kWh/100mi than cohort \u2014 eco-driving programme recommended",
+    "detail": "This vehicle used 36.2 kWh/100mi vs. a cohort median of 27.5 kWh/100mi (+31.6%), driving a $41.40 energy cost excess vs. cohort and $32.41 above its own 6-month baseline. Energy cost ratios are 1.40\u00d7 cohort and 1.29\u00d7 own history. DC-fast share (85.3%) is elevated vs. cohort (75.5%), slightly compounding unit costs, but the dominant signal is excess consumption per mile. Recommended action: enrol this vehicle in the fleet's eco-driving programme.",
+    "valid": true,
+    "guardrail_action": "NONE",
+    "attempts": 1,
+    "attempt_1_guardrail_action": "NONE"
+   }
+  },
+  {
+   "vin": "MRDAZ01S0RC01BKBJ",
+   "group_on_10_28": "blocked_once",
+   "inputs_hash_matched_live": true,
+   "old_prompt": {
+    "playbook": "1.0.0",
+    "cause": "efficiency",
+    "action": "driver_coaching",
+    "headline": "Energy anomaly: vehicle uses 37.9 kWh/100 mi vs cohort 27.5 \u2014 driver coaching recommended",
+    "detail": "Energy cost is $35.21 above both baselines (1.43\u00d7 cohort, 1.27\u00d7 own history). The primary driver is poor energy efficiency: 37.9 kWh/100 mi vs cohort median of 27.5 kWh/100 mi (+38%). Public share (75%) and DC fast share (80%) are nearly identical to cohort norms (75% / 76%), so charging mix and rate are not materially different. The excess kWh consumption points to driving behaviour. Recommended action: driver coaching on efficient driving techniques (smooth acceleration, regen braking, speed management).",
+    "guardrail_action": "GUARDRAIL_INTERVENED"
+   },
+   "new_prompt": {
+    "playbook": "1.1.0",
+    "cause": "efficiency",
+    "action": "driver_coaching",
+    "headline": "Energy anomaly: vehicle consumes 37.9 kWh/100mi vs cohort 27.5 \u2014 enrol in eco-driving programme",
+    "detail": "Energy cost is flagged as anomalous: 42.9% above the cohort median and 26.7% above this vehicle's own 6-month baseline, contributing ~$50 excess. The primary driver is elevated energy consumption: 37.9 kWh/100mi vs a cohort median of 27.5 kWh/100mi (+38%). While the public charging share (75%) and DC-fast share (80%) are also above cohort (75% / 76%), these closely mirror fleet norms and do not explain the excess. The efficiency gap dominates. Recommended action: enrol this vehicle in the fleet's eco-driving programme.",
+    "valid": true,
+    "guardrail_action": "NONE",
+    "attempts": 1,
+    "attempt_1_guardrail_action": "NONE"
+   }
+  },
+  {
+   "vin": "MRDAZ01S1RR01YH0T",
+   "group_on_10_28": "passed_first",
+   "inputs_hash_matched_live": true,
+   "old_prompt": {
+    "playbook": "1.0.0",
+    "cause": "efficiency",
+    "action": "driver_coaching",
+    "headline": "Energy anomaly: vehicle uses 29% more kWh/100 mi than cohort \u2014 driver coaching recommended",
+    "detail": "This vehicle consumed 35.52 kWh/100 mi vs. the cohort median of 27.52 kWh/100 mi (+29%), driving $36 in excess energy cost this month. Energy cost ratios are 1.28\u00d7 own history and 1.33\u00d7 cohort \u2014 both well above the 1.10 threshold. Charging mix (public share: 75.0%) and mean price per kWh ($0.400 vs. $0.388 cohort) are near-identical to peers, ruling out rate or mix as primary causes. The efficiency gap is the clear driver. Recommended action: initiate driver coaching focused on regenerative braking, speed management, and climate control use.",
+    "guardrail_action": "NONE"
+   },
+   "new_prompt": {
+    "playbook": "1.1.0",
+    "cause": "efficiency",
+    "action": "driver_coaching",
+    "headline": "Energy anomaly: vehicle consumes 29% more kWh/100 mi than cohort \u2014 enrol in eco-driving programme",
+    "detail": "This vehicle used 35.52 kWh/100 mi vs. a cohort median of 27.52 kWh/100 mi (+29%), driving a $31.80 energy cost excess. Charging rate (\u00a30.400 vs. $0.388/kWh cohort) and public/DC-fast share (75.0% public, 80.5% DC-fast vs. 75.0% and 75.5% cohort) are near-cohort and cannot explain the excess. The primary cause is above-cohort energy consumption. Recommended action: enrol this vehicle in the fleet's eco-driving programme.",
+    "valid": true,
+    "guardrail_action": "NONE",
+    "attempts": 1,
+    "attempt_1_guardrail_action": "NONE"
+   }
+  },
+  {
+   "vin": "MRDAZ01S1SC02CEDB",
+   "group_on_10_28": "blocked_twice",
+   "inputs_hash_matched_live": true,
+   "old_prompt": {
+    "playbook": "1.0.0",
+    "cause": "efficiency",
+    "action": "driver_coaching",
+    "headline": "Energy anomaly: vehicle consumes 47.8% more kWh/100mi than cohort \u2014 driver coaching recommended",
+    "detail": "This vehicle used 40.68 kWh/100mi vs. the cohort median of 27.52 kWh/100mi \u2014 a 47.8% efficiency gap that accounts for ~$60 in excess energy cost this month. Charging mix (public share: 75.0% vs. cohort 75.0%) and price per kWh ($0.396 vs. $0.389 cohort) are near-identical to the cohort, ruling out rate or mix as primary drivers. The excess is attributable to vehicle/driver energy consumption. Recommended action: driver coaching on regenerative braking, speed management, and climate control usage.",
+    "guardrail_action": "GUARDRAIL_INTERVENED"
+   },
+   "new_prompt": {
+    "playbook": "1.1.0",
+    "cause": "efficiency",
+    "action": "driver_coaching",
+    "headline": "Energy-only anomaly: vehicle consumes 47.8% more kWh/100 mi than cohort \u2014 enrol in eco-driving programme",
+    "detail": "This vehicle used 40.68 kWh/100 mi vs. the cohort median of 27.52 kWh/100 mi (+47.8%), accounting for ~$60 in excess energy spend this month (energy cost 1.51\u00d7 cohort baseline). Charging mix and rate are closely aligned with cohort (public share 75.0% vs. 75.0%; mean price $0.396 vs. $0.388/kWh), so higher consumption per mile is the primary driver of the anomaly. Recommended action: enrol this vehicle in the fleet's eco-driving programme.",
+    "valid": true,
+    "guardrail_action": "NONE",
+    "attempts": 1,
+    "attempt_1_guardrail_action": "NONE"
+   }
+  },
+  {
+   "vin": "MRDAZ01S0NC0059ML",
+   "group_on_10_28": "passed_first",
+   "inputs_hash_matched_live": true,
+   "old_prompt": {
+    "playbook": "1.0.0",
+    "cause": "efficiency",
+    "action": "driver_coaching",
+    "headline": "Energy anomaly: vehicle uses 76% more kWh/100mi than cohort \u2014 driver coaching recommended",
+    "detail": "This vehicle consumed 48.6 kWh/100mi vs. the cohort median of 27.5 kWh/100mi (+76%), generating $64.63 in excess energy cost this month. Charging mix and rate are in line with the cohort: public share (75% vs. 75%), DC fast share (70% vs. 76%), and mean price/kWh ($0.379 vs. $0.388) are all comparable. The dominant driver is poor energy efficiency, likely linked to driving behaviour. Recommended action: driver coaching on smooth acceleration, speed management, and climate control use.",
+    "guardrail_action": "NONE"
+   },
+   "new_prompt": {
+    "playbook": "1.1.0",
+    "cause": "efficiency",
+    "action": "driver_coaching",
+    "headline": "Energy anomaly: vehicle uses 48.6 kWh/100mi vs cohort 27.5 kWh/100mi \u2014 enrol in eco-driving programme",
+    "detail": "This vehicle's energy consumption is 48.6 kWh/100mi, 76% above the cohort median of 27.5 kWh/100mi, generating ~$64.63 in excess energy cost vs both baselines (ratio: 1.73\u00d7 cohort, 1.55\u00d7 own history). Charging mix and price per kWh are closely aligned with cohort (vehicle $0.379/kWh vs cohort $0.389/kWh; public share 75% vs cohort 75%), isolating efficiency as the primary driver. Recommended action: enrol this vehicle in the fleet's eco-driving programme.",
+    "valid": true,
+    "guardrail_action": "NONE",
+    "attempts": 1,
+    "attempt_1_guardrail_action": "NONE"
+   }
+  },
+  {
+   "vin": "MRDAZ01S0PC00FXH6",
+   "group_on_10_28": "blocked_twice",
+   "inputs_hash_matched_live": true,
+   "old_prompt": {
+    "playbook": "1.0.0",
+    "cause": "efficiency",
+    "action": "driver_coaching",
+    "headline": "Energy anomaly: vehicle uses 52% more kWh/100mi than cohort \u2014 driver coaching recommended",
+    "detail": "Vehicle consumed 41.78 kWh/100mi vs. cohort median of 27.52 kWh/100mi (+52%), driving ~$39 in excess energy cost this month. Charging mix is nearly identical to cohort (public share 75.0% vs 75.0%; DC-fast 56.7% vs 75.5%), and price per kWh is actually below cohort (0.353 vs 0.389). The excess is therefore attributable to poor energy efficiency, not charging behaviour or rates. Recommend driver coaching focused on regenerative braking, speed management, and climate control usage.",
+    "guardrail_action": "GUARDRAIL_INTERVENED"
+   },
+   "new_prompt": {
+    "playbook": "1.1.0",
+    "cause": "efficiency",
+    "action": "driver_coaching",
+    "headline": "Energy-only anomaly: vehicle uses 52% more kWh/100 mi than cohort \u2014 enrol in eco-driving programme",
+    "detail": "This vehicle consumed 41.78 kWh/100 mi vs. the cohort median of 27.52 kWh/100 mi \u2014 52% above average \u2014 driving $39.47 of excess energy cost this month. Charging mix does not explain the gap: public share (75.0%) matches the cohort (75.0%), and this vehicle's DC-fast share (56.7%) is actually below the cohort (75.5%), while its mean price per kWh (\u00a30.353) is below the cohort (\u00a30.388). The excess is attributable to higher energy consumption per mile. Recommended action: enrol this vehicle in the fleet's eco-driving programme.",
+    "valid": true,
+    "guardrail_action": "NONE",
+    "attempts": 1,
+    "attempt_1_guardrail_action": "NONE"
+   }
+  },
+  {
+   "vin": "MRDAZ01S0SC02FLES",
+   "group_on_10_28": "blocked_once",
+   "inputs_hash_matched_live": true,
+   "old_prompt": {
+    "playbook": "1.0.0",
+    "cause": "efficiency",
+    "action": "driver_coaching",
+    "headline": "Energy anomaly: vehicle uses 19.8% more kWh/100mi than cohort \u2014 driver coaching recommended",
+    "detail": "Vehicle consumes 32.98 kWh/100mi vs. cohort median of 27.52 kWh/100mi (+19.8%), the primary driver of a $27.28 energy cost excess this month (energy ratio vs. cohort: 1.203). Charging price per kWh (0.389) and public charging share (75.0%) are nearly identical to cohort benchmarks, ruling out rate or mix issues. The excess is attributable to elevated energy consumption per mile. Recommended action: driver coaching focused on regenerative braking, smooth acceleration, and climate control usage.",
+    "guardrail_action": "GUARDRAIL_INTERVENED"
+   },
+   "new_prompt": {
+    "playbook": "1.1.0",
+    "cause": "efficiency",
+    "action": "driver_coaching",
+    "headline": "Energy cost anomaly: above-cohort kWh/100mi is the primary driver of excess energy spend",
+    "detail": "This vehicle consumed 32.98 kWh/100 mi vs. cohort median 27.52 kWh/100 mi (+19.8%), driving ~$27 of excess energy cost. Charging mix and price per kWh are essentially in line with the cohort (public share 75.0% vs. 75.0%; mean price $0.389 vs. $0.388/kWh), so elevated consumption \u2014 not rate or mix \u2014 explains the anomaly. Recommended action: enrol this vehicle in the fleet's eco-driving programme.",
+    "valid": true,
+    "guardrail_action": "NONE",
+    "attempts": 1,
+    "attempt_1_guardrail_action": "NONE"
+   }
+  },
+  {
+   "vin": "MRDAZ01S2NC006TR6",
+   "group_on_10_28": "blocked_once",
+   "inputs_hash_matched_live": true,
+   "old_prompt": {
+    "playbook": "1.0.0",
+    "cause": "efficiency",
+    "action": "driver_coaching",
+    "headline": "Energy anomaly: vehicle uses 34% more kWh/100mi than cohort \u2014 driver coaching recommended",
+    "detail": "This vehicle consumed 36.98 kWh/100mi vs. the cohort median of 27.52 kWh/100mi (+34.4%), driving a $23.26 energy cost excess. Price per kWh is close to cohort (0.399 vs. 0.388) and public charging share is virtually identical (75.0% vs. 75.0%), so rate and mix are not the cause. The DC-fast share is slightly elevated (84.2% vs. 75.5%) but the dominant factor is poor energy efficiency. Recommend driver coaching on smooth acceleration, regenerative braking, and speed management to reduce consumption.",
+    "guardrail_action": "GUARDRAIL_INTERVENED"
+   },
+   "new_prompt": {
+    "playbook": "1.1.0",
+    "cause": "efficiency",
+    "action": "driver_coaching",
+    "headline": "Energy anomaly: vehicle consumes 34% more kWh/100 mi than cohort \u2014 enrol in eco-driving programme",
+    "detail": "This vehicle used 36.98 kWh/100 mi vs. the cohort median of 27.52 kWh/100 mi (+34%), driving $23.26 in excess energy cost (energy ratios: 1.39\u00d7 cohort, 1.20\u00d7 own history). Public charging share (75.0%) is essentially equal to the cohort (75.0%), and the mean price per kWh ($0.399 vs. $0.388 cohort) is not materially elevated, ruling out rate or mix as primary causes. The excess is attributable to higher energy consumption per mile. Recommended action: enrol this vehicle in the fleet's eco-driving programme.",
+    "valid": true,
+    "guardrail_action": "NONE",
+    "attempts": 1,
+    "attempt_1_guardrail_action": "NONE"
+   }
+  },
+  {
+   "vin": "MRDAZ01S1RC018W4C",
+   "group_on_10_28": "blocked_twice",
+   "inputs_hash_matched_live": true,
+   "old_prompt": {
+    "playbook": "1.0.0",
+    "cause": "efficiency",
+    "action": "driver_coaching",
+    "headline": "Energy cost anomaly: vehicle uses 32% more kWh/100mi than cohort \u2014 driver coaching recommended",
+    "detail": "This vehicle consumed 36.3 kWh/100mi vs. the cohort median of 27.5 kWh/100mi (+32%), making efficiency the primary driver of the $34.77 energy cost excess. Price per kWh is only modestly higher ($0.404 vs. $0.389 cohort), and public charging share is nearly identical to cohort (75% vs. 75%), so neither charging rate nor mix explain the anomaly. The excess energy volume \u2014 not price \u2014 is the root cause. Recommended action: driver coaching on efficient driving habits (acceleration, speed management) to bring kWh/100mi in line with fleet norms.",
+    "guardrail_action": "NONE"
+   },
+   "new_prompt": {
+    "playbook": "1.1.0",
+    "cause": "efficiency",
+    "action": "driver_coaching",
+    "headline": "Energy anomaly: vehicle consumes 36.3 kWh/100mi vs cohort 27.5 kWh/100mi \u2014 enrol in eco-driving programme",
+    "detail": "Energy cost is $34.77 above both baselines (own ratio 1.23\u00d7, cohort ratio 1.38\u00d7). The primary driver is excess energy consumption: 36.3 kWh/100mi vs cohort median 27.5 kWh/100mi (+32%). Charging mix is essentially identical to the cohort (public share 75.0% vs 75.0%), and mean price per kWh (0.404) is only marginally above cohort (0.388), ruling out rate or mix as primary causes. Recommended action: enrol this vehicle in the fleet's eco-driving programme.",
+    "valid": true,
+    "guardrail_action": "NONE",
+    "attempts": 1,
+    "attempt_1_guardrail_action": "NONE"
+   }
+  },
+  {
+   "vin": "MRDAZ01S0RC017564",
+   "group_on_10_28": "blocked_twice",
+   "inputs_hash_matched_live": true,
+   "old_prompt": {
+    "playbook": "1.0.0",
+    "cause": "efficiency",
+    "action": "driver_coaching",
+    "headline": "Energy cost ~43% above cohort driven by high kWh/mi consumption \u2014 driver coaching recommended",
+    "detail": "This vehicle used 38.06 kWh/100mi vs. the cohort median of 27.52 kWh/100mi (+38%), the primary driver of $45.80 excess energy cost. Charging rate is only marginally higher ($0.399 vs $0.388/kWh) and public/peak share is nearly identical to the cohort (75% vs 75%), so mix is not the cause. The excess is consumption-driven. Recommend driver coaching on smooth acceleration, speed management, and climate control use to bring efficiency in line with cohort.",
+    "guardrail_action": "NONE"
+   },
+   "new_prompt": {
+    "playbook": "1.1.0",
+    "cause": "efficiency",
+    "action": "driver_coaching",
+    "headline": "Energy anomaly: vehicle uses 38.1 kWh/100mi vs cohort 27.5 kWh/100mi \u2014 enrol in eco-driving programme",
+    "detail": "This vehicle's energy consumption is 38.1 kWh/100mi, 38% above the cohort median of 27.5 kWh/100mi, driving $48 in excess energy cost this month (energy ratios: 1.40\u00d7 own baseline, 1.43\u00d7 cohort). Charging rate is only marginally above cohort ($0.399 vs $0.389/kWh) and public share is virtually identical to cohort (75.0% vs 75.0%), so neither pricing nor charging mix explains the excess. The primary driver is above-average energy consumption per mile. Recommended action: enrol this vehicle in the fleet's eco-driving programme.",
+    "valid": true,
+    "guardrail_action": "NONE",
+    "attempts": 1,
+    "attempt_1_guardrail_action": "NONE"
+   }
+  },
+  {
+   "vin": "MRDAZ01S1PC00GCHJ",
+   "group_on_10_28": "blocked_twice",
+   "inputs_hash_matched_live": true,
+   "old_prompt": {
+    "playbook": "1.0.0",
+    "cause": "efficiency",
+    "action": "driver_coaching",
+    "headline": "Energy anomaly: vehicle uses 36% more kWh/100mi than cohort \u2014 driver coaching recommended",
+    "detail": "This vehicle consumed 37.56 kWh/100mi vs. a cohort median of 27.52 kWh/100mi (+36%), driving $35 in excess energy cost this month. Charging mix (75.0% public) and mean price per kWh ($0.378 vs. cohort $0.388) are in line with peers, ruling out rate or mix as the primary cause. The efficiency gap accounts for the full $20+ energy overage. Recommended action: driver coaching to address acceleration, speed, or climate usage patterns that may be inflating energy consumption.",
+    "guardrail_action": "GUARDRAIL_INTERVENED"
+   },
+   "new_prompt": {
+    "playbook": "1.1.0",
+    "cause": "efficiency",
+    "action": "driver_coaching",
+    "headline": "Energy anomaly: vehicle uses 37.6 kWh/100 mi vs cohort 27.5 kWh/100 mi \u2014 enrol in eco-driving programme",
+    "detail": "Energy cost is $20.31 above both baselines (1.17\u00d7 own history, 1.33\u00d7 cohort). The vehicle consumes 37.6 kWh/100 mi vs the cohort median of 27.5 kWh/100 mi \u2014 a 36.5% efficiency gap that is the primary driver of excess. Price per kWh (0.378) is slightly below the cohort (0.388), and public/DC-fast shares are in line with cohort, ruling out charging mix or rate as the cause. Recommended action: enrol this vehicle in the fleet's eco-driving programme.",
+    "valid": true,
+    "guardrail_action": "NONE",
+    "attempts": 1,
+    "attempt_1_guardrail_action": "NONE"
+   }
+  },
+  {
+   "vin": "MRDAZ01S2PC00GN1H",
+   "group_on_10_28": "blocked_twice",
+   "inputs_hash_matched_live": true,
+   "old_prompt": {
+    "playbook": "1.0.0",
+    "cause": "efficiency",
+    "action": "driver_coaching",
+    "headline": "Energy anomaly: vehicle uses 27% more kWh/100mi than cohort \u2014 driver coaching recommended",
+    "detail": "This vehicle consumed 35.06 kWh/100mi vs. a cohort median of 27.52 kWh/100mi (+27.4%), driving a $35.64 energy cost excess vs. cohort and $21.25 above own baseline \u2014 the primary flag trigger. Price per kWh is modestly elevated (0.408 vs. 0.388 cohort), and DC-fast share is higher than cohort (91% vs. 76%), which may contribute to both the rate and the efficiency gap. Public charging share is in line with cohort. The dominant signal is energy consumption rate. Recommended action: driver coaching on regenerative braking, speed management, and reducing DC-fast reliance.",
+    "guardrail_action": "GUARDRAIL_INTERVENED"
+   },
+   "new_prompt": {
+    "playbook": "1.1.0",
+    "cause": "efficiency",
+    "action": "driver_coaching",
+    "headline": "Energy anomaly: vehicle uses 27% more kWh/100mi than cohort \u2014 enrol in eco-driving programme",
+    "detail": "This vehicle's energy consumption is 35.06 kWh/100mi vs. a cohort median of 27.52 kWh/100mi (+27.4%), making it the dominant driver of the $35.64 energy cost excess over cohort. Energy cost is 34.4% above the cohort baseline and 18.0% above this vehicle's own 6-month mean, totalling $21.25 excess vs. both thresholds. Public charging share (75.0%) matches the cohort, and price per kWh ($0.408 vs. $0.388 cohort) is only marginally higher, so the excess is primarily efficiency-driven. Recommended action: enrol this vehicle in the fleet's eco-driving programme.",
+    "valid": true,
+    "guardrail_action": "NONE",
+    "attempts": 1,
+    "attempt_1_guardrail_action": "NONE"
+   }
+  },
+  {
+   "vin": "MRDAZ01S1RC019U84",
+   "group_on_10_28": "blocked_twice",
+   "inputs_hash_matched_live": true,
+   "old_prompt": {
+    "playbook": "1.0.0",
+    "cause": "efficiency",
+    "action": "driver_coaching",
+    "headline": "Energy anomaly: vehicle uses 48% more kWh/100mi than cohort \u2014 driver coaching recommended",
+    "detail": "Vehicle consumes 40.80 kWh/100mi vs. cohort median of 27.52 kWh/100mi (+48%), the primary driver of a $47.11 energy cost excess. Energy cost ratios are elevated vs. both own history (1.38\u00d7) and cohort (1.51\u00d7). Charging rate is only marginally higher ($0.395 vs. $0.389/kWh) and public share is effectively identical to cohort (75%), so neither charging mix nor rate explains the excess. The inefficiency pattern points to driving behaviour. Recommended action: driver coaching on regenerative braking and smooth acceleration to bring kWh/100mi in line with cohort.",
+    "guardrail_action": "GUARDRAIL_INTERVENED"
+   },
+   "new_prompt": {
+    "playbook": "1.1.0",
+    "cause": "efficiency",
+    "action": "driver_coaching",
+    "headline": "Energy-only anomaly: vehicle consuming 48% more kWh/100mi than cohort \u2014 enrol in eco-driving programme",
+    "detail": "This vehicle's energy consumption is 40.80 kWh/100mi vs. a cohort median of 27.52 kWh/100mi (+48%), driving a $47.11 energy cost excess. Energy cost ratios confirm the anomaly: 1.38\u00d7 own baseline and 1.51\u00d7 cohort. While public charging share (75%) matches the cohort, the elevated consumption per mile is the dominant driver of excess cost. Recommended action: enrol this vehicle in the fleet's eco-driving programme to address its above-average energy use per mile.",
+    "valid": true,
+    "guardrail_action": "NONE",
+    "attempts": 1,
+    "attempt_1_guardrail_action": "NONE"
+   }
+  },
+  {
+   "vin": "MRDAZ01S1SR0340V3",
+   "group_on_10_28": "blocked_twice",
+   "inputs_hash_matched_live": true,
+   "old_prompt": {
+    "playbook": "1.0.0",
+    "cause": "efficiency",
+    "action": "driver_coaching",
+    "headline": "Energy anomaly: vehicle uses 31% more kWh/100 mi than cohort \u2014 driver coaching recommended",
+    "detail": "This vehicle consumed 36.15 kWh/100 mi vs. the cohort median of 27.52 kWh/100 mi (+31%), driving a $44.43 energy cost excess (energy ratios: 1.39\u00d7 own baseline, 1.40\u00d7 cohort). Charging mix is in line with peers (public share 75.0% vs. cohort 75.0%), so elevated consumption \u2014 not rate or mix \u2014 is the primary driver. Recommend driver coaching to address habits that increase energy use (e.g., aggressive acceleration, excessive climate control). A mechanical inspection may be considered if coaching does not improve efficiency.",
+    "guardrail_action": "GUARDRAIL_INTERVENED"
+   },
+   "new_prompt": {
+    "playbook": "1.1.0",
+    "cause": "efficiency",
+    "action": "driver_coaching",
+    "headline": "Energy-only anomaly: vehicle consumes 31% more kWh/100 mi than cohort \u2014 enrol in eco-driving programme",
+    "detail": "This vehicle's energy consumption is 36.15 kWh/100 mi vs. the cohort median of 27.52 kWh/100 mi (+31%), which is the primary driver of the $44.43 energy cost excess (energy cost ratio: 1.40\u00d7 own baseline, 1.40\u00d7 cohort). Price per kWh (0.411) is only marginally above the cohort (0.388), and public charging share (75.0%) matches the cohort exactly, ruling out charging mix or rate as the root cause. Recommended action: enrol this vehicle in the fleet's eco-driving programme.",
+    "valid": true,
+    "guardrail_action": "NONE",
+    "attempts": 1,
+    "attempt_1_guardrail_action": "NONE"
+   }
+  },
+  {
+   "vin": "MRDAZ01S1RC01A1BW",
+   "group_on_10_28": "blocked_twice",
+   "inputs_hash_matched_live": true,
+   "old_prompt": {
+    "playbook": "1.0.0",
+    "cause": "efficiency",
+    "action": "driver_coaching",
+    "headline": "Energy-only anomaly: vehicle consumes 31% more kWh/100mi than cohort \u2014 driver coaching recommended",
+    "detail": "This vehicle's energy consumption is 36.18 kWh/100mi vs. cohort median of 27.52 kWh/100mi (+31.5%), driving ~$35.59 excess energy cost in 2026-09. Charging rate (mean $0.388/kWh) and public/DC-fast share are virtually identical to cohort, ruling out rate or mix as causes. The anomaly is attributable to efficiency \u2014 likely driving behaviour. Recommended action: driver coaching to improve regenerative braking and speed management.",
+    "guardrail_action": "NONE"
+   },
+   "new_prompt": {
+    "playbook": "1.1.0",
+    "cause": "efficiency",
+    "action": "driver_coaching",
+    "headline": "Energy anomaly: above-cohort kWh/100mi drives ~$35.59 excess in 2026-09",
+    "detail": "This vehicle used 36.18 kWh/100 mi vs. cohort median 27.52 kWh/100 mi (+31.5%), generating ~$35.59 in excess energy cost. Charging rate is not a factor \u2014 mean price per kWh (\u00a30.388) is virtually identical to cohort (\u00a30.388), and public/DC-fast shares are in line with cohort. The excess is driven by elevated energy consumption per mile. Recommended action: enrol this vehicle in the fleet's eco-driving programme.",
+    "valid": true,
+    "guardrail_action": "NONE",
+    "attempts": 1,
+    "attempt_1_guardrail_action": "NONE"
+   }
+  },
+  {
+   "vin": "MRDAZ01S0RR01WSLM",
+   "group_on_10_28": "blocked_twice",
+   "inputs_hash_matched_live": true,
+   "old_prompt": {
+    "playbook": "1.0.0",
+    "cause": "efficiency",
+    "action": "driver_coaching",
+    "headline": "Energy anomaly: vehicle uses 34% more kWh/100mi than cohort \u2014 driver coaching recommended",
+    "detail": "This vehicle consumed 36.91 kWh/100mi vs. the cohort median of 27.52 kWh/100mi (+34%), driving $33.63 in excess energy cost. Price per kWh (0.387) closely matches the cohort (0.388), and public charging share (75.0%) is essentially identical to cohort (75.0%), ruling out rate or mix issues. The excess stems from poor energy efficiency \u2014 likely aggressive acceleration, high auxiliary load, or vehicle condition. Recommended action: driver coaching on efficient driving behaviour. A mechanical inspection may also be considered if coaching does not resolve the anomaly.",
+    "guardrail_action": "GUARDRAIL_INTERVENED"
+   },
+   "new_prompt": {
+    "playbook": "1.1.0",
+    "cause": "efficiency",
+    "action": "driver_coaching",
+    "headline": "Energy anomaly: vehicle uses 34% more kWh/100mi than cohort \u2014 enrol in eco-driving programme",
+    "detail": "This vehicle consumed 36.91 kWh/100mi vs. the cohort median of 27.52 kWh/100mi (+34%), driving a $41 energy cost excess and a cohort energy ratio of 1.34. Charging rate is not the cause: mean price per kWh (\u00a30.387) is virtually identical to the cohort (\u00a30.388), and public/DC-fast shares are both in line with cohort norms. The excess is explained by above-average energy consumption. Recommended action: enrol this vehicle in the fleet's eco-driving programme.",
+    "valid": true,
+    "guardrail_action": "NONE",
+    "attempts": 1,
+    "attempt_1_guardrail_action": "NONE"
+   }
+  },
+  {
+   "vin": "MRDAZ01S0RR01WJFG",
+   "group_on_10_28": "blocked_twice",
+   "inputs_hash_matched_live": true,
+   "old_prompt": {
+    "playbook": "1.0.0",
+    "cause": "efficiency",
+    "action": "driver_coaching",
+    "headline": "Energy anomaly: vehicle consumes 53% more kWh/100mi than cohort \u2014 driver coaching recommended",
+    "detail": "Energy cost is $53.25 above cohort (1.44\u00d7 cohort baseline, 1.57\u00d7 own history). The primary driver is poor energy efficiency: 42.0 kWh/100mi vs. cohort median of 27.5 kWh/100mi (+53%). Price per kWh is actually slightly below cohort (0.365 vs. 0.389), and public/DC-fast charging share is in line with peers, ruling out rate or mix issues. Recommend driver coaching focused on smooth acceleration, speed management, and regenerative braking to close the efficiency gap.",
+    "guardrail_action": "GUARDRAIL_INTERVENED"
+   },
+   "new_prompt": {
+    "playbook": "1.1.0",
+    "cause": "efficiency",
+    "action": "driver_coaching",
+    "headline": "Energy anomaly: vehicle uses 53% more kWh/100 mi than cohort \u2014 enrol in eco-driving programme",
+    "detail": "This vehicle consumed 42.03 kWh/100 mi vs. a cohort median of 27.52 kWh/100 mi (+53%), driving $53.25 excess energy cost. Energy cost ratios are 1.57\u00d7 own baseline and 1.44\u00d7 cohort baseline. Charging price (\u00a30.365/kWh) is slightly below the cohort (\u00a30.388/kWh), and public charging share matches the cohort (~75%), ruling out rate or mix as primary causes. The excess is attributable to elevated energy consumption per mile. Recommended action: enrol this vehicle in the fleet's eco-driving programme.",
+    "valid": true,
+    "guardrail_action": "NONE",
+    "attempts": 1,
+    "attempt_1_guardrail_action": "NONE"
+   }
+  },
+  {
+   "vin": "MRDAZ01S0SC02GC7S",
+   "group_on_10_28": "blocked_twice",
+   "inputs_hash_matched_live": true,
+   "old_prompt": {
+    "playbook": "1.0.0",
+    "cause": "efficiency",
+    "action": "driver_coaching",
+    "headline": "Energy anomaly: vehicle uses 31.4% more kWh/100mi than cohort \u2014 driver coaching recommended",
+    "detail": "This vehicle consumed 36.17 kWh/100mi vs. the cohort median of 27.52 kWh/100mi (+31.4%), driving a $36.88 energy cost excess vs. cohort and $20.72 above both baselines. Price per kWh is in line with the cohort (0.390 vs. 0.388 $/kWh), and public charging share is essentially identical (75.0% vs. 75.0%), ruling out charging mix or rate as the primary driver. The elevated energy consumption is the clear cause. Recommended action: schedule driver coaching focused on regenerative braking and efficient driving techniques.",
+    "guardrail_action": "GUARDRAIL_INTERVENED"
+   },
+   "new_prompt": {
+    "playbook": "1.1.0",
+    "cause": "efficiency",
+    "action": "driver_coaching",
+    "headline": "Energy anomaly: vehicle uses 31% more kWh/100 mi than cohort \u2014 enrol in eco-driving programme",
+    "detail": "This vehicle's energy consumption is 36.2 kWh/100 mi vs. a cohort median of 27.5 kWh/100 mi (+31%), driving a $36.88 energy cost excess and a 33% energy cost premium over the cohort. Charging rate is not the cause: mean price per kWh is nearly identical to cohort (0.390 vs 0.389), and public share is the same (75%). The elevated DC-fast share (81% vs 76% cohort) reflects the high energy draw rather than a tariff issue. Recommended action: enrol this vehicle in the fleet's eco-driving programme.",
+    "valid": true,
+    "guardrail_action": "NONE",
+    "attempts": 1,
+    "attempt_1_guardrail_action": "NONE"
+   }
+  }
+ ]
+}

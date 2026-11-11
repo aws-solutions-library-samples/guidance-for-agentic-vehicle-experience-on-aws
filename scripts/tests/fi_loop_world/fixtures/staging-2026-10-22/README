@@ -1,0 +1,5 @@
+Real shapes captured read-only 2026-10-22 ~23:20Z from adp-staging.
+Account ID scrubbed to 123456789012; operator username scrubbed to user/operator.
+In the Glue view fixtures, the base64-encoded JSON's "owner" field was
+replaced with the same-length placeholder and re-encoded before capture.
+Rows are not altered; subsetting rows is fine but altering a row value is not.

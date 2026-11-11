@@ -1,0 +1,98 @@
+{
+  "_comment": "AVX broker + executor policy defaults — seeded into SSM Parameter Store at 'cdk deploy vsa-{stage}-avx-*'. All values are user-tunable via the future admin configurator; no code change required to adjust them. Keys use the literal '{stage}' template token; seeding substitutes the actual stage name.",
+  "_addenda": "D3 (APNs threshold + rate-limit + cardinality-cap) and D5 (retry-policy + escalation). See spec.md § 'Config-driven policy (Addenda D3, D5)' and § 'Retry count + escalation target — proposal'.",
+  "parameters": [
+    {
+      "_key_template": "/vsa/{stage}/avx/broker/apns-severity-threshold",
+      "description": "Minimum Finding severity that triggers an APNs push. Sub-threshold findings create an in-app card only. Addendum D3, assumption-flagged pending user confirmation.",
+      "staging_default": "p0",
+      "type": "String",
+      "_note_d3": "Assumption: P0-only is the right threshold. Flagged in decisions.md § '2026-09-18 — D3 assumption flagged'. This value is NOT provisional — it is the spec-stated default. The assumption itself (P0 only fires APNs) is what is flagged for user confirmation."
+    },
+    {
+      "_key_template": "/vsa/{stage}/avx/broker/rate-limit",
+      "description": "Per-owner card creation caps. 'day' is a rolling 24-hour window; 'hour' is a rolling 60-minute window. Excess requests are rejected at the broker before card creation.",
+      "staging_default": {"day": 10, "hour": 3},
+      "type": "String",
+      "_ssm_encoding": "JSON string: '{\"day\":10,\"hour\":3}'"
+    },
+    {
+      "_key_template": "/vsa/{stage}/avx/broker/cardinality-cap",
+      "description": "Per-owner per-day ceiling on total open cards (across all Findings + Actions). Excess is truncated by lowest priority + oldest first.",
+      "staging_default": 15,
+      "type": "String",
+      "_ssm_encoding": "String representation of integer: '15'"
+    },
+    {
+      "_key_template": "/vsa/{stage}/avx/executor/{target}/retry-policy",
+      "_target_example": "dms",
+      "description": "Per-target retry count and exponential backoff window for transient failures (5xx, network, timeout). Terminal 4xx failures are never retried — they transition directly to Action.status=declined. On retry-budget exhaustion, Action.status=failed.",
+      "staging_default": {
+        "retry_count": 3,
+        "backoff_base_ms": 1000,
+        "backoff_cap_ms": 4000
+      },
+      "type": "String",
+      "_ssm_encoding": "JSON string",
+      "_CONFIRMED": "2026-09-18 — user-confirmed per spec.md § 'Retry count + escalation target — CONFIRMED 2026-09-18 (SNS topic choice still open)'. Replaces a stale _PROVISIONAL marker that claimed these were a coder proposal pending sign-off, and cited that section by its pre-confirmation name. The SNS topic choice remains open; the retry/backoff values below do not.",
+      "_rationale": "retry_count=3 (initial + 2 retries), backoff_base_ms=1000, backoff_cap_ms=4000 gives a worst-case wall clock of ~6s, safely under API Gateway's 29s timeout so the approve route can remain synchronous."
+    },
+    {
+      "_key_template": "/vsa/{stage}/avx/executor/{target}/escalation",
+      "_target_example": "dms",
+      "description": "Escalation configuration fired when Action.status transitions to 'failed' (retry budget exhausted). Dual escalation: owner-visible synthetic iOS card + operator-visible EventBridge + CloudWatch metric.",
+      "staging_default": {
+        "owner_visible": {
+          "executor": "ios-owner",
+          "category": "service",
+          "severity": "informational"
+        },
+        "operator_visible": {
+          "eventbridge_source": "vsa.avx.executor",
+          "eventbridge_detail_type": "TerminalFailure",
+          "cloudwatch_metric": "AVXActionTerminalFailure",
+          "cloudwatch_dimension": "target_system",
+          "sns_topic_name": "vsa-{stage}-avx-action-terminal-failure-alerts"
+        }
+      },
+      "type": "String",
+      "_ssm_encoding": "JSON string",
+      "_CONFIRMED": "2026-09-18 — retry policy and dual-escalation shape confirmed by the user; dedicated SNS topic confirmed (NOT the shared Tier 2 alarm topic). See decisions.md § '2026-09-18 — User confirmations: D5 retry policy and dual escalation' and § '2026-09-18 — User confirmation (c)'. No longer provisional.",
+      "_note_subscription": "Group 7 acceptance criterion, not a follow-up: the topic MUST have a subscription with a real endpoint and an observed delivery. Publishing into an unsubscribed topic records the failure and tells no human — that is the CMS VFO failure mode (100% failure for 14+ days, empty AlarmActions, nobody paged). Created / published-to / delivered-and-observed are three separate claims.",
+      "_note_d5": "Addendum D5. 'failed' and 'declined' are distinct terminal states. 'declined' = target refused (4xx, no retry, no escalation). 'failed' = executor exhausted retries, fires this escalation config."
+    },
+    {
+      "_key_template": "/vsa/{stage}/avx/fi-cost/max-diagnoses-per-run",
+      "description": "FI cost agent (agent-fi-cost, component cost): the most vehicles one daily run diagnoses with a model call, counted after unchanged vehicles are skipped. Vehicles past it wait for the next daily run, in excess-cost order, and are counted as 'deferred' in the run record. One diagnosis is at most two Converse calls (one retry). Integer 0..500; an absent or malformed value falls back to the built-in default 50.",
+      "staging_default": 50,
+      "type": "String",
+      "_ssm_encoding": "String representation of integer: '50'",
+      "_source": "Spec 2026-10-02-fi-cost-stage-b U5 / D11 (default 50, about $0.90 a full run at Sonnet 4.6 list price); decisions.md 2026-10-05 item 6 (the cap counts model calls after the unchanged-skip, not the selection query). Read by agents/tier2/runner.resolve_max_diagnoses_per_run; a one-run override is the event field max_diagnoses_per_run (task 5.3 item 2)."
+    },
+    {
+      "_key_template": "/vsa/{stage}/avx/fi-rebalancing/policy",
+      "description": "FI rebalancing agent (agent-fi-rebalancing, component rebalance): its U9 thresholds. target_utilization: a source stays at or under this forecast utilisation after its moves. deficit_above: forecast utilisation above this is a deficit day. max_utilization: the most of a vehicle's operating hours that can be on rent. min_net_benefit_usd: move candidates under this are dropped. max_vehicles_per_move: the most vehicles one move names. Exactly these keys; no default exists in code, so an absent or malformed value aborts the run before any write.",
+      "staging_default": {
+        "target_utilization": 0.85,
+        "deficit_above": 0.90,
+        "max_utilization": 0.95,
+        "min_net_benefit_usd": 100,
+        "max_vehicles_per_move": 10
+      },
+      "type": "String",
+      "_ssm_encoding": "JSON string",
+      "_source": "Spec 2026-10-06-fi-rebalancing-stage-e U9 (approved 2026-10-06): target 85%, deficit above 90%, at most 95% achievable, at most 10 vehicles a move. At least $100 net benefit a move, as U9 names: the agent used $50 from task 4.1c until the user approved U9's $100 for Group 6 (decisions.md 2026-10-16). deficit_above and target_utilization must equal ADP's fleet_bookings_parameters row (parameters.yaml), which ADP's supply_demand_gaps view applies; surplus_below (70%) is applied only there. Read by agents/fi_rebalancing/policy.load_from_ssm. The auto-approval bounds (U6) are their own parameter below (Group 8, task 8.3), because this one's loader requires exactly its own keys."
+    },
+    {
+      "_key_template": "/vsa/{stage}/avx/fi-rebalancing/auto-approval-bounds",
+      "description": "Auto-approval bounds for limited action kinds (move_vehicles, U6). max_limit_usd: the largest limit any rule may carry; a rule approves a move only when the move's transfer_cost_usd is at or under the rule's limit. max_vehicles_per_auto_move: the most vehicles one rule-approved move may name. Exactly these keys. Read at run time by the approval-rules API (validates a rule's limit), the auto-approver (approves only within them) and CMS's internal move route (re-checks them); an absent, unreadable or malformed value fails closed in all three.",
+      "staging_default": {
+        "max_limit_usd": 500,
+        "max_vehicles_per_auto_move": 5
+      },
+      "type": "String",
+      "_ssm_encoding": "JSON string: '{\"max_limit_usd\":500,\"max_vehicles_per_auto_move\":5}'",
+      "_source": "Spec 2026-10-06-fi-rebalancing-stage-e U6 (approved 2026-10-06): a transfer-cost limit bounded at $500, at most 5 vehicles. Parsed by agents/executors/policy.parse_auto_approval_bounds (AVX) and services/fleet_intelligence/moves.parse_auto_approval_bounds (CMS); group8-notes G8-D5."
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "action_id": "AVX-ACT-f0a1b2c3-d4e5-6789-f0ab-cdef01234567",
+  "finding_id": "FIND-d7e8f9a0-b1c2-3456-def0-123456789abc",
+  "created_by": "owner-a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "created_at": "2026-10-02T10:00:00Z",
+  "updated_at": "2026-10-02T10:00:00Z",
+  "target_system": "none",
+  "status": "completed",
+  "action_kind": "acknowledge_only",
+  "parameters": {},
+  "evidence": [],
+  "audit_trail": [
+    {
+      "at": "2026-10-02T10:00:00Z",
+      "by": "owner-a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "from_status": "pending_execution",
+      "to_status": "completed",
+      "note": "Operator acknowledged fleet gap finding"
+    }
+  ],
+  "decided_by": {
+    "kind": "operator",
+    "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+  },
+  "decision": "approved"
+}

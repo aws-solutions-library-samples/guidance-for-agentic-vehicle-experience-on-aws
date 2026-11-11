@@ -1,0 +1,23 @@
+boto3==1.43.6
+# Same pins as lambdas/api-avx-findings/requirements.txt (FI Action Queue Stage A, Group 2
+# review Cycle 9 Critical): this Lambda also bundles agents/executors/ (bundle_executors) to
+# dispatch rule decisions, and dms.py / vehicle_command.py import `requests` at MODULE scope. Without it the whole executor package fails to import at cold start —
+# caught 2026-09-23 by importing the staged bundle in isolation, which is the only check
+# that sees this: a repo-root import resolves `requests` from the dev venv and passes.
+#
+# Pinned to match the root requirements.txt exactly. A different version here than in the
+# AgentCore runtime image would mean the same executor code runs against two different HTTP
+# clients depending on which artifact invoked it.
+requests==2.34.0
+
+# requests' own dependencies, pinned 2026-10-01 to the versions already live in
+# vsa-staging-api-avx-findings (deployed 2026-09-26). Left floating, a rebuild on
+# 2026-10-01 took charset-normalizer 3.5.2, uploaded the day before, inside the 7-day
+# quarantine in ~/.kiro/steering/dependency-versions.md. Upload dates:
+#   charset-normalizer 3.5.1 -> 2026-08-15   idna 3.20 -> 2026-09-17
+#   certifi 2026.7.22        -> 2026-07-22
+# urllib3 is not pinned here: scripts/build-avx-lambda.sh removes it and the Lambda
+# runtime provides it with botocore.
+charset-normalizer==3.5.1
+idna==3.20
+certifi==2026.7.22

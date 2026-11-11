@@ -1,0 +1,21 @@
+id: technician-repair-procedure-001
+description: "Technician requests the repair procedure for replacing catalytic converter; calls knowledge with dtc_guide/parts_catalog"
+tier: 2
+persona: technician
+persona_id: technician
+vehicle_id: VEH-1001
+driver_id: drv-technician-001
+input:
+  type: text
+  utterance: "What is the repair procedure for replacing the catalytic converter on this vehicle?"
+expected:
+  tool_calls:
+    - name: knowledge
+      args_contain: {}
+  routing:
+    offers_diy_choice: false
+    safety_critical: false
+  response:
+    must_contain_one_of: ["procedure", "catalytic converter", "torque", "removal", "installation", "steps", "repair"]
+    must_not_contain: ["I cannot retrieve the repair procedure", "procedure not available"]
+latency_budget_ms: 5000

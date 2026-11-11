@@ -1,0 +1,124 @@
+{
+ "Table": {
+  "CatalogId": "123456789012",
+  "CreateTime": "2026-10-09T12:25:41-04:00",
+  "CreatedBy": "arn:aws:iam::123456789012:user/operator",
+  "DatabaseName": "adp_staging_fleet_recall",
+  "IsMaterializedView": false,
+  "IsMultiDialectView": false,
+  "IsRegisteredWithLakeFormation": false,
+  "Name": "recall_campaigns_received",
+  "Parameters": {
+   "comment": "Presto View",
+   "presto_view": "true"
+  },
+  "Retention": 0,
+  "StorageDescriptor": {
+   "Columns": [
+    {
+     "Name": "campaign_id",
+     "Type": "string"
+    },
+    {
+     "Name": "manufacturer",
+     "Type": "string"
+    },
+    {
+     "Name": "component",
+     "Type": "string"
+    },
+    {
+     "Name": "summary",
+     "Type": "string"
+    },
+    {
+     "Name": "consequence",
+     "Type": "string"
+    },
+    {
+     "Name": "remedy",
+     "Type": "string"
+    },
+    {
+     "Name": "do_not_drive",
+     "Type": "boolean"
+    },
+    {
+     "Name": "park_outside",
+     "Type": "boolean"
+    },
+    {
+     "Name": "models",
+     "Type": "array<string>"
+    },
+    {
+     "Name": "model_year_min",
+     "Type": "int"
+    },
+    {
+     "Name": "model_year_max",
+     "Type": "int"
+    },
+    {
+     "Name": "plants",
+     "Type": "array<string>"
+    },
+    {
+     "Name": "build_from",
+     "Type": "date"
+    },
+    {
+     "Name": "build_to",
+     "Type": "date"
+    },
+    {
+     "Name": "fault_codes",
+     "Type": "array<string>"
+    },
+    {
+     "Name": "signature_lookback_days",
+     "Type": "int"
+    },
+    {
+     "Name": "remedy_labor_op",
+     "Type": "string"
+    },
+    {
+     "Name": "remedy_part_numbers",
+     "Type": "array<string>"
+    },
+    {
+     "Name": "remedy_flat_rate_hours",
+     "Type": "decimal(5,2)"
+    },
+    {
+     "Name": "remedy_available_from",
+     "Type": "date"
+    },
+    {
+     "Name": "received_date",
+     "Type": "date"
+    },
+    {
+     "Name": "catalog_version",
+     "Type": "string"
+    },
+    {
+     "Name": "recall_class",
+     "Type": "string"
+    }
+   ],
+   "Compressed": false,
+   "Location": "",
+   "NumberOfBuckets": 0,
+   "SerdeInfo": {},
+   "SortColumns": [],
+   "StoredAsSubDirectories": false
+  },
+  "TableType": "VIRTUAL_VIEW",
+  "UpdateTime": "2026-10-21T09:59:36-04:00",
+  "VersionId": "3",
+  "ViewExpandedText": "/* Presto View */",
+  "ViewOriginalText": "/* Presto View: eyJvcmlnaW5hbFNxbCI6IlNFTEVDVFxuICBjYW1wYWlnbl9pZFxuLCBtYW51ZmFjdHVyZXJcbiwgY29tcG9uZW50XG4sIHN1bW1hcnlcbiwgY29uc2VxdWVuY2VcbiwgcmVtZWR5XG4sIGRvX25vdF9kcml2ZVxuLCBwYXJrX291dHNpZGVcbiwgbW9kZWxzXG4sIG1vZGVsX3llYXJfbWluXG4sIG1vZGVsX3llYXJfbWF4XG4sIHBsYW50c1xuLCBidWlsZF9mcm9tXG4sIGJ1aWxkX3RvXG4sIGZhdWx0X2NvZGVzXG4sIHNpZ25hdHVyZV9sb29rYmFja19kYXlzXG4sIHJlbWVkeV9sYWJvcl9vcFxuLCByZW1lZHlfcGFydF9udW1iZXJzXG4sIHJlbWVkeV9mbGF0X3JhdGVfaG91cnNcbiwgcmVtZWR5X2F2YWlsYWJsZV9mcm9tXG4sIHJlY2VpdmVkX2RhdGVcbiwgY2F0YWxvZ192ZXJzaW9uXG4sIHJlY2FsbF9jbGFzc1xuRlJPTVxuICBhZHBfc3RhZ2luZ19mbGVldF9yZWNhbGwucmVjYWxsX2NhbXBhaWduc1xuV0hFUkUgKHJlY2VpdmVkX2RhdGUgPD0gY3VycmVudF9kYXRlKVxuVU5JT04gQUxMIFNFTEVDVFxuICBjYW1wYWlnbl9pZFxuLCBtYW51ZmFjdHVyZXJcbiwgY29tcG9uZW50XG4sIHN1bW1hcnlcbiwgY29uc2VxdWVuY2VcbiwgcmVtZWR5XG4sIGRvX25vdF9kcml2ZVxuLCBwYXJrX291dHNpZGVcbiwgbW9kZWxzXG4sIG1vZGVsX3llYXJfbWluXG4sIG1vZGVsX3llYXJfbWF4XG4sIHBsYW50c1xuLCBidWlsZF9mcm9tXG4sIGJ1aWxkX3RvXG4sIGZhdWx0X2NvZGVzXG4sIHNpZ25hdHVyZV9sb29rYmFja19kYXlzXG4sIHJlbWVkeV9sYWJvcl9vcFxuLCByZW1lZHlfcGFydF9udW1iZXJzXG4sIHJlbWVkeV9mbGF0X3JhdGVfaG91cnNcbiwgcmVtZWR5X2F2YWlsYWJsZV9mcm9tXG4sIHJlY2VpdmVkX2RhdGVcbiwgY2F0YWxvZ192ZXJzaW9uXG4sIHJlY2FsbF9jbGFzc1xuRlJPTVxuICBhZHBfc3RhZ2luZ19lbmdpbmVlcmluZy5yZWNhbGxfY2FtcGFpZ25zX2lzc3VlZFxuV0hFUkUgKChzdGF0dXMgPSAnaXNzdWVkJykgQU5EIChyZWNlaXZlZF9kYXRlIDw9IGN1cnJlbnRfZGF0ZSkgQU5EIChOT1QgKGNhbXBhaWduX2lkIElOIChTRUxFQ1QgY2FtcGFpZ25faWRcbkZST01cbiAgYWRwX3N0YWdpbmdfZmxlZXRfcmVjYWxsLnJlY2FsbF9jYW1wYWlnbnNcbldIRVJFIChjYW1wYWlnbl9pZCBJUyBOT1QgTlVMTClcbikpKSlcbiIsImNhdGFsb2ciOiJhd3NkYXRhY2F0YWxvZyIsInNjaGVtYSI6ImRlZmF1bHQiLCJjb2x1bW5zIjpbeyJuYW1lIjoiY2FtcGFpZ25faWQiLCJ0eXBlIjoidmFyY2hhciJ9LHsibmFtZSI6Im1hbnVmYWN0dXJlciIsInR5cGUiOiJ2YXJjaGFyIn0seyJuYW1lIjoiY29tcG9uZW50IiwidHlwZSI6InZhcmNoYXIifSx7Im5hbWUiOiJzdW1tYXJ5IiwidHlwZSI6InZhcmNoYXIifSx7Im5hbWUiOiJjb25zZXF1ZW5jZSIsInR5cGUiOiJ2YXJjaGFyIn0seyJuYW1lIjoicmVtZWR5IiwidHlwZSI6InZhcmNoYXIifSx7Im5hbWUiOiJkb19ub3RfZHJpdmUiLCJ0eXBlIjoiYm9vbGVhbiJ9LHsibmFtZSI6InBhcmtfb3V0c2lkZSIsInR5cGUiOiJib29sZWFuIn0seyJuYW1lIjoibW9kZWxzIiwidHlwZSI6ImFycmF5KHZhcmNoYXIpIn0seyJuYW1lIjoibW9kZWxfeWVhcl9taW4iLCJ0eXBlIjoiaW50ZWdlciJ9LHsibmFtZSI6Im1vZGVsX3llYXJfbWF4IiwidHlwZSI6ImludGVnZXIifSx7Im5hbWUiOiJwbGFudHMiLCJ0eXBlIjoiYXJyYXkodmFyY2hhcikifSx7Im5hbWUiOiJidWlsZF9mcm9tIiwidHlwZSI6ImRhdGUifSx7Im5hbWUiOiJidWlsZF90byIsInR5cGUiOiJkYXRlIn0seyJuYW1lIjoiZmF1bHRfY29kZXMiLCJ0eXBlIjoiYXJyYXkodmFyY2hhcikifSx7Im5hbWUiOiJzaWduYXR1cmVfbG9va2JhY2tfZGF5cyIsInR5cGUiOiJpbnRlZ2VyIn0seyJuYW1lIjoicmVtZWR5X2xhYm9yX29wIiwidHlwZSI6InZhcmNoYXIifSx7Im5hbWUiOiJyZW1lZHlfcGFydF9udW1iZXJzIiwidHlwZSI6ImFycmF5KHZhcmNoYXIpIn0seyJuYW1lIjoicmVtZWR5X2ZsYXRfcmF0ZV9ob3VycyIsInR5cGUiOiJkZWNpbWFsKDUsMikifSx7Im5hbWUiOiJyZW1lZHlfYXZhaWxhYmxlX2Zyb20iLCJ0eXBlIjoiZGF0ZSJ9LHsibmFtZSI6InJlY2VpdmVkX2RhdGUiLCJ0eXBlIjoiZGF0ZSJ9LHsibmFtZSI6ImNhdGFsb2dfdmVyc2lvbiIsInR5cGUiOiJ2YXJjaGFyIn0seyJuYW1lIjoicmVjYWxsX2NsYXNzIiwidHlwZSI6InZhcmNoYXIifV0sIm93bmVyIjoiMTIzNDU2Nzg5MDEyIiwicnVuQXNJbnZva2VyIjpmYWxzZSwicHJvcGVydGllcyI6e30sImlzUHJvdGVjdGVkIjpmYWxzZSwiaXNNdWx0aURpYWxlY3QiOmZhbHNlfQ== */"
+ }
+}

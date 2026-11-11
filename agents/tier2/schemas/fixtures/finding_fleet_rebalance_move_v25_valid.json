@@ -1,0 +1,70 @@
+{
+  "finding_id": "FIND-d7e8f9a0-b1c2-3456-def0-123456789abc",
+  "finding_key": "7c9f1a2b3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a",
+  "agent_id": "agent-fi-rebalancing",
+  "agent_version": "1.0.0",
+  "scope": {
+    "fleet_id": "FLEET-MRD-WEST"
+  },
+  "severity": "routine",
+  "computed_at": "2026-10-02T06:00:00Z",
+  "expires_at": "2026-10-09T06:00:00Z",
+  "confidence": "medium",
+  "finding_kind": "fleet.rebalance.move",
+  "headline": "2 vehicles recommended to move from Downtown to Airport depot — Tuesday demand gap",
+  "detail": "## Rebalancing Recommendation\n\nDemand forecast for Tuesday shows Airport depot short by 2 vehicles. Downtown has 4 excess. Moving 2 units covers the gap at estimated fleet efficiency gain of $180.",
+  "evidence": [
+    {
+      "kind": "fi.rebalancing.demand_forecast",
+      "source": "agent-fi-rebalancing",
+      "source_ref": "forecast-run-2026-10-02T06:00:00Z",
+      "value": {
+        "from_location": "loc-downtown-01",
+        "to_location": "loc-airport-02",
+        "deficit": 2,
+        "surplus": 4,
+        "tuesday_demand_score": 0.87
+      },
+      "computed_at": "2026-10-02T06:00:00Z",
+      "provenance": "live",
+      "vin": "MRDVEH00000000015"
+    },
+    {
+      "kind": "fi.rebalancing.demand_forecast",
+      "source": "agent-fi-rebalancing",
+      "source_ref": "forecast-run-2026-10-02T06:00:00Z",
+      "value": {
+        "from_location": "loc-downtown-01",
+        "to_location": "loc-airport-02",
+        "deficit": 2,
+        "surplus": 4,
+        "tuesday_demand_score": 0.87
+      },
+      "computed_at": "2026-10-02T06:00:00Z",
+      "provenance": "live",
+      "vin": "MRDVEH00000000016"
+    }
+  ],
+  "inputs_hash": "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
+  "tokens_used": 0,
+  "cost_usd": 0.0,
+  "audit_trail": [],
+  "subject_key": "loc-downtown-01__loc-airport-02__2026-10-07",
+  "recommended_action": {
+    "action_kind": "move_vehicles",
+    "target_system": "cms",
+    "parameters": {
+      "count": 2,
+      "from_location_id": "loc-downtown-01",
+      "to_location_id": "loc-airport-02",
+      "scheduled_date": "2026-10-07",
+      "vins": ["MRDVEH00000000015", "MRDVEH00000000016"]
+    },
+    "estimated_value_usd": 180.0,
+    "estimated_value_basis": "Demand forecast: 2-vehicle gap at Airport Tuesday; Downtown surplus 4"
+  },
+  "location": {
+    "from_location_id": "loc-downtown-01",
+    "to_location_id": "loc-airport-02"
+  }
+}

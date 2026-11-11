@@ -1,0 +1,21 @@
+id: dtc-p0420-catalyst-001
+description: "Driver asks what P0420 means; knowledge tool must return DTC interpretation from corpora/technical-reference/dtc-P0420-catalyst-efficiency.md"
+tier: 2
+persona: fleet-driver
+vehicle_id: VEH-0025
+driver_id: drv-samantha-carter
+input:
+  type: text
+  utterance: "what does P0420 mean?"
+expected:
+  tool_calls:
+    - name: lookup_knowledge
+      args_contain:
+        query: "P0420"
+  routing:
+    offers_diy_choice: false
+    safety_critical: false
+  response:
+    must_contain_one_of: ["catalytic converter", "catalyst", "emissions", "drivable", "service soon", "P0420", "O2 sensor"]
+    must_not_contain: ["I don't know what P0420 means", "cannot interpret that code"]
+latency_budget_ms: 5000

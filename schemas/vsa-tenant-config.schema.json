@@ -1,0 +1,219 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://vsa.example.com/schemas/vsa-tenant-config.schema.json",
+  "title": "VSA Tenant Config",
+  "description": "Source of truth: VSA_TENANT_CONFIG.md. See that doc for field semantics.",
+  "type": "object",
+  "required": [
+    "tenantId", "version", "status", "displayName", "segment",
+    "branding", "channels", "voice", "identity", "agents",
+    "triage", "booking", "escalation", "policies", "metadata"
+  ],
+  "properties": {
+    "tenantId":    { "type": "string", "pattern": "^[a-z0-9-]{3,32}$" },
+    "version":     { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+    "status":      { "enum": ["active", "paused", "archived"] },
+    "displayName": { "type": "string", "minLength": 1 },
+    "segment":     { "enum": ["fleet", "oem", "rental"] },
+
+    "branding": {
+      "type": "object",
+      "required": ["logoUrl", "primaryColor", "secondaryColor", "greeting"],
+      "properties": {
+        "logoUrl":        { "type": "string", "format": "uri" },
+        "primaryColor":   { "type": "string", "pattern": "^#[0-9A-Fa-f]{6}$" },
+        "secondaryColor": { "type": "string", "pattern": "^#[0-9A-Fa-f]{6}$" },
+        "fontFamily":     { "type": "string" },
+        "mapStyle":       { "type": "string" },
+        "greeting": {
+          "type": "object",
+          "required": ["voice", "chat", "app"],
+          "properties": {
+            "voice": { "type": "string" },
+            "chat":  { "type": "string" },
+            "app":   { "type": "string" }
+          }
+        }
+      }
+    },
+
+    "channels": {
+      "type": "object",
+      "required": ["connect", "companionApp"],
+      "properties": {
+        "connect": {
+          "type": "object",
+          "required": ["instanceArn", "inboundDid", "contactFlowId"],
+          "properties": {
+            "instanceArn":     { "type": "string" },
+            "inboundDid":      { "type": "string", "pattern": "^\\+[1-9]\\d{1,14}$" },
+            "contactFlowId":   { "type": "string" },
+            "lexBotAliasArn":  { "type": "string" },
+            "recording":       { "type": "boolean" }
+          }
+        },
+        "companionApp": {
+          "type": "object",
+          "required": ["enabled", "authMode"],
+          "properties": {
+            "enabled":   { "type": "boolean" },
+            "subdomain": { "type": "string" },
+            "authMode":  { "enum": ["sso", "signed-link", "anonymous-demo"] }
+          }
+        }
+      }
+    },
+
+    "voice": {
+      "type": "object",
+      "required": ["engine", "voiceId", "locale"],
+      "properties": {
+        "engine":  { "enum": ["nova-2-sonic", "polly-transcribe"] },
+        "voiceId": { "type": "string" },
+        "locale":  { "type": "string" }
+      }
+    },
+
+    "identity": {
+      "type": "object",
+      "required": ["callerResolution"],
+      "properties": {
+        "callerResolution":   { "enum": ["phone-lookup", "account-number", "sso", "vin-prompt"] },
+        "phoneLookupSource":  { "enum": ["adp-c360", "tenant-crm-webhook", "none"] },
+        "tenantCrmWebhook":   { "type": "string", "format": "uri" },
+        "consentRequired":    { "type": "array", "items": { "type": "string" } },
+        "tenantIdp": {
+          "type": "object",
+          "properties": {
+            "cognitoUserPoolArn": { "type": "string" },
+            "oidcDiscoveryUrl":   { "type": "string", "format": "uri" }
+          }
+        }
+      }
+    },
+
+    "agents": {
+      "type": "object",
+      "required": ["runtime", "supervisor", "specialistsEnabled", "knowledgeBaseIds"],
+      "properties": {
+        "runtime": { "enum": ["agentcore"] },
+        "supervisor": {
+          "type": "object",
+          "required": ["framework", "modelId"],
+          "properties": {
+            "framework":      { "enum": ["strands"] },
+            "modelId":        { "type": "string" },
+            "systemPromptId": { "type": "string" },
+            "maxTokens":      { "type": "integer", "minimum": 1 }
+          }
+        },
+        "specialistsEnabled": {
+          "type": "array",
+          "items": { "enum": ["cost", "recall-warranty", "maintenance", "rebalancing"] }
+        },
+        "tenantSpecialists": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "lambdaArn"],
+            "properties": {
+              "id":          { "type": "string" },
+              "lambdaArn":   { "type": "string" },
+              "description": { "type": "string" }
+            }
+          }
+        },
+        "knowledgeBaseIds": {
+          "type": "object",
+          "required": ["shared"],
+          "properties": {
+            "shared":         { "type": "string" },
+            "tenantOverlay":  { "type": "string" }
+          }
+        }
+      }
+    },
+
+    "triage": {
+      "type": "object",
+      "required": ["policyOverrides"],
+      "properties": {
+        "policyOverrides": {
+          "type": "object",
+          "required": ["thresholds", "downgradeForbidden"],
+          "properties": {
+            "thresholds":        { "type": "object" },
+            "escalations":       { "type": "array" },
+            "downgradeForbidden": { "const": true }
+          }
+        },
+        "predictiveMaintenanceWeight": { "enum": ["none", "escalator-one-tier", "advisory"] }
+      }
+    },
+
+    "booking": {
+      "type": "object",
+      "required": ["ticketSink", "warmTransfer"],
+      "properties": {
+        "ticketSink": {
+          "type": "object",
+          "required": ["type", "target"],
+          "properties": {
+            "type":                  { "enum": ["sqs", "webhook", "salesforce", "servicenow", "dynamodb"] },
+            "target":                { "type": ["string", "null"] },
+            "credentialsSecretArn":  { "type": ["string", "null"] }
+          }
+        },
+        "starXmlConversion": { "type": "boolean" },
+        "warmTransfer": {
+          "type": "object",
+          "required": ["enabled"],
+          "properties": {
+            "enabled":        { "type": "boolean" },
+            "queueArn":       { "type": "string" },
+            "businessHours":  { "type": "string" }
+          }
+        },
+        "slotProposal":    { "type": "object" },
+        "dmsIntegration":  { "type": "object" }
+      }
+    },
+
+    "escalation": {
+      "type": "object",
+      "required": ["tier2QueueArn", "outsideHoursBehavior"],
+      "properties": {
+        "tier2QueueArn":         { "type": "string" },
+        "businessHours":         { "type": "string" },
+        "outsideHoursBehavior":  { "enum": ["voicemail", "callback-request", "next-open-queue", "force-roadside-if-p0"] },
+        "roadsideDispatch":      { "type": "object" }
+      }
+    },
+
+    "policies": {
+      "type": "object",
+      "required": ["dataResidencyRegion"],
+      "properties": {
+        "dataResidencyRegion":    { "type": "string" },
+        "auditLogRetentionDays":  { "type": "integer", "minimum": 1 },
+        "recordingRetentionDays": { "type": "integer", "minimum": 0 },
+        "piiRedaction":           { "type": "object" },
+        "budgets":                { "type": "object" }
+      }
+    },
+
+    "observability": { "type": "object" },
+    "features":      { "type": "object" },
+
+    "metadata": {
+      "type": "object",
+      "required": ["createdAt", "updatedAt", "updatedBy"],
+      "properties": {
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" },
+        "updatedBy": { "type": "string" },
+        "notes":     { "type": "string" }
+      }
+    }
+  }
+}

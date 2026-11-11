@@ -1,0 +1,109 @@
+# requirements-tier2-lambda.txt
+#
+# Scoped requirements for the Tier 2 Lambda bundle (CDK bundling: block).
+# This is NOT the AgentCore supervisor requirements file (requirements.txt).
+#
+# Why a separate file:
+#   The repo-root requirements.txt serves the AgentCore text/HTTP supervisor
+#   runtime.  It includes packages the Tier 2 Lambda never needs at runtime:
+#   openapi-spec-validator, websockets, redis, aws_sdk_bedrock_runtime,
+#   requests, python-frontmatter, pyyaml, bedrock-agentcore-starter-toolkit,
+#   and the two bedrock-agentcore preview packages (the Lambda substrate is
+#   plain Strands, not the AgentCore managed harness).  Installing the full
+#   root set adds ~30–40 MB of dead weight and risks pulling in transitive
+#   deps that add shared-lib .so files incompatible with the manylinux
+#   Lambda execution environment.
+#
+#   Group 1's measure_tier2_bundle.sh measured the three-package dependency
+#   wall at 87.2 MB unzipped / 34.5 MB zip — comfortably under the 200 MB
+#   R1 gate.  The full root requirements.txt set has never been measured
+#   against the Lambda budget; this scoped file keeps that measurement valid.
+#
+# Version pins:
+#   All pins are exact (==) per ~/.kiro/steering/dependency-versions.md.
+#   strands-agents==1.39.0 and pydantic==2.13.4 are already pinned in
+#   requirements.txt.  boto3==1.43.6 was pinned there by Fix Group 4 C2
+#   (2026-09-18).  No version changes are introduced by this file.
+#
+# Runtime target: Lambda Runtime.PYTHON_3_12, platform linux/x86_64.
+# The CDK bundling block installs with --platform manylinux2014_x86_64
+# --only-binary=:all: so these must have manylinux wheels for Python 3.12
+# (all three do — verified by measure_tier2_bundle.sh).
+
+# strands-agents: the Strands LLM framework.  Its absence is the root cause
+# of tokens_used=0 — make_strands_agent_fn catches ImportError and falls back
+# to the deterministic path.  Pin matches requirements.txt.
+strands-agents==1.39.0
+
+# boto3: AWS SDK.  Used for DynamoDB, Athena, and CloudWatch calls in the
+# runner.  Pin matches requirements.txt (fixed from >=1.35.0 range in
+# Fix Group 4 C2).
+boto3==1.43.6
+
+# pydantic: used transitively by strands-agents (requires >=2.11.0 via mcp).
+# Pin matches requirements.txt.
+pydantic==2.13.4
+
+
+# redis + pyyaml (spec 2026-09-25-avx-own-vehicle-findings T4.2): the diagnostics
+# component reuses lambdas/shared/cms_client_real.get_active_dtcs (the status rule CVX
+# triage uses) and the triage classifier's _classify_dtcs (the P0 rule) rather than
+# copying either. cms_client_real imports redis at module scope (it never connects
+# here: the Tier 2 Lambda has no VPC path to CMS Redis); the classifier loads its DTC
+# table with yaml. pyyaml 6.0.3 was already in the bundle as a strands dependency and
+# is now declared; redis 5.3.1 is the repo-root pin. Both are pure-Python or have
+# manylinux wheels for 3.12.
+redis==5.3.1
+pyyaml==6.0.3
+
+# Transitive pins (FI Action Queue Stage A, Group 4, 2026-10-03). The direct pins above
+# left every transitive dependency floating, so the 2026-10-03 deploy pulled five versions
+# uploaded inside the 7-day quarantine in ~/.kiro/steering/dependency-versions.md
+# (botocore 1.43.108, cryptography 50.0.2, pyjwt 2.15.1, python-dotenv 1.2.4,
+# sse-starlette 3.5.0; uploaded 2026-09-28..10-02). These are the exact versions that were
+# live in vsa-staging-tier2-health-agent from 2026-09-28 until that deploy. All are older
+# than 7 days except wrapt 2.5.0 (uploaded 2026-09-27T01:39Z), which has been live since
+# 2026-09-28 and is kept rather than downgraded; it clears the quarantine 2026-10-04.
+annotated-types==0.8.0
+anyio==4.15.1
+attrs==26.1.0
+botocore==1.43.103
+certifi==2026.7.22
+cffi==2.1.1
+click==8.5.0
+cryptography==50.0.1
+docstring-parser==0.18.0
+h11==0.16.0
+httpcore==1.0.9
+httpx-sse==0.4.3
+httpx==0.28.1
+idna==3.20
+jmespath==1.1.0
+jsonschema-specifications==2025.9.1
+jsonschema==4.26.0
+mcp==1.30.0
+opentelemetry-api==1.45.0
+opentelemetry-instrumentation-threading==0.66b0
+opentelemetry-instrumentation==0.66b0
+opentelemetry-sdk==1.45.0
+opentelemetry-semantic-conventions==0.66b0
+packaging==26.3
+pycparser==3.0
+pydantic-core==2.46.4
+pydantic-settings==2.15.0
+pyjwt==2.15.0
+python-dateutil==2.9.0.post0
+python-dotenv==1.2.3
+python-multipart==0.0.32
+referencing==0.37.0
+rpds-py==2026.6.3
+s3transfer==0.17.1
+six==1.17.0
+sse-starlette==3.4.11
+starlette==1.7.0
+typing-extensions==4.16.0
+typing-inspection==0.4.4
+urllib3==2.8.0
+uvicorn==0.54.0
+watchdog==6.0.0
+wrapt==2.5.0

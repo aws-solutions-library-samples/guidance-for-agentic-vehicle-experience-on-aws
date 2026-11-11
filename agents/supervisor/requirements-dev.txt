@@ -1,0 +1,23 @@
+# Dev-only additions for the supervisor test suite (agents/supervisor/tests/).
+# Install with:
+#   pip install -r requirements.txt -r agents/supervisor/requirements-dev.txt
+#
+# The runtime dependencies come from the repo-root requirements.txt. The old
+# agents/supervisor/requirements.txt was deleted 2026-09-21 and must stay deleted
+# (tests/architecture/test_requirements_pins_repo_wide.py).
+#
+# Pinned 2026-10-01 (issues/2026-10-01-async-tests-inert-and-triage-tests-not-in-ci/).
+# Both lines were ranges, and pytest-asyncio was never installed in the repo .venv.
+# Without it, pytest.ini's `asyncio_mode = auto` is an unknown option, and pytest
+# 8.3.3 SKIPS every `async def` test with a warning and exits 0: 24 tests in
+# test_bidi_app.py and test_injection_queue.py, including every auth-rejection test
+# on the bidi voice boundary. test_async_plugin_active.py now fails if the plugin
+# is missing.
+#
+# pytest-asyncio 1.3.0, not 1.4.0: 1.4.0 (2026-05-26) is the latest stable but
+# requires pytest>=8.4, and the repo pins pytest==8.3.3 (root requirements-dev.txt).
+# 1.3.0 (2025-11-10) accepts pytest>=8.2,<10, so it also works with the pytest 9.0.2
+# the CI jobs install. Both releases clear the 7-day quarantine in
+# ~/.kiro/steering/dependency-versions.md.
+pytest==8.3.3
+pytest-asyncio==1.3.0

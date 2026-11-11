@@ -1,0 +1,251 @@
+openapi: "3.1.0"
+info:
+  title: AVX Register-Device API (off-contract-v2.2-final)
+  version: "1.0.0"
+  description: |
+    AVX `/notifications/register-device` route, documented as a standalone file
+    separate from the frozen contract `avx-findings-actions.openapi.yaml` (v2.2-final).
+    
+    **Why separate?** iOS (AVX iOS) is the sole consumer of this route; downstream
+    specs (Spec 1b, Spec 2, Spec 3) do not inherit it. Adding this route to the
+    frozen contract would rotate its SHA-256 pin, forcing every downstream spec to
+    re-vendor their inheritance fixtures. A separate file serves iOS correctly and
+    defers the contract v2.3 rotation (folding this route in) until the broader
+    re-vendoring pass.
+    
+    Base URL: `${CVX_API_ENDPOINT}` (per-stage CVX API Gateway endpoint).
+    Authentication: Bearer token — Cognito JWT supplied in `Authorization: Bearer <token>`.
+
+servers:
+  - url: "{CVX_API_ENDPOINT}"
+    description: Per-stage CVX API Gateway
+    variables:
+      CVX_API_ENDPOINT:
+        default: "https://api.staging.vsa.example.com"
+        description: Stage-specific base URL (set via CDK context `vsaApiEndpoint`).
+
+tags:
+  - name: notifications
+    description: Device registration for push notifications.
+
+security:
+  - CognitoJwt: []
+
+paths:
+
+  /notifications/register-device:
+    post:
+      operationId: registerDevice
+      tags: [notifications]
+      summary: Register a device for APNs push notifications
+      description: |
+        Registers a device token for push notifications via APNs (Apple Push Notification service).
+        The route upserts a row in the notification-devices table keyed by `(owner_id, device_token)`
+        and calls SNS to create (or fetch) a platform endpoint for the device token under the
+        specified platform application (staging or production APNs).
+
+        **Scope authorizer**: caller must be authenticated and resolvable to an `owner_id`
+        via Cognito `sub` claim (vehicle-owner, consumer, or fleet-driver persona).
+        Cognito groups are not required for this route.
+
+        **Device token handling**: the device_token is NEVER logged, NEVER echoed in responses,
+        and NEVER returned to the caller. The response confirms registration success only.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterDeviceRequest"
+            examples:
+              register_staging:
+                summary: Register device for staging APNs
+                value:
+                  device_token: "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b"
+                  per_category_consent:
+                    safety: true
+                    coverage: true
+                    service: false
+                  platform: "apns-staging"
+      responses:
+        "201":
+          description: Device registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RegisterDeviceResponse"
+              examples:
+                success:
+                  summary: Device registered
+                  value:
+                    success: true
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+
+components:
+
+  securitySchemes:
+    CognitoJwt:
+      type: http
+      scheme: bearer
+      bearerFormat: jwt
+      description: |
+        Cognito User Pool JWT issued at sign-in. The API Gateway Cognito authorizer
+        validates the token and forwards claims (sub, cognito:groups, custom:*) to
+        the Lambda handler.
+
+  schemas:
+
+    RegisterDeviceRequest:
+      type: object
+      required:
+        - device_token
+        - per_category_consent
+        - platform
+      additionalProperties: false
+      properties:
+        device_token:
+          type: string
+          minLength: 1
+          maxLength: 1024
+          description: |
+            APNs device token — a hexadecimal string assigned by Apple to this device.
+            **NEVER logged or echoed in responses.** Treated as a credential by the handler.
+        per_category_consent:
+          type: object
+          required:
+            - safety
+            - coverage
+            - service
+          additionalProperties: false
+          properties:
+            safety:
+              type: boolean
+              description: |
+                Consent for safety-critical findings (P0 stop-driving, P0 recall,
+                P0 battery critical, etc.). Caller may withdraw at any time.
+            coverage:
+              type: boolean
+              description: |
+                Consent for coverage-expiring findings (warranty, recall inspection).
+                Caller may withdraw at any time.
+            service:
+              type: boolean
+              description: |
+                Consent for service-routine findings (tire pressure, brake pad thickness,
+                oil change due, etc.). Caller may withdraw at any time.
+        platform:
+          type: string
+          enum:
+            - "apns-staging"
+            - "apns-prod"
+          description: |
+            SNS platform application to register the device against.
+            - `apns-staging`: staging platform application (for dev/test devices)
+            - `apns-prod`: production platform application (for production devices)
+
+    RegisterDeviceResponse:
+      type: object
+      required:
+        - success
+      additionalProperties: false
+      properties:
+        success:
+          type: boolean
+          enum: [true]
+          description: |
+            Always `true` on success. **The device_token is NOT returned in the response.**
+            Client should retain the token locally for future registration updates.
+
+    ErrorResponse:
+      type: object
+      required:
+        - error
+        - message
+      additionalProperties: false
+      properties:
+        error:
+          type: string
+          description: Machine-readable error code
+        message:
+          type: string
+          description: Human-readable error description
+
+  responses:
+
+    BadRequest:
+      description: Bad request — request body is malformed or invalid
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+          examples:
+            invalid_json:
+              summary: Malformed JSON
+              value:
+                error: "invalid_request_body"
+                message: "Request body is not valid JSON"
+            missing_field:
+              summary: Required field missing
+              value:
+                error: "missing_required_field"
+                message: "Field 'device_token' is required"
+            invalid_platform:
+              summary: Invalid platform value
+              value:
+                error: "invalid_enum_value"
+                message: "Field 'platform' must be one of: apns-staging, apns-prod"
+
+    Unauthorized:
+      description: Unauthorized — missing or invalid JWT
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+          examples:
+            missing_token:
+              summary: Missing Authorization header
+              value:
+                error: "missing_authorization_header"
+                message: "Authorization header is required"
+            invalid_token:
+              summary: Invalid or expired JWT
+              value:
+                error: "invalid_token"
+                message: "Token is invalid or expired"
+
+    Forbidden:
+      description: Forbidden — JWT is valid but caller identity not resolvable to an owner_id
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+          examples:
+            no_owner_id:
+              summary: Caller sub claim does not map to an owner
+              value:
+                error: "forbidden"
+                message: "Caller identity cannot be resolved to an owner_id"
+
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+          examples:
+            sns_error:
+              summary: SNS platform endpoint creation failed
+              value:
+                error: "internal_server_error"
+                message: "Failed to register device with SNS; please retry"
+            db_error:
+              summary: Database write failed
+              value:
+                error: "internal_server_error"
+                message: "Failed to persist device registration; please retry"

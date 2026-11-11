@@ -1,0 +1,21 @@
+id: vehicle-owner-service-history-001
+description: "Vehicle owner asks about recent service visits; agent calls service_history tool"
+tier: 2
+persona: vehicle_owner
+persona_id: vehicle_owner
+vehicle_id: VEH-1001
+driver_id: drv-vehicle-owner-001
+input:
+  type: text
+  utterance: "What service has been done on my vehicle recently?"
+expected:
+  tool_calls:
+    - name: service_history
+      args_contain: {}
+  routing:
+    offers_diy_choice: false
+    safety_critical: false
+  response:
+    must_contain_one_of: ["service", "visit", "maintenance", "oil", "repair", "work order", "history"]
+    must_not_contain: ["I don't have your service records", "no service history available"]
+latency_budget_ms: 5000

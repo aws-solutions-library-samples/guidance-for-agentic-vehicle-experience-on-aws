@@ -1,0 +1,65 @@
+{
+  "tier": 3,
+  "schema_version": 1,
+  "generated_at": "2026-05-25T19:13:15Z",
+  "cases": [
+    {
+      "id": "tier3-smoke-fleet_driver-001",
+      "persona_id": "fleet_driver",
+      "prompt": "What's the recent service activity for my vehicle?",
+      "outcome": null,
+      "expected_tools": ["lookup_service_records"],
+      "latency_ms": null
+    },
+    {
+      "id": "tier3-smoke-consumer-001",
+      "persona_id": "consumer",
+      "prompt": "Show my account profile.",
+      "outcome": null,
+      "expected_tools": ["lookup_customer_360"],
+      "latency_ms": null
+    },
+    {
+      "id": "tier3-smoke-retail_advisor-001",
+      "persona_id": "retail_advisor",
+      "prompt": "Show my account profile.",
+      "outcome": null,
+      "expected_tools": ["lookup_customer_interactions"],
+      "latency_ms": null
+    },
+    {
+      "id": "tier3-smoke-vehicle_owner-001",
+      "persona_id": "vehicle_owner",
+      "prompt": "What's the recent service activity for my vehicle?",
+      "outcome": null,
+      "expected_tools": ["lookup_service_records"],
+      "latency_ms": null
+    },
+    {
+      "id": "tier3-smoke-service_advisor-001",
+      "persona_id": "service_advisor",
+      "prompt": "What's the recent service activity for my vehicle?",
+      "outcome": null,
+      "expected_tools": ["knowledge"],
+      "latency_ms": null
+    },
+    {
+      "id": "tier3-smoke-technician-001",
+      "persona_id": "technician",
+      "prompt": "Show DTC P0420 procedure.",
+      "outcome": null,
+      "expected_tools": ["knowledge"],
+      "latency_ms": null
+    }
+  ],
+  "summary": {
+    "total": 0,
+    "passed": 0,
+    "failed": 0,
+    "skipped": 0,
+    "latency_p50_ms": 0,
+    "latency_p99_ms": 0,
+    "duration_ms": 0
+  },
+  "note": "populated on first nightly run when RUNTIME_ID is configured"
+}

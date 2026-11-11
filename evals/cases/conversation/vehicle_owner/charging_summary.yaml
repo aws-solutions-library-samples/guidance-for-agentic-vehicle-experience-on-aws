@@ -1,0 +1,21 @@
+id: vehicle-owner-charging-summary-001
+description: "Vehicle owner asks about charging history; agent calls charging_history and customer_profile"
+tier: 2
+persona: vehicle_owner
+persona_id: vehicle_owner
+vehicle_id: VEH-1001
+driver_id: drv-vehicle-owner-001
+input:
+  type: text
+  utterance: "Show me my recent charging sessions and how much energy I've used."
+expected:
+  tool_calls:
+    - name: charging_history
+      args_contain: {}
+  routing:
+    offers_diy_choice: false
+    safety_critical: false
+  response:
+    must_contain_one_of: ["charging", "kWh", "session", "energy", "charged", "charge", "battery"]
+    must_not_contain: ["I cannot retrieve charging data", "no charging history"]
+latency_budget_ms: 5000

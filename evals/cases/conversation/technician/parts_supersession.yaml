@@ -1,0 +1,21 @@
+id: technician-parts-supersession-001
+description: "Technician looks up part number for oxygen sensor and checks supersessions; calls parts_lookup"
+tier: 2
+persona: technician
+persona_id: technician
+vehicle_id: VEH-1001
+driver_id: drv-technician-001
+input:
+  type: text
+  utterance: "What is the part number for the downstream oxygen sensor and are there any supersessions?"
+expected:
+  tool_calls:
+    - name: parts_lookup
+      args_contain: {}
+  routing:
+    offers_diy_choice: false
+    safety_critical: false
+  response:
+    must_contain_one_of: ["part number", "oxygen sensor", "supersession", "OEM", "part", "catalog", "replacement"]
+    must_not_contain: ["I cannot find part numbers", "parts information unavailable"]
+latency_budget_ms: 5000

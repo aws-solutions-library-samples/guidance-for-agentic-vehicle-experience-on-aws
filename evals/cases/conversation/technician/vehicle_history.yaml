@@ -1,0 +1,21 @@
+id: technician-vehicle-history-001
+description: "Technician checks if P0420 has been diagnosed before on this VIN; calls service_history LTM"
+tier: 2
+persona: technician
+persona_id: technician
+vehicle_id: VEH-1001
+driver_id: drv-technician-001
+input:
+  type: text
+  utterance: "Has this vehicle had a P0420 or catalytic converter repair before?"
+expected:
+  tool_calls:
+    - name: service_history
+      args_contain: {}
+  routing:
+    offers_diy_choice: false
+    safety_critical: false
+  response:
+    must_contain_one_of: ["service history", "prior", "previous", "P0420", "catalytic", "repair", "no prior", "record"]
+    must_not_contain: ["I cannot check service history", "no service records available"]
+latency_budget_ms: 5000

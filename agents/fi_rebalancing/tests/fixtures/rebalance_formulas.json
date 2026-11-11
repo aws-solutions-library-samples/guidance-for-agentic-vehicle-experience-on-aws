@@ -1,0 +1,179 @@
+{
+  "_comment": "Fixed test vectors for D9 formula unit tests (spec D9, contract § 7). Shared with CMS display tests per Stage B D7 pattern.",
+
+  "transfer_cost": {
+    "_comment": "distance_miles=12 road miles → spec's '12-mile move ≈ $42' example. formula: (2×d/urban_mph + handling_h)×driver_$/h + d×veh_$/mi",
+    "inputs": {
+      "distance_miles": 12.0,
+      "urban_mph": 22,
+      "handling_hours": 0.25,
+      "driver_usd_per_hour": 30.0,
+      "vehicle_usd_per_mile": 0.15
+    },
+    "expected_usd": 42.03,
+    "tolerance": 0.02
+  },
+
+  "revenue_gain_per_day": {
+    "_comment": "Airport rate. forecast_unserved < moved cap, so gain = forecast_unserved × rate.",
+    "inputs": {
+      "forecast_unserved_hours": 5.0,
+      "moved_vehicles": 2,
+      "vehicle_op_hours": 12.0,
+      "max_utilization": 0.95,
+      "usd_per_on_rent_hour": 3.50
+    },
+    "expected_usd": 17.50,
+    "tolerance": 0.01
+  },
+
+  "revenue_gain_per_day_capped_by_moved": {
+    "_comment": "moved cap < forecast_unserved, so gain = moved_vehicles×op_hours×max_util × rate.",
+    "inputs": {
+      "forecast_unserved_hours": 100.0,
+      "moved_vehicles": 1,
+      "vehicle_op_hours": 8.0,
+      "max_utilization": 0.95,
+      "usd_per_on_rent_hour": 3.00
+    },
+    "expected_usd": 22.80,
+    "tolerance": 0.01
+  },
+
+  "source_loss_per_day": {
+    "_comment": "Spec D9: [unserved(F, S-m) - unserved(F, S)] x rate. Source: 10 vehicles, 72 h/day forecast, 12 h op, max_util 0.95, losing 2. unserved(72, 10) = max(0, 72-114) = 0; unserved(72, 8) = max(0, 72-91.2) = 0; delta = 0 h. A well-staged source (spare vehicles check passed) costs $0/day — the superseded 'most-pessimistic' formula priced the same move at $43.20/day.",
+    "inputs": {
+      "source_forecast_hours": 72.0,
+      "source_supply_vehicles": 10,
+      "moved_vehicles": 2,
+      "vehicle_op_hours": 12.0,
+      "max_utilization": 0.95,
+      "usd_per_on_rent_hour": 3.00
+    },
+    "expected_usd": 0.00,
+    "tolerance": 0.01
+  },
+
+  "source_loss_per_day_over_cap": {
+    "_comment": "Spec D9, source pushed over cap. Source: 10 vehicles, 120 h/day forecast, 8 h op, max_util 0.95, losing 2, $3.00/h. unserved(120, 10) = max(0, 120-76) = 44.0; unserved(120, 8) = max(0, 120-60.8) = 59.2; delta = 15.2 h x $3.00 = $45.60/day.",
+    "inputs": {
+      "source_forecast_hours": 120.0,
+      "source_supply_vehicles": 10,
+      "moved_vehicles": 2,
+      "vehicle_op_hours": 8.0,
+      "max_utilization": 0.95,
+      "usd_per_on_rent_hour": 3.00
+    },
+    "expected_usd": 45.60,
+    "tolerance": 0.01
+  },
+
+  "revenue_impact": {
+    "_comment": "(gain 70.00 - loss 48.00) × 7 days = $154.00.",
+    "inputs": {
+      "revenue_gain_per_day": 70.00,
+      "source_loss_per_day": 48.00,
+      "horizon_days": 7
+    },
+    "expected_usd": 154.00,
+    "tolerance": 0.01
+  },
+
+  "net_benefit": {
+    "_comment": "revenue_impact 154.00 - transfer_cost 84.06 (2 vehicles × 42.03) = $69.94.",
+    "inputs": {
+      "revenue_impact": 154.00,
+      "transfer_cost": 84.06
+    },
+    "expected_usd": 69.94,
+    "tolerance": 0.02
+  },
+
+  "end_to_end_chain": {
+    "_comment": "One vehicle, airport destination ($3.50/h per § 7), downtown source ($3.00/h per § 7), 12-mile move (§ 7 defaults). Source: 10 vehicles, 72 h/day forecast, 12 h op, max_util 0.95 — within cap, so D9 source loss = $0/day. Full chain feeding step outputs into next step: gain=min(8.0, 1×12×0.95)×3.50=28.00/day; source_loss=0.00/day (D9: unserved delta=0); impact=(28.00−0.00)×7=196.00; cost=42.03; net=153.97≥50.00 ✓",
+    "transfer_cost": {
+      "distance_miles": 12.0, "urban_mph": 22, "handling_hours": 0.25,
+      "driver_usd_per_hour": 30.0, "vehicle_usd_per_mile": 0.15,
+      "expected_usd": 42.03
+    },
+    "revenue_gain_per_day": {
+      "forecast_unserved_hours": 8.0, "moved_vehicles": 1,
+      "vehicle_op_hours": 12.0, "max_utilization": 0.95,
+      "usd_per_on_rent_hour": 3.50,
+      "expected_usd": 28.00
+    },
+    "source_loss_per_day": {
+      "source_forecast_hours": 72.0, "source_supply_vehicles": 10,
+      "moved_vehicles": 1, "vehicle_op_hours": 12.0,
+      "max_utilization": 0.95, "usd_per_on_rent_hour": 3.00,
+      "expected_usd": 0.00
+    },
+    "revenue_impact": {
+      "revenue_gain_per_day": 28.00, "source_loss_per_day": 0.00, "horizon_days": 7,
+      "expected_usd": 196.00
+    },
+    "net_benefit": {
+      "revenue_impact": 196.00, "transfer_cost": 42.03,
+      "expected_usd": 153.97
+    },
+    "passes_threshold": {
+      "net_benefit": 153.97, "min_net_benefit_usd": 50.00, "should_pass": true
+    },
+    "tolerance": 0.02
+  },
+
+  "min_net_benefit_threshold": [
+    {"net_benefit": 50.01, "min_net_benefit_usd": 50.00, "should_pass": true,
+     "_comment": "strictly above threshold → passes"},
+    {"net_benefit": 50.00, "min_net_benefit_usd": 50.00, "should_pass": true,
+     "_comment": "exactly at threshold → passes (spec D8 step 2 uses ≥)"},
+    {"net_benefit": 49.99, "min_net_benefit_usd": 50.00, "should_pass": false,
+     "_comment": "strictly below threshold → candidate dropped"},
+    {"net_benefit": 50.00, "min_net_benefit_usd": 120.00, "should_pass": false,
+     "_comment": "different threshold: 50.00 < 120.00 → fails. Catches N4 (hardcoded 50.0): a stub that ignores min_net_benefit_usd and uses 50.0 passes the first three cases but fails here (50.00 ≥ 50.0 would wrongly pass). Proves threshold is read from config, not hardcoded."},
+    {"net_benefit": 30.00, "min_net_benefit_usd": 20.00, "should_pass": true,
+     "_comment": "threshold below 50: net=30.00 ≥ min=20.00 → passes. Catches N10 (max(threshold,50.0) floor): floor makes effective threshold 50.0, so 30.00 < 50.0 → False, but expected True → fails. Proves configured threshold can go below $50."},
+    {"net_benefit": 19.99, "min_net_benefit_usd": 20.00, "should_pass": false,
+     "_comment": "threshold below 50, fail side: net=19.99 < min=20.00 → fails. Paired with the row above to pin both sides of a sub-$50 threshold."}
+  ],
+
+  "confidence_bands": [
+    {"mape": 0.14, "recent_outcomes_ratio": null, "expected": "high",
+     "_comment": "MAPE ≤ 0.15 → high; no outcome history"},
+    {"mape": 0.15, "recent_outcomes_ratio": null, "expected": "high",
+     "_comment": "MAPE exactly 0.15 → high (boundary)"},
+    {"mape": 0.16, "recent_outcomes_ratio": null, "expected": "medium",
+     "_comment": "MAPE 0.16 > 0.15 → medium"},
+    {"mape": 0.30, "recent_outcomes_ratio": null, "expected": "medium",
+     "_comment": "MAPE exactly 0.30 → medium (boundary)"},
+    {"mape": 0.31, "recent_outcomes_ratio": null, "expected": "low",
+     "_comment": "MAPE 0.31 > 0.30 → low"},
+    {"mape": 0.10, "recent_outcomes_ratio": 0.49, "expected": "medium",
+     "_comment": "high→medium: MAPE ≤ 0.15 gives high, then downgraded by poor outcomes (ratio<0.5)"},
+    {"mape": 0.20, "recent_outcomes_ratio": 0.49, "expected": "low",
+     "_comment": "medium→low: MAPE 0.16–0.30 gives medium, then downgraded by poor outcomes"},
+    {"mape": 0.35, "recent_outcomes_ratio": 0.49, "expected": "low",
+     "_comment": "low stays low: downgrade on already-low does not go below low"},
+    {"mape": 0.10, "recent_outcomes_ratio": 0.50, "expected": "high",
+     "_comment": "ratio exactly 0.50 does NOT trigger downgrade (threshold is < 0.5, spec D9)"},
+    {"mape": 0.10, "recent_outcomes_ratio": 0.80, "expected": "high",
+     "_comment": "good outcomes: no downgrade"}
+  ],
+
+  "severity_bands": [
+    {"turned_away_share": 0.30, "expected": "attention",
+     "_comment": "exactly 0.30 → attention (boundary ≥ 0.30)"},
+    {"turned_away_share": 0.31, "expected": "attention",
+     "_comment": "above 0.30 → attention"},
+    {"turned_away_share": 0.15, "expected": "soon",
+     "_comment": "exactly 0.15 → soon (boundary ≥ 0.15)"},
+    {"turned_away_share": 0.29, "expected": "soon",
+     "_comment": "0.15 ≤ share < 0.30 → soon"},
+    {"turned_away_share": 0.14, "expected": "routine",
+     "_comment": "just below 0.15 → routine"},
+    {"turned_away_share": 0.00, "expected": "routine",
+     "_comment": "zero turn-aways → routine"},
+    {"turned_away_share": 1.00, "expected": "attention",
+     "_comment": "100% turn-aways → attention (never p0)"}
+  ]
+}

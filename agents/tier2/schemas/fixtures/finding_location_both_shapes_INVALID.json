@@ -1,0 +1,36 @@
+{
+  "finding_id": "FIND-ff000000-0000-0000-0000-000000000001",
+  "finding_key": "fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff0",
+  "agent_id": "agent-fi-rebalancing",
+  "agent_version": "1.0.0",
+  "scope": {
+    "fleet_id": "FLEET-MRD-WEST"
+  },
+  "severity": "routine",
+  "computed_at": "2026-10-02T06:00:00Z",
+  "expires_at": "2026-10-09T06:00:00Z",
+  "confidence": "medium",
+  "finding_kind": "fleet.rebalance.move",
+  "headline": "INVALID: both location shapes present simultaneously",
+  "detail": "This fixture is intentionally invalid. It carries both location_id AND from/to_location_id, which violates the oneOf constraint on the location field. Schema validation MUST reject it.",
+  "evidence": [
+    {
+      "kind": "fi.rebalancing.demand_forecast",
+      "source": "agent-fi-rebalancing",
+      "source_ref": "forecast-run-invalid",
+      "value": {},
+      "computed_at": "2026-10-02T06:00:00Z",
+      "provenance": "mocked",
+      "vin": "MRDVEH00000000015"
+    }
+  ],
+  "inputs_hash": "fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff0",
+  "tokens_used": 0,
+  "cost_usd": 0.0,
+  "audit_trail": [],
+  "location": {
+    "location_id": "loc-downtown-01",
+    "from_location_id": "loc-downtown-01",
+    "to_location_id": "loc-airport-02"
+  }
+}

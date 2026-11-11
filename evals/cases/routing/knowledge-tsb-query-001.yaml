@@ -1,0 +1,21 @@
+id: knowledge-tsb-query-001
+description: "Driver asks about a TSB for brake squeal; agent should call knowledge tool for TSB lookup"
+tier: 2
+persona: fleet-driver
+vehicle_id: VEH-0025
+driver_id: drv-samantha-carter
+input:
+  type: text
+  utterance: "is there a TSB for the brake squeal?"
+expected:
+  tool_calls:
+    - name: lookup_knowledge
+      args_contain:
+        query: "brake squeal"
+  routing:
+    offers_diy_choice: false
+    safety_critical: false
+  response:
+    must_contain_one_of: ["TSB", "brake squeal", "brake pad", "noise", "2024-BR-0847", "warranty"]
+    must_not_contain: ["DIY", "do it yourself", "walk you through"]
+latency_budget_ms: 5000

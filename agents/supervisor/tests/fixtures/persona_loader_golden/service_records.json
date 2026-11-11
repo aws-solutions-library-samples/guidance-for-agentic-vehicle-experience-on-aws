@@ -1,0 +1,35 @@
+[
+  {
+    "service_id": "SVC-001",
+    "service_date": "2026-03-15",
+    "service_month": "2026-03-01",
+    "vin": "1FTRX18W6XKB12345",
+    "service_type": "scheduled_maintenance",
+    "labor_hours": "2.5",
+    "total_cost_usd": "350.00",
+    "warranty_covered": "false",
+    "outcome": "completed"
+  },
+  {
+    "service_id": "SVC-002",
+    "service_date": "2025-11-10",
+    "service_month": "2025-11-01",
+    "vin": "1FTRX18W6XKB12345",
+    "service_type": "charging_system",
+    "labor_hours": "1.0",
+    "total_cost_usd": "120.00",
+    "warranty_covered": "true",
+    "outcome": "completed"
+  },
+  {
+    "service_id": "SVC-003",
+    "service_date": "2025-06-22",
+    "service_month": "2025-06-01",
+    "vin": "1FTRX18W6XKB12345",
+    "service_type": "software_update",
+    "labor_hours": "0.5",
+    "total_cost_usd": "0.00",
+    "warranty_covered": "true",
+    "outcome": "completed"
+  }
+]

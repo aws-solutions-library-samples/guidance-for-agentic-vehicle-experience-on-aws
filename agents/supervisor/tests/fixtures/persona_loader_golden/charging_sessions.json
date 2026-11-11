@@ -1,0 +1,38 @@
+[
+  {
+    "session_id": "sess-001",
+    "vin": "1FTRX18W6XKB12345",
+    "session_date": "2026-06-01",
+    "start_time": "2026-06-01T08:00:00Z",
+    "end_time": "2026-06-01T09:30:00Z",
+    "station_type": "public_dc_fast",
+    "network_provider": "EA",
+    "kwh_delivered": "55.2",
+    "peak_power_kw": "150.0",
+    "cost_usd": "22.08"
+  },
+  {
+    "session_id": "sess-002",
+    "vin": "1FTRX18W6XKB12345",
+    "session_date": "2026-05-28",
+    "start_time": "2026-05-28T22:00:00Z",
+    "end_time": "2026-05-29T06:00:00Z",
+    "station_type": "home_l2",
+    "network_provider": "",
+    "kwh_delivered": "72.0",
+    "peak_power_kw": "9.6",
+    "cost_usd": "10.80"
+  },
+  {
+    "session_id": "sess-003",
+    "vin": "1FTRX18W6XKB12345",
+    "session_date": "2026-05-20",
+    "start_time": "2026-05-20T12:15:00Z",
+    "end_time": "2026-05-20T13:00:00Z",
+    "station_type": "public_dc_fast",
+    "network_provider": "EVgo",
+    "kwh_delivered": "40.0",
+    "peak_power_kw": "100.0",
+    "cost_usd": "16.00"
+  }
+]

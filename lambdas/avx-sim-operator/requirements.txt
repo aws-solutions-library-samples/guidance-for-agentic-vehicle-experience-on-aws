@@ -1,0 +1,9 @@
+# avx-sim-operator (FI D10) bundles agents/executors/ (bundle_executors) to dispatch the
+# stand-in's decisions; dms.py and vehicle_command.py import `requests` at module scope, which
+# the Lambda 3.12 runtime lacks. Same pins as lambdas/avx-auto-approver/requirements.txt (see
+# its comments for why each is pinned); guarded by tests/test_avx_build_path.py.
+boto3==1.43.6
+requests==2.34.0
+charset-normalizer==3.5.1
+idna==3.20
+certifi==2026.7.22

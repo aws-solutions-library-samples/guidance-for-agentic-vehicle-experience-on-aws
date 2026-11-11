@@ -1,0 +1,38 @@
+[
+  {
+    "campaign_id": "CAMP-001",
+    "vin": "1FTRX18W6XKB12345",
+    "dispatch_date": "2026-05-01",
+    "dispatch_time": "2026-05-01T03:00:00Z",
+    "final_status": "installed",
+    "previous_software_version": "4.1.0",
+    "new_software_version": "4.2.1",
+    "campaign_name": "FW-2026-MAY-SAFETY",
+    "category": "safety_recall",
+    "severity": "high"
+  },
+  {
+    "campaign_id": "CAMP-002",
+    "vin": "1FTRX18W6XKB12345",
+    "dispatch_date": "2025-11-15",
+    "dispatch_time": "2025-11-15T04:00:00Z",
+    "final_status": "installed",
+    "previous_software_version": "3.9.5",
+    "new_software_version": "4.1.0",
+    "campaign_name": "FW-2025-NOV-FEATURE",
+    "category": "feature_add",
+    "severity": "medium"
+  },
+  {
+    "campaign_id": "CAMP-003",
+    "vin": "1FTRX18W6XKB12345",
+    "dispatch_date": "2025-06-10",
+    "dispatch_time": "2025-06-10T02:00:00Z",
+    "final_status": "installed",
+    "previous_software_version": "3.8.0",
+    "new_software_version": "3.9.5",
+    "campaign_name": "FW-2025-JUN-BUGFIX",
+    "category": "bug_fix",
+    "severity": "low"
+  }
+]

@@ -1,0 +1,260 @@
+# FI Fleet-Health: needs → labor-op / parts mapping (spec D8 step 2).
+#
+# Each entry maps a need kind + source discriminator to a labor_op and a list
+# of part numbers used for rooftop stock-check.  The loop's `map_need_to_labor_op`
+# function resolves each need using this table.
+#
+# Fault needs: keyed by fault code (every code ADP can raise at band soon or
+# worse), falling back to the band entry only for a code ADP doesn't know.
+# PM needs: keyed by task_code.
+# Agent 2 needs: keyed by finding kind (e.g. "battery", "brakes", "tires").
+#
+# labor_op is a DMS labor op (LAB-*): one vocabulary for AVX's bookings and ADP's
+# code_labor_op_map (G6-D2, user 2026-10-17). A booked fault op must be listed
+# for its code in ADP's map, or the completed repair never clears the fault;
+# a booked PM op must be listed for its task, or the task never shows current.
+# Three op sets never share a name (option (a), user 2026-10-18): fault repairs
+# (each stop-driving code has an op of its own; other codes their system's repair
+# op), PM tasks (ordinary dealer service), and Agent 2 bookings, which ADP's map
+# lists nowhere, so a completed Agent 2 booking clears no fault and completes no
+# PM task. The band entries and loop.py's fallbacks book LAB-ELE-07, which ADP's
+# map also lists nowhere.
+# `adp_code_labor_op_map.json` beside this file is ADP's map, vendored and
+# sha256-pinned; tests/test_labor_op_vocabulary.py checks every op here against it.
+# parts may be empty ([]) when the service requires no pre-stocked parts.
+
+# ---------------------------------------------------------------------------
+# Fault needs — by fault band (only for a code not listed below)
+# ---------------------------------------------------------------------------
+fault_bands:
+  p0:
+    labor_op: "LAB-ELE-07"
+    parts: []            # p0: dealer dispatches; no advance stock required
+  attention:
+    labor_op: "LAB-ELE-07"
+    parts: []
+  soon:
+    labor_op: "LAB-ELE-07"
+    parts: []
+
+# ---------------------------------------------------------------------------
+# Fault needs — by fault code (ADP's map: a p0 code's own op, else its system's repair op)
+# ---------------------------------------------------------------------------
+fault_codes:
+  B0001:                 # restraints, attention: Airbag / SRS fault
+    labor_op: "LAB-SRSFLT-01"
+    parts: []
+  B0001_FIRE:            # body, p0: Thermal runaway — engine compartment fire risk
+    labor_op: "LAB-FIRE-01"
+    parts: []
+  B1004:                 # body, soon: Body control module power supply fault
+    labor_op: "LAB-BCMFLT-01"
+    parts: []
+  B109B:                 # restraints, attention: Occupant classification system fault
+    labor_op: "LAB-SRSFLT-01"
+    parts: []
+  B1100:                 # hv_battery, soon: HV battery management system malfunction
+    labor_op: "LAB-HVFLT-01"
+    parts: []
+  B1115:                 # restraints, attention: SRS deployment loop circuit fault
+    labor_op: "LAB-SRSFLT-01"
+    parts: []
+  B11D6:                 # restraints, attention: Side curtain airbag deployment loop fault
+    labor_op: "LAB-SRSFLT-01"
+    parts: []
+  B1234:                 # body, soon: Body control module circuit fault
+    labor_op: "LAB-BCMFLT-01"
+    parts: []
+  B124D:                 # restraints, attention: Seat belt pre-tensioner circuit fault
+    labor_op: "LAB-SRSFLT-01"
+    parts: []
+  B1419:                 # restraints, attention: Restraints control module fault
+    labor_op: "LAB-SRSFLT-01"
+    parts: []
+  C0035:                 # abs, soon: LF wheel speed sensor circuit malfunction
+    labor_op: "LAB-ABSFLT-01"
+    parts: []
+  C0040:                 # abs, soon: RF wheel speed sensor circuit malfunction
+    labor_op: "LAB-ABSFLT-01"
+    parts: []
+  C004A:                 # steering, attention: Steering angle sensor circuit malfunction
+    labor_op: "LAB-STRFLT-01"
+    parts: []
+  C0091:                 # brakes, attention: Trailer brake connection lost
+    labor_op: "LAB-BRKFLT-01"
+    parts: []
+  C0460:                 # steering, attention: Electric power steering fault
+    labor_op: "LAB-STRFLT-01"
+    parts: []
+  C0561:                 # abs, soon: ABS system disabled
+    labor_op: "LAB-ABSFLT-01"
+    parts: ["ABS-MODULATOR-001"]
+  C1001:                 # abs, attention: ABS hydraulic pump motor fault
+    labor_op: "LAB-ABSFLT-01"
+    parts: []
+  C1201:                 # brakes, attention: Traction control system disabled
+    labor_op: "LAB-BRKFLT-01"
+    parts: []
+  C1234:                 # brakes, p0: Brake system fault — stop driving
+    labor_op: "LAB-BRKSYS-01"
+    parts: []
+  C1235:                 # brakes, soon: Wheel speed sensor open or inactive
+    labor_op: "LAB-BRKFLT-01"
+    parts: []
+  C1241:                 # brakes, attention: Low brake fluid
+    labor_op: "LAB-BRKFLT-01"
+    parts: []
+  C2007:                 # brakes, attention: Brake pressure differential switch malfunction
+    labor_op: "LAB-BRKFLT-01"
+    parts: []
+  P0001:                 # fuel, soon: Fuel volume regulator control circuit open
+    labor_op: "LAB-FUELFLT-01"
+    parts: []
+  P0093:                 # fuel, attention: Water in fuel
+    labor_op: "LAB-FUELFLT-01"
+    parts: []
+  P0118:                 # cooling, attention: Coolant temperature sensor circuit high
+    labor_op: "LAB-COOLFLT-01"
+    parts: []
+  P0171:                 # fuel, soon: System too lean — bank 1
+    labor_op: "LAB-FUELFLT-01"
+    parts: []
+  P0217:                 # powertrain, p0: Engine coolant over-temperature — stop driving
+    labor_op: "LAB-COOLOT-01"
+    parts: []
+  P0219:                 # powertrain, attention: Engine overspeed
+    labor_op: "LAB-PTFLT-01"
+    parts: []
+  P0299:                 # powertrain, attention: Turbocharger/supercharger underboost
+    labor_op: "LAB-PTFLT-01"
+    parts: []
+  P0300:                 # powertrain, attention: Random/multiple cylinder misfire detected
+    labor_op: "LAB-PTFLT-01"
+    parts: []
+  P0340:                 # powertrain, attention: Camshaft position sensor circuit malfunction
+    labor_op: "LAB-PTFLT-01"
+    parts: []
+  P0401:                 # emissions, soon: EGR flow insufficient detected
+    labor_op: "LAB-EXHFLT-01"
+    parts: []
+  P0420:                 # emissions, soon: Catalyst system efficiency below threshold
+    labor_op: "LAB-EXHFLT-01"
+    parts: []
+  P0455:                 # emissions, soon: EVAP system — large leak detected
+    labor_op: "LAB-EXHFLT-01"
+    parts: []
+  P0520:                 # powertrain, p0: Engine oil pressure sensor circuit — low oil pressure, stop engine
+    labor_op: "LAB-OILPR-01"
+    parts: []
+  P0606:                 # powertrain, attention: PCM/ECM processor fault
+    labor_op: "LAB-PTFLT-01"
+    parts: []
+  P0607:                 # powertrain, attention: Powertrain malfunction
+    labor_op: "LAB-PTFLT-01"
+    parts: []
+  P0700:                 # transmission, p0: Transmission control system malfunction — limp mode
+    labor_op: "LAB-TCM-01"
+    parts: []
+  P0A0D:                 # hv_battery, p0: HV battery interlock circuit fault — stop driving
+    labor_op: "LAB-HVILK-01"
+    parts: []
+  P0A1F:                 # hv_battery, attention: HV battery cell voltage low
+    labor_op: "LAB-HVFLT-01"
+    parts: ["CURRENT-SENSOR-001"]
+  P0A7F:                 # hv_battery, attention: HV battery pack power limit exceeded
+    labor_op: "LAB-HVFLT-01"
+    parts: ["HV-BATT-DIAG-001"]
+  P0A80:                 # hv_battery, p0: HV battery — replace required / thermal event
+    labor_op: "LAB-HVPACK-01"
+    parts: []
+  P0AA6:                 # hv_battery, p0: HV battery isolation fault — stop driving
+    labor_op: "LAB-HVISO-01"
+    parts: ["HV-ISO-KIT-001"]
+  P0AFA:                 # hv_battery, attention: HV battery charge voltage fault
+    labor_op: "LAB-HVFLT-01"
+    parts: ["HV-BATT-DIAG-001"]
+  P1A0F:                 # hv_battery, soon: Battery coolant pump failure
+    labor_op: "LAB-HVFLT-01"
+    parts: ["THERMAL-KIT-001"]
+  P1AAA:                 # hv_battery, soon: Battery cell imbalance detected
+    labor_op: "LAB-HVFLT-01"
+    parts: []
+  P1AB0:                 # hv_battery, soon: Battery thermal management system fault
+    labor_op: "LAB-HVFLT-01"
+    parts: ["CHARGE-PORT-001"]
+  P1B0F:                 # hv_battery, soon: Battery management system internal fault
+    labor_op: "LAB-HVFLT-01"
+    parts: []
+  P1B16:                 # hv_battery, soon: Thermal valve position sensor fault
+    labor_op: "LAB-HVFLT-01"
+    parts: ["OBC-MODULE-001"]
+  P20EE:                 # emissions, attention: SCR NOx catalyst efficiency below threshold
+    labor_op: "LAB-EXHFLT-01"
+    parts: []
+  U0073:                 # communication, soon: CAN bus communication fault — bus off
+    labor_op: "LAB-NETFLT-01"
+    parts: []
+  U0100:                 # communication, attention: Lost communication with PCM/ECM
+    labor_op: "LAB-NETFLT-01"
+    parts: []
+  U0101:                 # communication, attention: Lost communication with transmission control module
+    labor_op: "LAB-NETFLT-01"
+    parts: []
+  U0121:                 # communication, attention: Lost communication with ABS control module
+    labor_op: "LAB-NETFLT-01"
+    parts: []
+  U0401:                 # communication, soon: Invalid data received from ECM
+    labor_op: "LAB-NETFLT-01"
+    parts: []
+  U0415:                 # communication, attention: Invalid data received from ABS control module
+    labor_op: "LAB-NETFLT-01"
+    parts: []
+  U3000:                 # communication, p0: Control module internal hardware fault — stop driving
+    labor_op: "LAB-CTLMOD-01"
+    parts: []
+  U3000_CRASH:           # safety, p0: Collision detected — crash response
+    labor_op: "LAB-CRASH-01"
+    parts: []
+
+# ---------------------------------------------------------------------------
+# PM task needs — by task_code (the first op ADP lists for the task)
+# ---------------------------------------------------------------------------
+pm_tasks:
+  TIRE_ROTATION:
+    labor_op: "LAB-SUS-03"
+    parts: []
+  BRAKE_INSPECTION:
+    labor_op: "LAB-BRK-01"
+    parts: ["BRAKE-PAD-EV-001"]
+  OIL_CHANGE:
+    labor_op: "LAB-OIL-01"
+    parts: ["SYNTH-OIL-5W30", "OIL-FILTER-001"]
+  SCHEDULED_MAINTENANCE:
+    labor_op: "LAB-PM-001"
+    parts: []
+  HV_BATTERY_CHECK:
+    labor_op: "LAB-HV-02"
+    parts: ["HV-BATT-DIAG-001"]
+  CABIN_FILTER:
+    labor_op: "LAB-CAB-01"
+    parts: ["CABIN-FILTER-001"]
+
+# ---------------------------------------------------------------------------
+# Agent 2 finding needs — by finding kind (ops ADP's map lists nowhere; option (a))
+# ---------------------------------------------------------------------------
+agent2_findings:
+  battery:
+    labor_op: "LAB-BATSVC-01"
+    parts: ["HV-BATT-DIAG-001"]
+  brakes:
+    labor_op: "LAB-BRKSVC-01"
+    parts: ["BRAKE-PAD-EV-001"]
+  tires:
+    labor_op: "LAB-TIRSVC-01"
+    parts: []
+  diagnostics:
+    labor_op: "LAB-DIAGSVC-01"
+    parts: []
+  default:
+    labor_op: "LAB-DIAGSVC-01"
+    parts: []

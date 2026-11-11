@@ -1,0 +1,16 @@
+tool: vehicle_identity
+id: vehicle-identity-error-001
+description: "lookup_vehicle_identity with unknown VIN — mock returns found=true (book DDB mock override; see decisions.md)"
+tier: 1
+persona: fleet-driver
+vehicle_id: VEH-0025
+driver_id: drv-samantha-carter
+input:
+  type: text
+  input_args:
+    vin: "UNKNOWNVIN000000000"
+expected:
+  tool_output:
+    found: true
+    make: "Ford"
+latency_budget_ms: 1000

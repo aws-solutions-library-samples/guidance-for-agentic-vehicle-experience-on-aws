@@ -1,0 +1,18 @@
+tool: vehicle_identity
+id: vehicle-identity-happy-001
+description: "lookup_vehicle_identity returns found=true with vehicle details for fixture VIN"
+tier: 1
+persona: fleet-driver
+vehicle_id: VEH-0025
+driver_id: drv-samantha-carter
+input:
+  type: text
+  input_args:
+    vin: "1FTRX18W6XKB12345"
+expected:
+  tool_output:
+    found: true
+    make: "Ford"
+    model: "F-150"
+    year: 2022
+latency_budget_ms: 1000

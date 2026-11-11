@@ -1,0 +1,25 @@
+id: recall-lookup-text-001
+description: "E2E: Driver asks about open recalls on their vehicle; agent looks up knowledge base via real Nova + AgentCore"
+tier: 3
+persona: fleet-driver
+vehicle_id: VEH-0025
+driver_id: drv-samantha-carter
+input:
+  type: text
+  utterance: "are there any open recalls on my vehicle?"
+expected:
+  tool_calls:
+    - name: lookup_knowledge
+      args_contain: {}
+  routing:
+    offers_diy_choice: false
+    safety_critical: false
+  response:
+    # Recall-false-assurance guard (issues/2026-09-25-recall-rule-asserts-no-open-recalls/):
+    # there is no recall catalog, so the answer must fall back to a dealer or
+    # nhtsa.gov/recalls and must never assert that the vehicle has no recalls.
+    must_contain_one_of: ["NHTSA", "dealer"]
+    # Singular stems cover plural forms (substring match, case-insensitive);
+    # straight and curly apostrophes both listed (review Cycle 16 W2).
+    must_not_contain: ["DIY", "do it yourself", "no open recall", "no recall", "no safety recall", "no outstanding recall", "aren't any", "aren’t any", "doesn't have any", "doesn’t have any", "not subject to any recall", "isn't subject to any recall", "isn’t subject to any recall", "clear of recall", "recall-free", "all clear", "no active recall", "hasn't been recalled", "hasn\u2019t been recalled", "has not been recalled", "never been recalled", "never recalled", "isn't recalled", "isn\u2019t recalled", "not been recalled", "not recalled", "wasn't recalled", "wasn\u2019t recalled", "zero open recall", "no open safety recall", "not affected by any open recall", "not affected by any recall", "isn't affected by any recall", "not subject to a recall", "isn't subject to a recall", "isn\u2019t subject to a recall", "isn\u2019t affected by any recall"]
+latency_budget_ms: 10000

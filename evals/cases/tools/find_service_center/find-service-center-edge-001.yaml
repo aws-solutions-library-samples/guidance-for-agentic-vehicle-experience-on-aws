@@ -1,0 +1,18 @@
+tool: service_network
+id: find-service-center-edge-001
+description: "find_service_center normalizes tire-inflation capability alias — returns found=false (book DDB mock override; see decisions.md)"
+tier: 1
+persona: fleet-driver
+vehicle_id: VEH-0025
+driver_id: drv-samantha-carter
+input:
+  type: text
+  input_args:
+    capability: "tire-inflation"
+    vehicle_make: ""
+    max_results: 3
+expected:
+  tool_output:
+    found: false
+    centers: []
+latency_budget_ms: 1000

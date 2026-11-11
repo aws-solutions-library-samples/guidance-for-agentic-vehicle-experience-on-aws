@@ -1,0 +1,739 @@
+{
+ "_about": "AVX DMS-executor request bodies for the DMS internal routes (FI spec D10, 11.3c/11.5). Generated from AVX agents/executors/dms.py; DMS keeps a byte-identical copy and rebuilds each body from its Action. Change both copies together.",
+ "cases": [
+  {
+   "action": {
+    "action_id": "AVX-ACT-0f1e2d3c-4b5a-4968-8776-655443322110",
+    "action_kind": "book_fleet_service",
+    "parameters": {
+     "dealer_id": "DLR-PDX-001",
+     "needs": [
+      {
+       "description": "HV isolation fault",
+       "labor_op": "HV-ISO",
+       "need_id": "fault:P0A0D"
+      },
+      {
+       "labor_op": "HV-BATT",
+       "need_id": "fault:P0A7F"
+      },
+      {
+       "labor_op": "TIRE-ROT",
+       "need_id": "pm:TIRE_ROTATION"
+      },
+      {
+       "labor_op": "BAT-TEST",
+       "need_id": "a2:health.battery"
+      }
+     ],
+     "urgency": "high",
+     "vehicle_vin": "MRDAZ01S0NC0048AJ"
+    }
+   },
+   "body": {
+    "avx_action_id": "0f1e2d3c-4b5a-4968-8776-655443322110",
+    "dealer_id": "DLR-PDX-001",
+    "description": "FI fleet service: fault codes P0A0D, P0A7F; maintenance TIRE_ROTATION; health.battery",
+    "evidence": {
+     "dtcs": [
+      "P0A0D",
+      "P0A7F"
+     ]
+    },
+    "lines": [
+     {
+      "description": "HV isolation fault",
+      "labor_op": "HV-ISO",
+      "line_no": 1,
+      "need_id": "fault:P0A0D",
+      "pay_type": "customer_pay"
+     },
+     {
+      "labor_op": "HV-BATT",
+      "line_no": 2,
+      "need_id": "fault:P0A7F",
+      "pay_type": "customer_pay"
+     },
+     {
+      "labor_op": "TIRE-ROT",
+      "line_no": 3,
+      "need_id": "pm:TIRE_ROTATION",
+      "pay_type": "customer_pay"
+     },
+     {
+      "labor_op": "BAT-TEST",
+      "line_no": 4,
+      "need_id": "a2:health.battery",
+      "pay_type": "customer_pay"
+     }
+    ],
+    "urgency": "high",
+    "vehicle_vin": "MRDAZ01S0NC0048AJ"
+   },
+   "name": "fleet_faults_pm_a2"
+  },
+  {
+   "action": {
+    "action_id": "AVX-ACT-0f1e2d3c-4b5a-4968-8776-655443322110",
+    "action_kind": "book_fleet_service",
+    "parameters": {
+     "dealer_id": "DLR-PDX-001",
+     "needs": [
+      {
+       "labor_op": "HV-ISO",
+       "need_id": "fault:P0A0D"
+      },
+      {
+       "labor_op": "HV-ISO-2",
+       "need_id": "fault:P0A0D"
+      }
+     ],
+     "vehicle_vin": "MRDAZ01S0NC0048AJ"
+    }
+   },
+   "body": {
+    "avx_action_id": "0f1e2d3c-4b5a-4968-8776-655443322110",
+    "dealer_id": "DLR-PDX-001",
+    "description": "FI fleet service: fault codes P0A0D",
+    "evidence": {
+     "dtcs": [
+      "P0A0D"
+     ]
+    },
+    "lines": [
+     {
+      "labor_op": "HV-ISO",
+      "line_no": 1,
+      "need_id": "fault:P0A0D",
+      "pay_type": "customer_pay"
+     },
+     {
+      "labor_op": "HV-ISO-2",
+      "line_no": 2,
+      "need_id": "fault:P0A0D",
+      "pay_type": "customer_pay"
+     }
+    ],
+    "vehicle_vin": "MRDAZ01S0NC0048AJ"
+   },
+   "name": "fleet_duplicate_codes"
+  },
+  {
+   "action": {
+    "action_id": "AVX-ACT-0f1e2d3c-4b5a-4968-8776-655443322110",
+    "action_kind": "book_fleet_service",
+    "parameters": {
+     "dealer_id": "DLR-PDX-001",
+     "needs": [
+      {
+       "labor_op": "OIL",
+       "need_id": "pm:OIL_CHANGE"
+      }
+     ],
+     "vehicle_vin": "MRDAZ01S0NC0048AJ"
+    }
+   },
+   "body": {
+    "avx_action_id": "0f1e2d3c-4b5a-4968-8776-655443322110",
+    "dealer_id": "DLR-PDX-001",
+    "description": "FI fleet service: maintenance OIL_CHANGE",
+    "lines": [
+     {
+      "labor_op": "OIL",
+      "line_no": 1,
+      "need_id": "pm:OIL_CHANGE",
+      "pay_type": "customer_pay"
+     }
+    ],
+    "vehicle_vin": "MRDAZ01S0NC0048AJ"
+   },
+   "name": "fleet_no_faults"
+  },
+  {
+   "action": {
+    "action_id": "AVX-ACT-0f1e2d3c-4b5a-4968-8776-655443322110",
+    "action_kind": "book_fleet_service",
+    "parameters": {
+     "dealer_id": "DLR-PDX-001",
+     "needs": [
+      {
+       "labor_op": "DIAG",
+       "need_id": "fault:P0000"
+      },
+      {
+       "labor_op": "DIAG",
+       "need_id": "fault:P0001"
+      },
+      {
+       "labor_op": "DIAG",
+       "need_id": "fault:P0002"
+      },
+      {
+       "labor_op": "DIAG",
+       "need_id": "fault:P0003"
+      },
+      {
+       "labor_op": "DIAG",
+       "need_id": "fault:P0004"
+      },
+      {
+       "labor_op": "DIAG",
+       "need_id": "fault:P0005"
+      },
+      {
+       "labor_op": "DIAG",
+       "need_id": "fault:P0006"
+      },
+      {
+       "labor_op": "DIAG",
+       "need_id": "fault:P0007"
+      },
+      {
+       "labor_op": "DIAG",
+       "need_id": "fault:P0008"
+      },
+      {
+       "labor_op": "DIAG",
+       "need_id": "fault:P0009"
+      },
+      {
+       "labor_op": "DIAG",
+       "need_id": "fault:P0010"
+      },
+      {
+       "labor_op": "DIAG",
+       "need_id": "fault:P0011"
+      },
+      {
+       "labor_op": "DIAG",
+       "need_id": "fault:P0012"
+      },
+      {
+       "labor_op": "DIAG",
+       "need_id": "fault:P0013"
+      },
+      {
+       "labor_op": "DIAG",
+       "need_id": "fault:P0014"
+      },
+      {
+       "labor_op": "DIAG",
+       "need_id": "fault:P0015"
+      },
+      {
+       "labor_op": "DIAG",
+       "need_id": "fault:P0016"
+      },
+      {
+       "labor_op": "DIAG",
+       "need_id": "fault:P0017"
+      },
+      {
+       "labor_op": "DIAG",
+       "need_id": "fault:P0018"
+      },
+      {
+       "labor_op": "DIAG",
+       "need_id": "fault:P0019"
+      },
+      {
+       "labor_op": "DIAG",
+       "need_id": "fault:P0020"
+      },
+      {
+       "labor_op": "DIAG",
+       "need_id": "fault:P0021"
+      },
+      {
+       "labor_op": "DIAG",
+       "need_id": "fault:P0022"
+      },
+      {
+       "labor_op": "DIAG",
+       "need_id": "fault:P0023"
+      },
+      {
+       "labor_op": "DIAG",
+       "need_id": "fault:P0024"
+      },
+      {
+       "labor_op": "DIAG",
+       "need_id": "fault:P0025"
+      },
+      {
+       "labor_op": "DIAG",
+       "need_id": "fault:P0026"
+      },
+      {
+       "labor_op": "DIAG",
+       "need_id": "fault:P0027"
+      },
+      {
+       "labor_op": "DIAG",
+       "need_id": "fault:P0028"
+      },
+      {
+       "labor_op": "DIAG",
+       "need_id": "fault:P0029"
+      },
+      {
+       "labor_op": "DIAG",
+       "need_id": "fault:P0030"
+      },
+      {
+       "labor_op": "DIAG",
+       "need_id": "fault:P0031"
+      },
+      {
+       "labor_op": "DIAG",
+       "need_id": "fault:P0032"
+      },
+      {
+       "labor_op": "DIAG",
+       "need_id": "fault:P0033"
+      },
+      {
+       "labor_op": "DIAG",
+       "need_id": "fault:P0034"
+      },
+      {
+       "labor_op": "DIAG",
+       "need_id": "fault:P0035"
+      },
+      {
+       "labor_op": "DIAG",
+       "need_id": "fault:P0036"
+      },
+      {
+       "labor_op": "DIAG",
+       "need_id": "fault:P0037"
+      },
+      {
+       "labor_op": "DIAG",
+       "need_id": "fault:P0038"
+      },
+      {
+       "labor_op": "DIAG",
+       "need_id": "fault:P0039"
+      }
+     ],
+     "vehicle_vin": "MRDAZ01S0NC0048AJ"
+    }
+   },
+   "body": {
+    "avx_action_id": "0f1e2d3c-4b5a-4968-8776-655443322110",
+    "dealer_id": "DLR-PDX-001",
+    "description": "FI fleet service: fault codes P0000, P0001, P0002, P0003, P0004, P0005, P0006, P0007, P0008, P0009, P0010, P0011, P0012, P0013, P0014, P0015, P0016, P0017, P0018, P0019, P0020, P0021 and 18 more",
+    "evidence": {
+     "dtcs": [
+      "P0000",
+      "P0001",
+      "P0002",
+      "P0003",
+      "P0004",
+      "P0005",
+      "P0006",
+      "P0007",
+      "P0008",
+      "P0009",
+      "P0010",
+      "P0011",
+      "P0012",
+      "P0013",
+      "P0014",
+      "P0015",
+      "P0016",
+      "P0017",
+      "P0018",
+      "P0019",
+      "P0020",
+      "P0021",
+      "P0022",
+      "P0023",
+      "P0024",
+      "P0025",
+      "P0026",
+      "P0027",
+      "P0028",
+      "P0029",
+      "P0030",
+      "P0031",
+      "P0032",
+      "P0033",
+      "P0034",
+      "P0035",
+      "P0036",
+      "P0037",
+      "P0038",
+      "P0039"
+     ]
+    },
+    "lines": [
+     {
+      "labor_op": "DIAG",
+      "line_no": 1,
+      "need_id": "fault:P0000",
+      "pay_type": "customer_pay"
+     },
+     {
+      "labor_op": "DIAG",
+      "line_no": 2,
+      "need_id": "fault:P0001",
+      "pay_type": "customer_pay"
+     },
+     {
+      "labor_op": "DIAG",
+      "line_no": 3,
+      "need_id": "fault:P0002",
+      "pay_type": "customer_pay"
+     },
+     {
+      "labor_op": "DIAG",
+      "line_no": 4,
+      "need_id": "fault:P0003",
+      "pay_type": "customer_pay"
+     },
+     {
+      "labor_op": "DIAG",
+      "line_no": 5,
+      "need_id": "fault:P0004",
+      "pay_type": "customer_pay"
+     },
+     {
+      "labor_op": "DIAG",
+      "line_no": 6,
+      "need_id": "fault:P0005",
+      "pay_type": "customer_pay"
+     },
+     {
+      "labor_op": "DIAG",
+      "line_no": 7,
+      "need_id": "fault:P0006",
+      "pay_type": "customer_pay"
+     },
+     {
+      "labor_op": "DIAG",
+      "line_no": 8,
+      "need_id": "fault:P0007",
+      "pay_type": "customer_pay"
+     },
+     {
+      "labor_op": "DIAG",
+      "line_no": 9,
+      "need_id": "fault:P0008",
+      "pay_type": "customer_pay"
+     },
+     {
+      "labor_op": "DIAG",
+      "line_no": 10,
+      "need_id": "fault:P0009",
+      "pay_type": "customer_pay"
+     },
+     {
+      "labor_op": "DIAG",
+      "line_no": 11,
+      "need_id": "fault:P0010",
+      "pay_type": "customer_pay"
+     },
+     {
+      "labor_op": "DIAG",
+      "line_no": 12,
+      "need_id": "fault:P0011",
+      "pay_type": "customer_pay"
+     },
+     {
+      "labor_op": "DIAG",
+      "line_no": 13,
+      "need_id": "fault:P0012",
+      "pay_type": "customer_pay"
+     },
+     {
+      "labor_op": "DIAG",
+      "line_no": 14,
+      "need_id": "fault:P0013",
+      "pay_type": "customer_pay"
+     },
+     {
+      "labor_op": "DIAG",
+      "line_no": 15,
+      "need_id": "fault:P0014",
+      "pay_type": "customer_pay"
+     },
+     {
+      "labor_op": "DIAG",
+      "line_no": 16,
+      "need_id": "fault:P0015",
+      "pay_type": "customer_pay"
+     },
+     {
+      "labor_op": "DIAG",
+      "line_no": 17,
+      "need_id": "fault:P0016",
+      "pay_type": "customer_pay"
+     },
+     {
+      "labor_op": "DIAG",
+      "line_no": 18,
+      "need_id": "fault:P0017",
+      "pay_type": "customer_pay"
+     },
+     {
+      "labor_op": "DIAG",
+      "line_no": 19,
+      "need_id": "fault:P0018",
+      "pay_type": "customer_pay"
+     },
+     {
+      "labor_op": "DIAG",
+      "line_no": 20,
+      "need_id": "fault:P0019",
+      "pay_type": "customer_pay"
+     },
+     {
+      "labor_op": "DIAG",
+      "line_no": 21,
+      "need_id": "fault:P0020",
+      "pay_type": "customer_pay"
+     },
+     {
+      "labor_op": "DIAG",
+      "line_no": 22,
+      "need_id": "fault:P0021",
+      "pay_type": "customer_pay"
+     },
+     {
+      "labor_op": "DIAG",
+      "line_no": 23,
+      "need_id": "fault:P0022",
+      "pay_type": "customer_pay"
+     },
+     {
+      "labor_op": "DIAG",
+      "line_no": 24,
+      "need_id": "fault:P0023",
+      "pay_type": "customer_pay"
+     },
+     {
+      "labor_op": "DIAG",
+      "line_no": 25,
+      "need_id": "fault:P0024",
+      "pay_type": "customer_pay"
+     },
+     {
+      "labor_op": "DIAG",
+      "line_no": 26,
+      "need_id": "fault:P0025",
+      "pay_type": "customer_pay"
+     },
+     {
+      "labor_op": "DIAG",
+      "line_no": 27,
+      "need_id": "fault:P0026",
+      "pay_type": "customer_pay"
+     },
+     {
+      "labor_op": "DIAG",
+      "line_no": 28,
+      "need_id": "fault:P0027",
+      "pay_type": "customer_pay"
+     },
+     {
+      "labor_op": "DIAG",
+      "line_no": 29,
+      "need_id": "fault:P0028",
+      "pay_type": "customer_pay"
+     },
+     {
+      "labor_op": "DIAG",
+      "line_no": 30,
+      "need_id": "fault:P0029",
+      "pay_type": "customer_pay"
+     },
+     {
+      "labor_op": "DIAG",
+      "line_no": 31,
+      "need_id": "fault:P0030",
+      "pay_type": "customer_pay"
+     },
+     {
+      "labor_op": "DIAG",
+      "line_no": 32,
+      "need_id": "fault:P0031",
+      "pay_type": "customer_pay"
+     },
+     {
+      "labor_op": "DIAG",
+      "line_no": 33,
+      "need_id": "fault:P0032",
+      "pay_type": "customer_pay"
+     },
+     {
+      "labor_op": "DIAG",
+      "line_no": 34,
+      "need_id": "fault:P0033",
+      "pay_type": "customer_pay"
+     },
+     {
+      "labor_op": "DIAG",
+      "line_no": 35,
+      "need_id": "fault:P0034",
+      "pay_type": "customer_pay"
+     },
+     {
+      "labor_op": "DIAG",
+      "line_no": 36,
+      "need_id": "fault:P0035",
+      "pay_type": "customer_pay"
+     },
+     {
+      "labor_op": "DIAG",
+      "line_no": 37,
+      "need_id": "fault:P0036",
+      "pay_type": "customer_pay"
+     },
+     {
+      "labor_op": "DIAG",
+      "line_no": 38,
+      "need_id": "fault:P0037",
+      "pay_type": "customer_pay"
+     },
+     {
+      "labor_op": "DIAG",
+      "line_no": 39,
+      "need_id": "fault:P0038",
+      "pay_type": "customer_pay"
+     },
+     {
+      "labor_op": "DIAG",
+      "line_no": 40,
+      "need_id": "fault:P0039",
+      "pay_type": "customer_pay"
+     }
+    ],
+    "vehicle_vin": "MRDAZ01S0NC0048AJ"
+   },
+   "name": "fleet_truncated"
+  },
+  {
+   "action": {
+    "action_id": "AVX-ACT-0f1e2d3c-4b5a-4968-8776-655443322110",
+    "action_kind": "book_fleet_service",
+    "parameters": {
+     "dealer_id": "DLR-PDX-001",
+     "needs": [
+      {
+       "labor_op": " COMM ",
+       "need_id": " fault:U0100 "
+      }
+     ],
+     "urgency": " normal ",
+     "vehicle_vin": "MRDAZ01S0NC0048AJ"
+    }
+   },
+   "body": {
+    "avx_action_id": "0f1e2d3c-4b5a-4968-8776-655443322110",
+    "dealer_id": "DLR-PDX-001",
+    "description": "FI fleet service: fault U0100",
+    "lines": [
+     {
+      "labor_op": "COMM",
+      "line_no": 1,
+      "need_id": "fault:U0100",
+      "pay_type": "customer_pay"
+     }
+    ],
+    "urgency": "normal",
+    "vehicle_vin": "MRDAZ01S0NC0048AJ"
+   },
+   "name": "fleet_whitespace_trimmed"
+  },
+  {
+   "action": {
+    "action_id": "AVX-ACT-0f1e2d3c-4b5a-4968-8776-655443322110",
+    "action_kind": "book_recall_service",
+    "parameters": {
+     "dealer_id": "DLR-PDX-001",
+     "recall_id": "MRD-2026-004",
+     "vehicle_vin": "MRDAZ01S0NC0048AJ"
+    }
+   },
+   "body": {
+    "avx_action_id": "0f1e2d3c-4b5a-4968-8776-655443322110",
+    "dealer_id": "DLR-PDX-001",
+    "description": "FI recall MRD-2026-004",
+    "recall_id": "MRD-2026-004",
+    "vehicle_vin": "MRDAZ01S0NC0048AJ"
+   },
+   "name": "recall_booking"
+  },
+  {
+   "action": {
+    "action_id": "AVX-ACT-0f1e2d3c-4b5a-4968-8776-655443322110",
+    "action_kind": "book_recall_service",
+    "parameters": {
+     "dealer_id": "DLR-PDX-001",
+     "labor_op": "RCL-004",
+     "recall_id": "MRD-2026-004",
+     "urgency": "high",
+     "vehicle_vin": "MRDAZ01S0NC0048AJ"
+    }
+   },
+   "body": {
+    "avx_action_id": "0f1e2d3c-4b5a-4968-8776-655443322110",
+    "dealer_id": "DLR-PDX-001",
+    "description": "FI recall MRD-2026-004",
+    "recall_id": "MRD-2026-004",
+    "vehicle_vin": "MRDAZ01S0NC0048AJ"
+   },
+   "name": "recall_booking_ignores_extra"
+  },
+  {
+   "action": {
+    "action_id": "AVX-ACT-0f1e2d3c-4b5a-4968-8776-655443322110",
+    "action_kind": "submit_warranty_claim",
+    "parameters": {
+     "dealer_id": "DLR-PDX-001",
+     "labor_op": "BAT-REPL",
+     "line_no": 2,
+     "ro_id": "7b0e3c1a-2f4d-5e6f-8a9b-0c1d2e3f4a5b",
+     "vehicle_vin": "MRDAZ01S0NC0048AJ"
+    }
+   },
+   "body": {
+    "avx_action_id": "0f1e2d3c-4b5a-4968-8776-655443322110",
+    "dealer_id": "DLR-PDX-001",
+    "labor_op": "BAT-REPL",
+    "line_no": "2",
+    "ro_id": "7b0e3c1a-2f4d-5e6f-8a9b-0c1d2e3f4a5b",
+    "vehicle_vin": "MRDAZ01S0NC0048AJ"
+   },
+   "name": "warranty_int_line_no"
+  },
+  {
+   "action": {
+    "action_id": "AVX-ACT-0f1e2d3c-4b5a-4968-8776-655443322110",
+    "action_kind": "submit_warranty_claim",
+    "parameters": {
+     "dealer_id": "DLR-PDX-001",
+     "fault_code": "P0A7F",
+     "labor_op": "BAT-REPL",
+     "line_no": 2,
+     "notes": "FI warranty verdict approved",
+     "ro_id": "7b0e3c1a-2f4d-5e6f-8a9b-0c1d2e3f4a5b",
+     "vehicle_vin": "MRDAZ01S0NC0048AJ"
+    }
+   },
+   "body": {
+    "avx_action_id": "0f1e2d3c-4b5a-4968-8776-655443322110",
+    "dealer_id": "DLR-PDX-001",
+    "fault_code": "P0A7F",
+    "labor_op": "BAT-REPL",
+    "line_no": "2",
+    "notes": "FI warranty verdict approved",
+    "ro_id": "7b0e3c1a-2f4d-5e6f-8a9b-0c1d2e3f4a5b",
+    "vehicle_vin": "MRDAZ01S0NC0048AJ"
+   },
+   "name": "warranty_notes_fault_code"
+  }
+ ]
+}

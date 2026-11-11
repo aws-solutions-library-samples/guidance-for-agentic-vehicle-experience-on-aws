@@ -1,0 +1,580 @@
+{
+  "_meta": {
+    "spec": "2026-11-02-fi-ground-book-return D1, D10b",
+    "task": "11.6e",
+    "form": "fleet-health only (recall form is AVX-only)",
+    "note": "vin appears at top-level (CMS) and scope.vin (AVX); both forms required for parity"
+  },
+  "now_iso": "2026-11-10T00:00:00Z",
+  "cases": [
+    {
+      "name": "happy_path",
+      "grounding": {
+        "finding_id": "GND-01",
+        "agent_id": "agent-fi-fleet-health",
+        "vin": "VIN-P01",
+        "scope": {"vin": "VIN-P01"},
+        "fleet_id": "fleet-p-demo",
+        "computed_at": "2026-11-05T05:00:00Z",
+        "expires_at": "2026-12-01T00:00:00Z",
+        "disclosure_txt": "Parity stop-driving P0001",
+        "recommended_action": {
+          "action_kind": "ground_vehicle",
+          "target_system": "cms",
+          "parameters": {"vehicle_vin": "VIN-P01", "fault_codes": ["P0001"]}
+        }
+      },
+      "candidates": [
+        {
+          "finding_id": "BOOK-01",
+          "agent_id": "agent-fi-fleet-health",
+          "vin": "VIN-P01",
+          "scope": {"vin": "VIN-P01"},
+          "fleet_id": "fleet-p-demo",
+          "computed_at": "2026-11-05T06:00:00Z",
+          "expires_at": "2026-12-01T00:00:00Z",
+          "disclosure_txt": "Parity stop-driving P0001",
+          "recommended_action": {
+            "action_kind": "book_fleet_service",
+            "target_system": "dms",
+            "parameters": {
+              "vehicle_vin": "VIN-P01",
+              "needs": [{"need_id": "fault:P0001"}],
+              "dealer_id": "DLR-P01"
+            }
+          }
+        }
+      ],
+      "decided_finding_ids": [],
+      "expected": {"booking_finding_id": "BOOK-01", "reason": null}
+    },
+    {
+      "name": "not_fleet_health",
+      "grounding": {
+        "finding_id": "GND-02",
+        "agent_id": "agent-fi-cost",
+        "vin": "VIN-P01",
+        "scope": {"vin": "VIN-P01"},
+        "fleet_id": "fleet-p-demo",
+        "computed_at": "2026-11-05T05:00:00Z",
+        "expires_at": "2026-12-01T00:00:00Z",
+        "disclosure_txt": "Parity stop-driving P0001",
+        "recommended_action": {
+          "action_kind": "ground_vehicle",
+          "target_system": "cms",
+          "parameters": {"vehicle_vin": "VIN-P01", "fault_codes": ["P0001"]}
+        }
+      },
+      "candidates": [
+        {
+          "finding_id": "BOOK-02",
+          "agent_id": "agent-fi-fleet-health",
+          "vin": "VIN-P01",
+          "scope": {"vin": "VIN-P01"},
+          "fleet_id": "fleet-p-demo",
+          "computed_at": "2026-11-05T06:00:00Z",
+          "expires_at": "2026-12-01T00:00:00Z",
+          "disclosure_txt": "Parity stop-driving P0001",
+          "recommended_action": {
+            "action_kind": "book_fleet_service",
+            "target_system": "dms",
+            "parameters": {
+              "vehicle_vin": "VIN-P01",
+              "needs": [{"need_id": "fault:P0001"}],
+              "dealer_id": "DLR-P01"
+            }
+          }
+        }
+      ],
+      "decided_finding_ids": [],
+      "expected": {"booking_finding_id": null, "reason": "not_fleet_health"}
+    },
+    {
+      "name": "no_booking_item_no_candidate",
+      "grounding": {
+        "finding_id": "GND-03",
+        "agent_id": "agent-fi-fleet-health",
+        "vin": "VIN-P01",
+        "scope": {"vin": "VIN-P01"},
+        "fleet_id": "fleet-p-demo",
+        "computed_at": "2026-11-05T05:00:00Z",
+        "expires_at": "2026-12-01T00:00:00Z",
+        "disclosure_txt": "Parity stop-driving P0001",
+        "recommended_action": {
+          "action_kind": "ground_vehicle",
+          "target_system": "cms",
+          "parameters": {"vehicle_vin": "VIN-P01", "fault_codes": ["P0001"]}
+        }
+      },
+      "candidates": [],
+      "decided_finding_ids": [],
+      "expected": {"booking_finding_id": null, "reason": "no_booking_item"}
+    },
+    {
+      "name": "no_booking_item_wrong_vin",
+      "grounding": {
+        "finding_id": "GND-04",
+        "agent_id": "agent-fi-fleet-health",
+        "vin": "VIN-P01",
+        "scope": {"vin": "VIN-P01"},
+        "fleet_id": "fleet-p-demo",
+        "computed_at": "2026-11-05T05:00:00Z",
+        "expires_at": "2026-12-01T00:00:00Z",
+        "disclosure_txt": "Parity stop-driving P0001",
+        "recommended_action": {
+          "action_kind": "ground_vehicle",
+          "target_system": "cms",
+          "parameters": {"vehicle_vin": "VIN-P01", "fault_codes": ["P0001"]}
+        }
+      },
+      "candidates": [
+        {
+          "finding_id": "BOOK-04",
+          "agent_id": "agent-fi-fleet-health",
+          "vin": "VIN-P99",
+          "scope": {"vin": "VIN-P99"},
+          "fleet_id": "fleet-p-demo",
+          "computed_at": "2026-11-05T06:00:00Z",
+          "expires_at": "2026-12-01T00:00:00Z",
+          "disclosure_txt": "Parity stop-driving P0001",
+          "recommended_action": {
+            "action_kind": "book_fleet_service",
+            "target_system": "dms",
+            "parameters": {
+              "vehicle_vin": "VIN-P99",
+              "needs": [{"need_id": "fault:P0001"}],
+              "dealer_id": "DLR-P01"
+            }
+          }
+        }
+      ],
+      "decided_finding_ids": [],
+      "expected": {"booking_finding_id": null, "reason": "no_booking_item"}
+    },
+    {
+      "name": "no_booking_item_expired",
+      "grounding": {
+        "finding_id": "GND-05",
+        "agent_id": "agent-fi-fleet-health",
+        "vin": "VIN-P01",
+        "scope": {"vin": "VIN-P01"},
+        "fleet_id": "fleet-p-demo",
+        "computed_at": "2026-11-05T05:00:00Z",
+        "expires_at": "2026-12-01T00:00:00Z",
+        "disclosure_txt": "Parity stop-driving P0001",
+        "recommended_action": {
+          "action_kind": "ground_vehicle",
+          "target_system": "cms",
+          "parameters": {"vehicle_vin": "VIN-P01", "fault_codes": ["P0001"]}
+        }
+      },
+      "candidates": [
+        {
+          "finding_id": "BOOK-05",
+          "agent_id": "agent-fi-fleet-health",
+          "vin": "VIN-P01",
+          "scope": {"vin": "VIN-P01"},
+          "fleet_id": "fleet-p-demo",
+          "computed_at": "2026-11-05T06:00:00Z",
+          "expires_at": "2026-10-01T00:00:00Z",
+          "disclosure_txt": "Parity stop-driving P0001",
+          "recommended_action": {
+            "action_kind": "book_fleet_service",
+            "target_system": "dms",
+            "parameters": {
+              "vehicle_vin": "VIN-P01",
+              "needs": [{"need_id": "fault:P0001"}],
+              "dealer_id": "DLR-P01"
+            }
+          }
+        }
+      ],
+      "decided_finding_ids": [],
+      "expected": {"booking_finding_id": null, "reason": "no_booking_item"}
+    },
+    {
+      "name": "no_booking_item_codes_not_covered",
+      "grounding": {
+        "finding_id": "GND-06",
+        "agent_id": "agent-fi-fleet-health",
+        "vin": "VIN-P01",
+        "scope": {"vin": "VIN-P01"},
+        "fleet_id": "fleet-p-demo",
+        "computed_at": "2026-11-05T05:00:00Z",
+        "expires_at": "2026-12-01T00:00:00Z",
+        "disclosure_txt": "Parity stop-driving P0001",
+        "recommended_action": {
+          "action_kind": "ground_vehicle",
+          "target_system": "cms",
+          "parameters": {"vehicle_vin": "VIN-P01", "fault_codes": ["P0001"]}
+        }
+      },
+      "candidates": [
+        {
+          "finding_id": "BOOK-06",
+          "agent_id": "agent-fi-fleet-health",
+          "vin": "VIN-P01",
+          "scope": {"vin": "VIN-P01"},
+          "fleet_id": "fleet-p-demo",
+          "computed_at": "2026-11-05T06:00:00Z",
+          "expires_at": "2026-12-01T00:00:00Z",
+          "disclosure_txt": "Parity stop-driving P0001",
+          "recommended_action": {
+            "action_kind": "book_fleet_service",
+            "target_system": "dms",
+            "parameters": {
+              "vehicle_vin": "VIN-P01",
+              "needs": [{"need_id": "fault:P0002"}],
+              "dealer_id": "DLR-P01"
+            }
+          }
+        }
+      ],
+      "decided_finding_ids": [],
+      "expected": {"booking_finding_id": null, "reason": "no_booking_item"}
+    },
+    {
+      "name": "already_decided",
+      "grounding": {
+        "finding_id": "GND-07",
+        "agent_id": "agent-fi-fleet-health",
+        "vin": "VIN-P01",
+        "scope": {"vin": "VIN-P01"},
+        "fleet_id": "fleet-p-demo",
+        "computed_at": "2026-11-05T05:00:00Z",
+        "expires_at": "2026-12-01T00:00:00Z",
+        "disclosure_txt": "Parity stop-driving P0001",
+        "recommended_action": {
+          "action_kind": "ground_vehicle",
+          "target_system": "cms",
+          "parameters": {"vehicle_vin": "VIN-P01", "fault_codes": ["P0001"]}
+        }
+      },
+      "candidates": [
+        {
+          "finding_id": "BOOK-07",
+          "agent_id": "agent-fi-fleet-health",
+          "vin": "VIN-P01",
+          "scope": {"vin": "VIN-P01"},
+          "fleet_id": "fleet-p-demo",
+          "computed_at": "2026-11-05T06:00:00Z",
+          "expires_at": "2026-12-01T00:00:00Z",
+          "disclosure_txt": "Parity stop-driving P0001",
+          "recommended_action": {
+            "action_kind": "book_fleet_service",
+            "target_system": "dms",
+            "parameters": {
+              "vehicle_vin": "VIN-P01",
+              "needs": [{"need_id": "fault:P0001"}],
+              "dealer_id": "DLR-P01"
+            }
+          }
+        }
+      ],
+      "decided_finding_ids": ["BOOK-07"],
+      "expected": {"booking_finding_id": "BOOK-07", "reason": "already_decided"}
+    },
+    {
+      "name": "no_dealer",
+      "grounding": {
+        "finding_id": "GND-08",
+        "agent_id": "agent-fi-fleet-health",
+        "vin": "VIN-P01",
+        "scope": {"vin": "VIN-P01"},
+        "fleet_id": "fleet-p-demo",
+        "computed_at": "2026-11-05T05:00:00Z",
+        "expires_at": "2026-12-01T00:00:00Z",
+        "disclosure_txt": "Parity stop-driving P0001",
+        "recommended_action": {
+          "action_kind": "ground_vehicle",
+          "target_system": "cms",
+          "parameters": {"vehicle_vin": "VIN-P01", "fault_codes": ["P0001"]}
+        }
+      },
+      "candidates": [
+        {
+          "finding_id": "BOOK-08",
+          "agent_id": "agent-fi-fleet-health",
+          "vin": "VIN-P01",
+          "scope": {"vin": "VIN-P01"},
+          "fleet_id": "fleet-p-demo",
+          "computed_at": "2026-11-05T06:00:00Z",
+          "expires_at": "2026-12-01T00:00:00Z",
+          "disclosure_txt": "Parity stop-driving P0001",
+          "recommended_action": {
+            "action_kind": "book_fleet_service",
+            "target_system": "dms",
+            "parameters": {
+              "vehicle_vin": "VIN-P01",
+              "needs": [{"need_id": "fault:P0001"}]
+            }
+          }
+        }
+      ],
+      "decided_finding_ids": [],
+      "expected": {"booking_finding_id": "BOOK-08", "reason": "no_dealer"}
+    },
+    {
+      "name": "disclosure_differs",
+      "grounding": {
+        "finding_id": "GND-09",
+        "agent_id": "agent-fi-fleet-health",
+        "vin": "VIN-P01",
+        "scope": {"vin": "VIN-P01"},
+        "fleet_id": "fleet-p-demo",
+        "computed_at": "2026-11-05T05:00:00Z",
+        "expires_at": "2026-12-01T00:00:00Z",
+        "disclosure_txt": "Parity stop-driving P0001",
+        "recommended_action": {
+          "action_kind": "ground_vehicle",
+          "target_system": "cms",
+          "parameters": {"vehicle_vin": "VIN-P01", "fault_codes": ["P0001"]}
+        }
+      },
+      "candidates": [
+        {
+          "finding_id": "BOOK-09",
+          "agent_id": "agent-fi-fleet-health",
+          "vin": "VIN-P01",
+          "scope": {"vin": "VIN-P01"},
+          "fleet_id": "fleet-p-demo",
+          "computed_at": "2026-11-05T06:00:00Z",
+          "expires_at": "2026-12-01T00:00:00Z",
+          "disclosure_txt": "DIFFERENT: book service soon",
+          "recommended_action": {
+            "action_kind": "book_fleet_service",
+            "target_system": "dms",
+            "parameters": {
+              "vehicle_vin": "VIN-P01",
+              "needs": [{"need_id": "fault:P0001"}],
+              "dealer_id": "DLR-P01"
+            }
+          }
+        }
+      ],
+      "decided_finding_ids": [],
+      "expected": {"booking_finding_id": "BOOK-09", "reason": "disclosure_differs"}
+    },
+    {
+      "name": "latest_eligible_wins",
+      "grounding": {
+        "finding_id": "GND-10",
+        "agent_id": "agent-fi-fleet-health",
+        "vin": "VIN-P01",
+        "scope": {"vin": "VIN-P01"},
+        "fleet_id": "fleet-p-demo",
+        "computed_at": "2026-11-05T05:00:00Z",
+        "expires_at": "2026-12-01T00:00:00Z",
+        "disclosure_txt": "Parity stop-driving P0001",
+        "recommended_action": {
+          "action_kind": "ground_vehicle",
+          "target_system": "cms",
+          "parameters": {"vehicle_vin": "VIN-P01", "fault_codes": ["P0001"]}
+        }
+      },
+      "candidates": [
+        {
+          "finding_id": "BOOK-10A",
+          "agent_id": "agent-fi-fleet-health",
+          "vin": "VIN-P01",
+          "scope": {"vin": "VIN-P01"},
+          "fleet_id": "fleet-p-demo",
+          "computed_at": "2026-11-04T06:00:00Z",
+          "expires_at": "2026-12-01T00:00:00Z",
+          "disclosure_txt": "Parity stop-driving P0001",
+          "recommended_action": {
+            "action_kind": "book_fleet_service",
+            "target_system": "dms",
+            "parameters": {
+              "vehicle_vin": "VIN-P01",
+              "needs": [{"need_id": "fault:P0001"}],
+              "dealer_id": "DLR-P01"
+            }
+          }
+        },
+        {
+          "finding_id": "BOOK-10B",
+          "agent_id": "agent-fi-fleet-health",
+          "vin": "VIN-P01",
+          "scope": {"vin": "VIN-P01"},
+          "fleet_id": "fleet-p-demo",
+          "computed_at": "2026-11-06T06:00:00Z",
+          "expires_at": "2026-12-01T00:00:00Z",
+          "disclosure_txt": "Parity stop-driving P0001",
+          "recommended_action": {
+            "action_kind": "book_fleet_service",
+            "target_system": "dms",
+            "parameters": {
+              "vehicle_vin": "VIN-P01",
+              "needs": [{"need_id": "fault:P0001"}],
+              "dealer_id": "DLR-P01"
+            }
+          }
+        }
+      ],
+      "decided_finding_ids": [],
+      "expected": {"booking_finding_id": "BOOK-10B", "reason": null}
+    },
+    {
+      "name": "tiebreak_by_finding_id",
+      "grounding": {
+        "finding_id": "GND-11",
+        "agent_id": "agent-fi-fleet-health",
+        "vin": "VIN-P01",
+        "scope": {"vin": "VIN-P01"},
+        "fleet_id": "fleet-p-demo",
+        "computed_at": "2026-11-05T05:00:00Z",
+        "expires_at": "2026-12-01T00:00:00Z",
+        "disclosure_txt": "Parity stop-driving P0001",
+        "recommended_action": {
+          "action_kind": "ground_vehicle",
+          "target_system": "cms",
+          "parameters": {"vehicle_vin": "VIN-P01", "fault_codes": ["P0001"]}
+        }
+      },
+      "candidates": [
+        {
+          "finding_id": "BOOK-11-AAA",
+          "agent_id": "agent-fi-fleet-health",
+          "vin": "VIN-P01",
+          "scope": {"vin": "VIN-P01"},
+          "fleet_id": "fleet-p-demo",
+          "computed_at": "2026-11-05T06:00:00Z",
+          "expires_at": "2026-12-01T00:00:00Z",
+          "disclosure_txt": "Parity stop-driving P0001",
+          "recommended_action": {
+            "action_kind": "book_fleet_service",
+            "target_system": "dms",
+            "parameters": {
+              "vehicle_vin": "VIN-P01",
+              "needs": [{"need_id": "fault:P0001"}],
+              "dealer_id": "DLR-P01"
+            }
+          }
+        },
+        {
+          "finding_id": "BOOK-11-ZZZ",
+          "agent_id": "agent-fi-fleet-health",
+          "vin": "VIN-P01",
+          "scope": {"vin": "VIN-P01"},
+          "fleet_id": "fleet-p-demo",
+          "computed_at": "2026-11-05T06:00:00Z",
+          "expires_at": "2026-12-01T00:00:00Z",
+          "disclosure_txt": "Parity stop-driving P0001",
+          "recommended_action": {
+            "action_kind": "book_fleet_service",
+            "target_system": "dms",
+            "parameters": {
+              "vehicle_vin": "VIN-P01",
+              "needs": [{"need_id": "fault:P0001"}],
+              "dealer_id": "DLR-P01"
+            }
+          }
+        }
+      ],
+      "decided_finding_ids": [],
+      "expected": {"booking_finding_id": "BOOK-11-ZZZ", "reason": null}
+    },
+    {
+      "name": "eligible_over_decided",
+      "grounding": {
+        "finding_id": "GND-12",
+        "agent_id": "agent-fi-fleet-health",
+        "vin": "VIN-P01",
+        "scope": {"vin": "VIN-P01"},
+        "fleet_id": "fleet-p-demo",
+        "computed_at": "2026-11-05T05:00:00Z",
+        "expires_at": "2026-12-01T00:00:00Z",
+        "disclosure_txt": "Parity stop-driving P0001",
+        "recommended_action": {
+          "action_kind": "ground_vehicle",
+          "target_system": "cms",
+          "parameters": {"vehicle_vin": "VIN-P01", "fault_codes": ["P0001"]}
+        }
+      },
+      "candidates": [
+        {
+          "finding_id": "BOOK-12D",
+          "agent_id": "agent-fi-fleet-health",
+          "vin": "VIN-P01",
+          "scope": {"vin": "VIN-P01"},
+          "fleet_id": "fleet-p-demo",
+          "computed_at": "2026-11-06T06:00:00Z",
+          "expires_at": "2026-12-01T00:00:00Z",
+          "disclosure_txt": "Parity stop-driving P0001",
+          "recommended_action": {
+            "action_kind": "book_fleet_service",
+            "target_system": "dms",
+            "parameters": {
+              "vehicle_vin": "VIN-P01",
+              "needs": [{"need_id": "fault:P0001"}],
+              "dealer_id": "DLR-P01"
+            }
+          }
+        },
+        {
+          "finding_id": "BOOK-12E",
+          "agent_id": "agent-fi-fleet-health",
+          "vin": "VIN-P01",
+          "scope": {"vin": "VIN-P01"},
+          "fleet_id": "fleet-p-demo",
+          "computed_at": "2026-11-05T05:00:00Z",
+          "expires_at": "2026-12-01T00:00:00Z",
+          "disclosure_txt": "Parity stop-driving P0001",
+          "recommended_action": {
+            "action_kind": "book_fleet_service",
+            "target_system": "dms",
+            "parameters": {
+              "vehicle_vin": "VIN-P01",
+              "needs": [{"need_id": "fault:P0001"}],
+              "dealer_id": "DLR-P01"
+            }
+          }
+        }
+      ],
+      "decided_finding_ids": ["BOOK-12D"],
+      "expected": {"booking_finding_id": "BOOK-12E", "reason": null}
+    },
+    {
+      "name": "no_booking_item_wrong_fleet",
+      "grounding": {
+        "finding_id": "GND-13",
+        "agent_id": "agent-fi-fleet-health",
+        "vin": "VIN-P01",
+        "scope": {"vin": "VIN-P01"},
+        "fleet_id": "fleet-p-demo",
+        "computed_at": "2026-11-05T05:00:00Z",
+        "expires_at": "2026-12-01T00:00:00Z",
+        "disclosure_txt": "Parity stop-driving P0001",
+        "recommended_action": {
+          "action_kind": "ground_vehicle",
+          "target_system": "cms",
+          "parameters": {"vehicle_vin": "VIN-P01", "fault_codes": ["P0001"]}
+        }
+      },
+      "candidates": [
+        {
+          "finding_id": "BOOK-13",
+          "agent_id": "agent-fi-fleet-health",
+          "vin": "VIN-P01",
+          "scope": {"vin": "VIN-P01"},
+          "fleet_id": "fleet-p-other",
+          "computed_at": "2026-11-05T06:00:00Z",
+          "expires_at": "2026-12-01T00:00:00Z",
+          "disclosure_txt": "Parity stop-driving P0001",
+          "recommended_action": {
+            "action_kind": "book_fleet_service",
+            "target_system": "dms",
+            "parameters": {
+              "vehicle_vin": "VIN-P01",
+              "needs": [{"need_id": "fault:P0001"}],
+              "dealer_id": "DLR-P01"
+            }
+          }
+        }
+      ],
+      "decided_finding_ids": [],
+      "expected": {"booking_finding_id": null, "reason": "no_booking_item"}
+    }
+  ]
+}

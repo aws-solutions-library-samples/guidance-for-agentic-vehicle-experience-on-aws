@@ -1,0 +1,134 @@
+{
+  "_comment": "Golden inputs and expected outputs for D7 saving formulas. Used by AVX test_savings_formulas.py and CMS display tests (task 6.4). Both must agree on these values.",
+  "_spec": ".kiro/specs/2026-10-02-fi-cost-stage-b/spec.md § D7",
+  "formulas": {
+    "shift_to_depot_off_peak": {
+      "_formula": "public_and_peak_kwh x (mean_public_peak_price - depot_off_peak_price)",
+      "_basis_template": "monthly kWh moved to depot off-peak x price difference, <month>",
+      "cases": [
+        {
+          "name": "typical_dc_fast_heavy_user",
+          "input": {
+            "public_and_peak_kwh": 400.0,
+            "mean_public_peak_price_per_kwh": 0.38,
+            "depot_off_peak_price_per_kwh": 0.09,
+            "month": "2026-08"
+          },
+          "expected": {
+            "estimated_value_usd": 116.0,
+            "estimated_value_basis": "monthly kWh moved to depot off-peak x price difference, 2026-08"
+          }
+        },
+        {
+          "name": "zero_public_kwh",
+          "input": {
+            "public_and_peak_kwh": 0.0,
+            "mean_public_peak_price_per_kwh": 0.38,
+            "depot_off_peak_price_per_kwh": 0.09,
+            "month": "2026-08"
+          },
+          "expected": {
+            "estimated_value_usd": 0.0,
+            "estimated_value_basis": "monthly kWh moved to depot off-peak x price difference, 2026-08"
+          }
+        }
+      ]
+    },
+    "schedule_inspection": {
+      "_formula": "maintenance_cost - cohort_baseline_maintenance_cost",
+      "_basis_template": "maintenance above fleet-model median, <month>",
+      "cases": [
+        {
+          "name": "repeat_repair_excess",
+          "input": {
+            "vehicle_maintenance_cost": 850.0,
+            "cohort_baseline_maintenance_cost": 250.0,
+            "month": "2026-08"
+          },
+          "expected": {
+            "estimated_value_usd": 600.0,
+            "estimated_value_basis": "maintenance above fleet-model median, 2026-08"
+          }
+        },
+        {
+          "name": "rounding_check",
+          "input": {
+            "vehicle_maintenance_cost": 333.34,
+            "cohort_baseline_maintenance_cost": 100.01,
+            "month": "2026-09"
+          },
+          "expected": {
+            "estimated_value_usd": 233.33,
+            "estimated_value_basis": "maintenance above fleet-model median, 2026-09"
+          }
+        }
+      ]
+    },
+    "reassign_or_remarket": {
+      "_formula": "max(0, (lease + insurance) x (1 - miles / fleet_median_miles))",
+      "_basis_template": "fixed cost not covered by fleet-median use, <month>",
+      "cases": [
+        {
+          "name": "low_utilisation",
+          "input": {
+            "lease_cost": 600.0,
+            "insurance_cost": 150.0,
+            "vehicle_miles": 200.0,
+            "fleet_median_miles": 1000.0,
+            "month": "2026-08"
+          },
+          "expected": {
+            "estimated_value_usd": 600.0,
+            "estimated_value_basis": "fixed cost not covered by fleet-median use, 2026-08"
+          }
+        },
+        {
+          "name": "over_fleet_median_floored_at_zero",
+          "input": {
+            "lease_cost": 600.0,
+            "insurance_cost": 150.0,
+            "vehicle_miles": 1500.0,
+            "fleet_median_miles": 1000.0,
+            "month": "2026-08"
+          },
+          "expected": {
+            "estimated_value_usd": 0.0,
+            "estimated_value_basis": "fixed cost not covered by fleet-median use, 2026-08"
+          }
+        }
+      ]
+    },
+    "driver_coaching": {
+      "_formula": "energy_cost x (1 - cohort_kwh_per_100mi / vehicle_kwh_per_100mi)",
+      "_basis_template": "energy above fleet-model efficiency, <month>",
+      "cases": [
+        {
+          "name": "inefficient_driver",
+          "input": {
+            "vehicle_energy_cost": 500.0,
+            "cohort_kwh_per_100mi": 30.0,
+            "vehicle_kwh_per_100mi": 40.0,
+            "month": "2026-08"
+          },
+          "expected": {
+            "estimated_value_usd": 125.0,
+            "estimated_value_basis": "energy above fleet-model efficiency, 2026-08"
+          }
+        },
+        {
+          "name": "at_fleet_efficiency_zero_saving",
+          "input": {
+            "vehicle_energy_cost": 500.0,
+            "cohort_kwh_per_100mi": 30.0,
+            "vehicle_kwh_per_100mi": 30.0,
+            "month": "2026-08"
+          },
+          "expected": {
+            "estimated_value_usd": 0.0,
+            "estimated_value_basis": "energy above fleet-model efficiency, 2026-08"
+          }
+        }
+      ]
+    }
+  }
+}

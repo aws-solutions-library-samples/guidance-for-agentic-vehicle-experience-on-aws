@@ -1,0 +1,77 @@
+{
+ "_source": "aws scheduler get-schedule, read-only 2026-10-19; account replaced. service is DISABLED live until 6.2 enables it.",
+ "schedules": [
+  {
+   "Name": "vsa-staging-tier2-daily-battery-us-west-2",
+   "GroupName": "default",
+   "ScheduleExpression": "cron(0 2 * * ? *)",
+   "ScheduleExpressionTimezone": "Etc/UTC",
+   "State": "ENABLED",
+   "FlexibleTimeWindow": {
+    "Mode": "OFF"
+   },
+   "Target": {
+    "Arn": "arn:aws:lambda:us-west-2:123456789012:function:vsa-staging-tier2-health-agent-us-west-2",
+    "Input": "{\"stage\":\"staging\",\"component\":\"battery\"}",
+    "RetryPolicy": {
+     "MaximumEventAgeInSeconds": 3600,
+     "MaximumRetryAttempts": 2
+    }
+   }
+  },
+  {
+   "Name": "vsa-staging-tier2-daily-tires-us-west-2",
+   "GroupName": "default",
+   "ScheduleExpression": "cron(20 2 * * ? *)",
+   "ScheduleExpressionTimezone": "Etc/UTC",
+   "State": "ENABLED",
+   "FlexibleTimeWindow": {
+    "Mode": "OFF"
+   },
+   "Target": {
+    "Arn": "arn:aws:lambda:us-west-2:123456789012:function:vsa-staging-tier2-health-agent-us-west-2",
+    "Input": "{\"stage\":\"staging\",\"component\":\"tires\"}",
+    "RetryPolicy": {
+     "MaximumEventAgeInSeconds": 3600,
+     "MaximumRetryAttempts": 2
+    }
+   }
+  },
+  {
+   "Name": "vsa-staging-tier2-daily-brakes-us-west-2",
+   "GroupName": "default",
+   "ScheduleExpression": "cron(40 2 * * ? *)",
+   "ScheduleExpressionTimezone": "Etc/UTC",
+   "State": "ENABLED",
+   "FlexibleTimeWindow": {
+    "Mode": "OFF"
+   },
+   "Target": {
+    "Arn": "arn:aws:lambda:us-west-2:123456789012:function:vsa-staging-tier2-health-agent-us-west-2",
+    "Input": "{\"stage\":\"staging\",\"component\":\"brakes\"}",
+    "RetryPolicy": {
+     "MaximumEventAgeInSeconds": 3600,
+     "MaximumRetryAttempts": 2
+    }
+   }
+  },
+  {
+   "Name": "vsa-staging-tier2-daily-service-us-west-2",
+   "GroupName": "default",
+   "ScheduleExpression": "cron(40 5 * * ? *)",
+   "ScheduleExpressionTimezone": "Etc/UTC",
+   "State": "DISABLED",
+   "FlexibleTimeWindow": {
+    "Mode": "OFF"
+   },
+   "Target": {
+    "Arn": "arn:aws:lambda:us-west-2:123456789012:function:vsa-staging-tier2-health-agent-us-west-2",
+    "Input": "{\"stage\":\"staging\",\"component\":\"service\"}",
+    "RetryPolicy": {
+     "MaximumEventAgeInSeconds": 3600,
+     "MaximumRetryAttempts": 2
+    }
+   }
+  }
+ ]
+}

@@ -1,0 +1,12 @@
+{
+  "name": "p1-coolant-overtemp",
+  "description": "Driver reports coolant temperature spike. Supervisor should call triage, retrieve recall context, and if the customer confirms, call book. Because the second turn has the customer explicitly agreeing to a ticket + warm transfer, book MUST be called regardless of classification.",
+  "vin": "1FMCU0F70MUA12345",
+  "user_turns": [
+    "Temperature gauge just spiked.",
+    "Yes, please create a ticket and connect me to fleet ops."
+  ],
+  "expect_book_call": true,
+  "forbidden_tools_if": {},
+  "notes": "Tests: (1) triage-first, (2) book fires after explicit customer confirmation per rule 3, (3) book args include warm-transfer-to-fleet-ops if the classification warrants it. This scenario does not assert on retrieve because that is classification-dependent — retrieve is most useful on P1/P2 where recall or warranty context shapes the narration."
+}

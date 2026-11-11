@@ -1,0 +1,34 @@
+{
+ "_source": "live get-function-configuration of the CMS FI Lambda, 2026-10-21 ~19:00Z, account scrubbed, AVX endpoint host replaced",
+ "function": {
+  "Env": {
+   "ADP_DATA_PROVENANCE": "simulated",
+   "ADP_REGION": "us-east-1",
+   "ADP_STAGE": "staging",
+   "ATHENA_OUTPUT_LOC": "s3://cms-staging-athena-results-123456789012-us-east-1/fleet-intelligence/",
+   "ATHENA_WORKGROUP": "cms-staging-analytics",
+   "AVX_ACTIONS_TABLE_NAME": "vsa-staging-avx-actions",
+   "AVX_API_ENDPOINT": "https://avx-api.example.invalid/staging/",
+   "AVX_APPROVAL_RULES_TABLE_NAME": "vsa-staging-avx-approval-rules",
+   "AVX_AUTO_APPROVAL_BOUNDS_PARAM": "/vsa/staging/avx/fi-rebalancing/auto-approval-bounds",
+   "AVX_AUTO_APPROVER_ROLE_ARN": "arn:aws:iam::123456789012:role/vsa-staging-avx-auto-approver-us-west-2",
+   "AVX_FINDINGS_TABLE_NAME": "vsa-staging-avx-findings",
+   "AVX_INVESTIGATIONS_TABLE_NAME": "vsa-staging-avx-investigations",
+   "COST_ACTIONS_TABLE_NAME": "cms-staging-storage-cost-actions",
+   "DIGITAL_THREAD_TABLE_NAME": "adp-staging-digital-thread",
+   "FI_LIFECYCLE_WINDOW_MONTHS": "36",
+   "FI_WINDOW_MONTHS": "12",
+   "FLEET_LOCATIONS_TABLE_NAME": "cms-staging-storage-fleet-locations",
+   "GROUNDINGS_TABLE_NAME": "cms-staging-storage-vehicle-groundings",
+   "OTA_CAMPAIGNS_ISSUED_TABLE_NAME": "adp-staging-ota-campaigns-issued",
+   "PM_PLANS_TABLE_NAME": "cms-staging-storage-pm-plans",
+   "REBALANCE_FLEET_IDS": "demo-rental-carshare",
+   "VEHICLES_TABLE_NAME": "cms-staging-storage-vehicles",
+   "VEHICLE_MOVES_TABLE_NAME": "cms-staging-storage-vehicle-moves"
+  },
+  "Handler": "index.handler",
+  "MemorySize": 512,
+  "Runtime": "python3.12",
+  "Timeout": 900
+ }
+}

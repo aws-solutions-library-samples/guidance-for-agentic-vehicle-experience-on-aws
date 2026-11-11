@@ -1,0 +1,348 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:cvx:avx:action:v1",
+  "title": "AVX Action",
+  "description": "A human-initiated action taken in response to a Finding. Dispatched via the executor layer. Spec source: specs/2026-09-18-avx-tier2-ios-cards-and-actions/spec.md § 'Cross-surface Action data model — canonical' including Contract Addenda D4, D5.",
+  "type": "object",
+  "required": [
+    "action_id",
+    "finding_id",
+    "created_by",
+    "created_at",
+    "updated_at",
+    "target_system",
+    "status",
+    "action_kind",
+    "parameters",
+    "evidence",
+    "audit_trail"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "action_id": {
+      "type": "string",
+      "pattern": "^AVX-ACT-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+      "description": "Unique identifier. Format: AVX-ACT-{uuid}"
+    },
+    "finding_id": {
+      "type": "string",
+      "pattern": "^FIND-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+      "description": "FK to the originating Finding."
+    },
+    "created_by": {
+      "type": "string",
+      "description": "Identity of the actor who created the action. Format: owner-{id} | dealer-{id} | fleet-manager-{id} | rule-{fleet_id}/{rule_id} (auto-approval rule, Stage A D9). The approve and decline routes write owner-{sub} for every human caller; decided_by.kind says what standing they decided on."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO-8601 UTC timestamp of action creation."
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO-8601 UTC timestamp of the most recent state change on this Action (set on create and on every status transition). Callers surface this as staleness context per parent PRD § M5. Contract Addendum C2 (review Cycle 1)."
+    },
+    "target_system": {
+      "type": "string",
+      "enum": ["dms", "vehicle-command", "retail", "none", "chat", "ios-owner", "cms", "adp"],
+      "description": "Executor target. One executor class per target system. Stage A D3 adds 'cms' for CMS-side actions (grounding, moves, recall completion). Stage D adds 'adp' for the three engineering action kinds: record_engineering_decision, issue_recall, issue_software_campaign. The AdpExecutor invokes adp-{stage}-digital-thread-writer cross-region (us-east-1) with a deadline inside the dispatch budget. Until Stages C/D, the CmsExecutor refuses every Action as target_refused."
+    },
+    "target_ref": {
+      "type": "string",
+      "description": "Downstream system reference ID, populated by the executor after successful dispatch (e.g. DMS-RO-9999 for dms, message-id for ios-owner). Optional until executed."
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending_execution",
+        "executed",
+        "in_progress",
+        "completed",
+        "cancelled",
+        "declined",
+        "dismissed",
+        "failed"
+      ],
+      "description": "Action lifecycle state. Addenda D4/D5: 'dismissed' — owner tapped Dismiss (terminal, distinct from 'cancelled' and 'declined'); 'failed' — executor exhausted retries on transient downstream failure (terminal, distinct from 'declined' which is a terminal 4xx refusal)."
+    },
+    "action_kind": {
+      "type": "string",
+      "enum": [
+        "book_combined_visit",
+        "schedule_inspection",
+        "update_charging_schedule",
+        "file_warranty_pre",
+        "surface_recall",
+        "acknowledge_only",
+        "book_recall_service",
+        "ground_vehicle",
+        "move_vehicles",
+        "exempt_recall",
+        "complete_recall",
+        "submit_warranty_claim",
+        "apply_cost_action",
+        "lead_capture",
+        "configurator_recommend",
+        "book_fleet_service",
+        "record_engineering_decision",
+        "issue_recall",
+        "issue_software_campaign"
+      ],
+      "description": "Action type. Extensible; enum is test-pinned per executor. Spec 1a values: first six. Stage A (spec 2026-10-02-fi-action-queue-stage-a D3) adds: book_recall_service (dms, executable Stage A), ground_vehicle (cms), move_vehicles (cms), exempt_recall (cms), complete_recall (cms), submit_warranty_claim (dms: CMS drafts, DMS files, PRD Open Question 2), apply_cost_action (target set by the cost stage), and the two retail kinds lead_capture/configurator_recommend (closes the _RETAIL_KINDS contract gap, gate not lifted — D3). Stage D (spec 2026-10-05-fi-fleet-health-stage-d) adds: book_fleet_service (dms, executable by operator; G5 does not apply), record_engineering_decision (adp, product-engineer only, G5), issue_recall (adp, product-engineer only, G5), issue_software_campaign (adp, product-engineer only, G5). The per-kind target is enforced by agents/executors/policy.py, not by this schema."
+    },
+    "parameters": {
+      "type": "object",
+      "description": "Executor-specific parameters. Shape varies per target_system."
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/evidence_entry"
+      },
+      "description": "COPY of the originating Finding's evidence at approval time. Immutable — later Finding re-runs do NOT mutate this copy."
+    },
+    "audit_trail": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/audit_entry"
+      },
+      "description": "Ordered log of state transitions. Addendum D5: transitions to 'declined' or 'failed' must carry failure_kind (and retry_count for 'failed')."
+    },
+    "decided_by": {
+      "type": "object",
+      "description": "Who made the decision for this Action. Absent on pre-Stage-A Actions. Stage A D3.",
+      "required": ["kind", "id"],
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": ["operator", "user", "rule", "engineer", "simulated_fleet_operator"],
+          "description": "'operator' — a human who decided on fleet-operator standing for the Finding's fleet (fleet-operator group with a trusted custom:fleetIds naming the fleet), or a platform-admin. 'user' — any other human the approve check admits (owner, fleet driver, service advisor). 'rule' — an auto-approval rule. Guardrails G1–G3 and every FI action kind require 'operator' (Stage A D5). 'engineer' — a human who decided on product-engineer standing (membership in the 'product-engineer' Cognito group). Written by the investigations route and the population approve handler from the verified token; G5 requires it for the three engineering action kinds. G1–G4 compare decided_by.kind with 'operator'; an 'engineer' therefore cannot satisfy G1–G4 unless they are also in the operator groups (platform-admin). Stage D D11, D14, D16. 'simulated_fleet_operator' — the scheduled stand-in (spec D10), a deterministic non-model Lambda that approves FI items for the four staging demo fleets. G2 (ground_vehicle) and G3 (submit_warranty_claim) admit this kind only when the process flag FI_SIM_OPERATOR_ENABLED=='true' and the fleet is in DEMO_FLEET_IDS. Every other guardrail refuses it."
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Operator or user: the verified Cognito token sub, never a body field. Rule: '{fleet_id}/{rule_id}'."
+        }
+      }
+    },
+    "decision": {
+      "type": "string",
+      "enum": ["approved", "overridden", "auto_approved", "declined"],
+      "description": "How the Action was decided. 'approved' — parameters match the Finding's recommended_action. 'overridden' — parameters differ. 'auto_approved' — created by an auto-approval rule. 'declined' — a human rejected the recommendation through POST /findings/{finding_id}/decline; nothing was dispatched. Guardrail blocks and target refusals keep the decision that was made and are told apart by the audit trail (status declined plus audit guardrail, or failure_kind target_refused without guardrail). Written only on the one decision Action of an FI queue item (a Finding with recommended_action); every other Action, including non-FI approves, omits it. Absent on pre-Stage-A Actions. Stage A D3, D8."
+    }
+  },
+  "$defs": {
+    "evidence_entry": {
+      "type": "object",
+      "required": ["kind", "source", "source_ref", "value", "computed_at", "provenance"],
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "type": "string",
+          "description": "Category of evidence."
+        },
+        "source": {
+          "type": "string",
+          "description": "System that produced this evidence entry."
+        },
+        "source_ref": {
+          "type": "string",
+          "description": "Opaque reference to the source record."
+        },
+        "value": {
+          "description": "The evidence value. Any JSON-serialisable type."
+        },
+        "computed_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO-8601 UTC timestamp of when this evidence was collected."
+        },
+        "provenance": {
+          "type": "string",
+          "enum": ["live", "mocked", "absent"],
+          "description": "Data provenance. 'mocked' required by Spec 1b Agent 3 mocked partner seams (parent PRD § M14). Must be an accepted enum value even in Spec 1a."
+        },
+        "vin": {
+          "type": "string",
+          "description": "Optional per-VIN attribution, copied from the originating Finding's evidence entries (Addendum D1)."
+        }
+      }
+    },
+    "audit_entry": {
+      "type": "object",
+      "required": ["at", "by", "from_status", "to_status"],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "$comment": "Addendum D5: 'declined' means the downstream target REFUSED the work (terminal 4xx). It must carry failure_kind=target_refused and must NOT borrow a transient failure_kind — otherwise 'dealer said no' and 'we could not reach the dealer' become indistinguishable, which is the entire distinction D5 exists to create.",
+          "if": {
+            "properties": {
+              "to_status": { "const": "declined" }
+            },
+            "required": ["to_status"]
+          },
+          "then": {
+            "required": ["failure_kind"],
+            "properties": {
+              "failure_kind": { "const": "target_refused" }
+            }
+          }
+        },
+        {
+          "$comment": "Addendum D5: 'failed' means the executor exhausted its retry budget against a transient failure (5xx / network / timeout). failure_kind is constrained to the transient kinds, and retry_count is required so the audit trail records how many attempts were spent before escalation fired.",
+          "if": {
+            "properties": {
+              "to_status": { "const": "failed" }
+            },
+            "required": ["to_status"]
+          },
+          "then": {
+            "required": ["failure_kind", "retry_count"],
+            "properties": {
+              "failure_kind": {
+                "enum": ["executor_exhausted_retries", "executor_terminal_error"]
+              }
+            }
+          }
+        },
+        {
+          "$comment": "Stage A D5: a guardrail block is a transition to 'declined' with failure_kind=target_refused. The guardrail field is valid only there, so 'set only when a guardrail refused' is enforced, not described. Fix Group 5 (D14): a block always says why (failure_reason) and never carries error_status, because a guardrail never sends the Action.",
+          "if": {
+            "required": ["guardrail"]
+          },
+          "then": {
+            "required": ["to_status", "failure_kind", "failure_reason"],
+            "properties": {
+              "to_status": { "const": "declined" },
+              "failure_kind": { "const": "target_refused" }
+            },
+            "not": { "required": ["error_status"] }
+          }
+        },
+        {
+          "$comment": "Stage A D14: failure_reason and error_status describe a transition that did not go through, so they are valid only on 'declined' or 'failed'.",
+          "if": {
+            "anyOf": [
+              { "required": ["failure_reason"] },
+              { "required": ["error_status"] }
+            ]
+          },
+          "then": {
+            "required": ["to_status"],
+            "properties": {
+              "to_status": { "enum": ["declined", "failed"] }
+            }
+          }
+        },
+        {
+          "$comment": "Stage A D14: error_status is v2.5-only and every v2.5 writer that records it also records the sentence, which names the same status (contract section 10a).",
+          "if": {
+            "required": ["error_status"]
+          },
+          "then": {
+            "required": ["failure_reason"]
+          }
+        },
+        {
+          "$comment": "Contract section 10b: target_reason is the target's own refusal words. registry.dispatch() records it only on a target refusal with a 4xx status, beside the fixed failure_reason, and never on a guardrail block (a guardrail never sends the Action).",
+          "if": {
+            "required": ["target_reason"]
+          },
+          "then": {
+            "required": ["to_status", "failure_kind", "error_status", "failure_reason"],
+            "properties": {
+              "to_status": { "const": "declined" },
+              "failure_kind": { "const": "target_refused" },
+              "error_status": { "minimum": 400, "maximum": 499 }
+            },
+            "not": { "required": ["guardrail"] }
+          }
+        }
+      ],
+      "properties": {
+        "at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO-8601 UTC timestamp of the transition."
+        },
+        "by": {
+          "type": "string",
+          "description": "Identity of the actor who triggered the transition."
+        },
+        "from_status": {
+          "type": "string",
+          "enum": [
+            "pending_execution",
+            "executed",
+            "in_progress",
+            "completed",
+            "cancelled",
+            "declined",
+            "dismissed",
+            "failed"
+          ],
+          "description": "Status before the transition."
+        },
+        "to_status": {
+          "type": "string",
+          "enum": [
+            "pending_execution",
+            "executed",
+            "in_progress",
+            "completed",
+            "cancelled",
+            "declined",
+            "dismissed",
+            "failed"
+          ],
+          "description": "Status after the transition."
+        },
+        "note": {
+          "type": "string",
+          "description": "Optional free-text note for the transition."
+        },
+        "failure_kind": {
+          "type": "string",
+          "enum": [
+            "target_refused",
+            "executor_exhausted_retries",
+            "executor_terminal_error"
+          ],
+          "description": "Required when to_status is 'declined' (kind=target_refused) or 'failed' (kind=executor_exhausted_retries | executor_terminal_error). Addendum D5."
+        },
+        "retry_count": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Number of retry attempts before the terminal 'failed' status. Populated on the transition into 'failed'. Addendum D5."
+        },
+        "failure_reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300,
+          "pattern": "^(?:Blocked: exempting a safety recall needs a fleet operator\\.|Blocked: grounding a vehicle needs a fleet operator\\.|Blocked: sending a warranty claim needs a fleet operator\\.|Blocked: completing a recall needs a (?:fleet operator|service record)\\.|Blocked: the service record could not be (?:checked|found)\\.|Blocked: the service record is for a different vehicle\\.|Blocked: the service record is not complete \\(status (?:Draft|InProgress|AwaitingParts|Ready|Delivered|Closed|Invoiced|unknown)\\)\\.|Blocked: engineering decisions need a product engineer\\.|AVX could not complete this action\\.|CMS cannot carry out this action yet\\.|(?:DMS|CMS|ADP|The retail system|The vehicle|The owner's app) refused the request(?: \\(HTTP [1-5][0-9]{2}\\))?\\.|(?:DMS|CMS|ADP|The retail system|The vehicle|The owner's app) was unavailable \\(HTTP [1-5][0-9]{2}\\) after (?:1 attempt|(?:[2-9]|[1-9][0-9]+) attempts)\\.|(?:DMS|CMS|ADP|The retail system|The vehicle|The owner's app) did not respond after (?:1 attempt|(?:[2-9]|[1-9][0-9]+) attempts)\\.|AVX ran out of time before it could contact (?:DMS|CMS|ADP|the retail system|the vehicle|the owner's app)\\.|(?:DMS|CMS|ADP|The retail system|The vehicle|The owner's app) did not accept the request \\(HTTP [1-5][0-9]{2}\\)\\.|AVX could not complete the request to (?:DMS|CMS|ADP|the retail system|the vehicle|the owner's app)\\.)$",
+          "description": "Operator-facing sentence saying why the Action did not go through, from the fixed vocabulary in docs/fi-action-queue-contract.md § 10a (spec 2026-10-02-fi-action-queue-stage-a D14); the pattern admits exactly those sentences. Stage D adds the G5 sentence ('Blocked: engineering decisions need a product engineer.') and ADP to all target-name groups. Written on every transition to 'declined' or 'failed' that registry.dispatch() or an executor records. Built by agents/executors/failure_reason.py from the target, failure_kind, error_status, retry_count, guardrail, G4 case and DMS RO status word only; never from an exception message, a response body or caller-supplied text. Omitted, never null, on entries that carry none."
+        },
+        "error_status": {
+          "type": "integer",
+          "minimum": 100,
+          "maximum": 599,
+          "description": "HTTP status the target returned to the dispatch, when there was one (Stage A D14). Omitted, never null, when there was none; never written on a guardrail block. Replaces folding last_error_status into note for v2.5 writers."
+        },
+        "guardrail": {
+          "type": "string",
+          "enum": ["G1", "G2", "G3", "G4", "G5"],
+          "description": "Set only when registry.dispatch() refused the Action under a Stage A guardrail (spec 2026-10-02-fi-action-queue-stage-a D5): G1 recall exemption, G2 grounding, G3 warranty claim, G4 recall completion without a service record. G5 (Stage D D11, D14): engineering decisions need a product engineer (record_engineering_decision, issue_recall, issue_software_campaign refused when decided_by.kind != 'engineer'). The transition is to 'declined' with failure_kind=target_refused, so D5's meaning of 'declined' is unchanged; this field is what lets a reader tell a guardrail block from a target refusal without parsing the note."
+        },
+        "target_reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200,
+          "pattern": "^[^\\u0000-\\u001f\\u007f-\\u009f<>\\u00ad\\u061c\\u180e\\u200b-\\u200f\\u2028-\\u202e\\u2060-\\u206f\\ufeff\\ufff9-\\ufffb]+$",
+          "description": "The target's own refusal words, unchanged (docs/fi-action-queue-contract.md section 10b): CMS's 'error' sentence on a 4xx refusal, or DMS's 'verdict_reason' reason code (for example 'miles_term_expired') on a warranty claim's 422. Recorded only by registry.dispatch(), after agents/executors/target_reason.py makes it plain text (whitespace to single spaces; control, format, surrogate, private-use and unassigned characters removed) and drops it whole if it is empty, longer than 200 characters or contains '<' or '>'. Untrusted text from the target: show it as text, never as markup. Omitted, never null, when absent; failure_reason is always written beside it."
+        }
+      }
+    }
+  }
+}

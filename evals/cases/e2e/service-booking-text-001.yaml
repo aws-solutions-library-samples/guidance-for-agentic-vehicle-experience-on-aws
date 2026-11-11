@@ -1,0 +1,22 @@
+id: service-booking-text-001
+description: "E2E: Driver asks to book a service appointment; agent finds service center then books via real Nova + AgentCore"
+tier: 3
+persona: fleet-driver
+vehicle_id: VEH-0025
+driver_id: drv-samantha-carter
+input:
+  type: text
+  utterance: "I need to book a service appointment for an oil change"
+expected:
+  tool_calls:
+    - name: find_service_center
+      args_contain: {}
+    - name: book
+      args_contain: {}
+  routing:
+    offers_diy_choice: false
+    safety_critical: false
+  response:
+    must_contain_one_of: ["appointment", "booked", "scheduled", "confirmed", "service center", "shop"]
+    must_not_contain: ["DIY", "do it yourself", "walk you through"]
+latency_budget_ms: 10000

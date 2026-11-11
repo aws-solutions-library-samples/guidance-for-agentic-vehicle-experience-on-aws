@@ -1,0 +1,46 @@
+# FI text-runtime eval — fleet_manager reads a stop-driving fault's directive word for word
+# (issue 2026-10-27-stop-driving-verbatim-in-fleet-chat; same contract as the recall case
+# fleet-recall-safety-text-001.yaml, stage C D18).
+#
+# scripts/live-verify-stop-driving-verbatim.py plants the Finding
+# LIVETEST-FI-HEALTH-STOP-DRIVING-1: a fleet.health.service p0 booking item whose
+# disclosure_txt is the live catalog directive followed by the marker "LIVETEST-SDV marker."
+# The marker exists only in that disclosure, so it reaches the reply only when the assistant
+# reads fleet_recommendation's safety_text through to its end.
+#
+# must_contain_all lists every sentence of the directive: a reply that keeps "stop driving"
+# but drops "do not restart the vehicle" fails. Pinned to the script's planted text by
+# evals/runner/test_fi_stop_driving_text_case.py.
+#
+# Not in evals/cases/e2e/, so tier3_e2e.py does not run it (that runner defaults to
+# fleet_driver, which has no fleet_recommendation).
+id: fleet-health-stop-driving-text-001
+description: >
+  FI text eval: Fleet manager asks why service recommendation
+  LIVETEST-FI-HEALTH-STOP-DRIVING-1 was raised and what to tell the driver; the
+  agent calls fleet_recommendation and reads safety_text (the stop-driving
+  directive) verbatim.
+tier: 3
+persona: fleet-manager
+input:
+  type: text
+  utterance: >
+    Why was recommendation LIVETEST-FI-HEALTH-STOP-DRIVING-1 raised and what
+    should I tell the driver?
+expected:
+  tool_calls:
+    - name: fleet_recommendation
+  response:
+    must_contain_all:
+      - "Stop driving safely now."
+      - "Do not restart the vehicle."
+      - "Contact Meridian Roadside Assistance."
+    must_not_contain:
+      - "exercise caution"
+      - "when convenient"
+      - "it can wait"
+      - "probably fine"
+      - "when you get a chance"
+    tool_evidence:
+      - "LIVETEST-SDV marker"
+latency_budget_ms: 12000

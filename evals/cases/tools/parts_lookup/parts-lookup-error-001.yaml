@@ -1,0 +1,18 @@
+tool: parts_lookup
+id: parts-lookup-error-001
+description: "lookup_parts with no vehicle filter returns found=false (book DDB mock override; see decisions.md)"
+tier: 1
+persona: fleet-driver
+vehicle_id: VEH-0025
+driver_id: drv-samantha-carter
+input:
+  type: text
+  input_args:
+    category: "brakes"
+    vehicle_make: ""
+    vehicle_model: ""
+expected:
+  tool_output:
+    found: false
+    parts: []
+latency_budget_ms: 1000

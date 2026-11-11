@@ -1,0 +1,37 @@
+# FI text-runtime eval — fleet_manager safety_text verbatim narration (spec D18)
+#
+# The Finding LIVETEST-FI-RW-SAFETY-TEXT-1 is planted by task 5.5's live-verify
+# script with a disclosure_txt that says "do not drive" and "park outside" and whose
+# remedy sentence carries the marker LIVETEST-D18 (decisions.md call 63). The marker
+# exists only in that planted Finding, so it reaches the reply only through the
+# fleet_recommendation tool's result (safety_text, which is the disclosure verbatim).
+# The agent must read safety_text word for word per the fleet_manager prompt rule.
+#
+# Task 5.5 runs this case via /assistant/chat as an ephemeral fleet_manager
+# (decisions.md call 60; same approach as cost Stage B task 5.3 item 8).
+# Not in evals/cases/e2e/ so tier3_e2e.py does not discover or run it
+# (that runner sends no persona header and defaults to fleet_driver, which
+# has no fleet_recommendation).
+id: fleet-recall-safety-text-001
+description: >
+  FI text eval: Fleet manager asks why recall LIVETEST-FI-RW-SAFETY-TEXT-1 was
+  raised and what to tell the driver; agent calls fleet_recommendation and reads
+  safety_text verbatim — response must contain both "do not drive" and
+  "park outside".
+tier: 3
+persona: fleet-manager
+input:
+  type: text
+  utterance: >
+    Why was recommendation LIVETEST-FI-RW-SAFETY-TEXT-1 raised and what
+    should I tell the driver?
+expected:
+  tool_calls:
+    - name: fleet_recommendation
+  response:
+    must_contain_all:
+      - "do not drive"
+      - "park outside"
+    tool_evidence:
+      - "LIVETEST-D18"
+latency_budget_ms: 12000

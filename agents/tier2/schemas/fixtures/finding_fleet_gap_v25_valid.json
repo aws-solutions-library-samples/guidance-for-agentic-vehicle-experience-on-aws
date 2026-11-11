@@ -1,0 +1,39 @@
+{
+  "finding_id": "FIND-e8f9a0b1-c2d3-4567-ef01-234567890bcd",
+  "finding_key": "b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3",
+  "agent_id": "agent-fi-rebalancing",
+  "agent_version": "1.0.0",
+  "scope": {
+    "fleet_id": "FLEET-MRD-WEST"
+  },
+  "severity": "attention",
+  "computed_at": "2026-10-02T06:00:00Z",
+  "expires_at": "2026-10-09T06:00:00Z",
+  "confidence": "high",
+  "finding_kind": "fleet.rebalance.gap",
+  "headline": "Airport depot projected short by 3 vehicles on Thursday",
+  "detail": "## Fleet Gap — Airport Depot\n\nThursday demand forecast shows Airport depot short by 3 vehicles. No obvious surplus location identified — manual rebalancing decision recommended.",
+  "evidence": [
+    {
+      "kind": "fi.rebalancing.demand_forecast",
+      "source": "agent-fi-rebalancing",
+      "source_ref": "forecast-run-2026-10-02T06:00:00Z",
+      "value": {
+        "location": "loc-airport-02",
+        "deficit": 3,
+        "thursday_demand_score": 0.94
+      },
+      "computed_at": "2026-10-02T06:00:00Z",
+      "provenance": "live",
+      "vin": "MRDVEH00000000017"
+    }
+  ],
+  "inputs_hash": "c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4",
+  "tokens_used": 0,
+  "cost_usd": 0.0,
+  "audit_trail": [],
+  "subject_key": "loc-airport-02__gap__2026-10-09",
+  "location": {
+    "location_id": "loc-airport-02"
+  }
+}

@@ -1,0 +1,21 @@
+id: tire-pressure-low-text-001
+description: "E2E: Driver reports low tire pressure; agent offers DIY-or-service choice via real Nova + AgentCore"
+tier: 3
+persona: fleet-driver
+vehicle_id: VEH-0025
+driver_id: drv-samantha-carter
+input:
+  type: text
+  utterance: "my tire pressure light just came on"
+expected:
+  tool_calls:
+    - name: diy_repair_advisor
+      args_contain:
+        query: "tire pressure"
+  routing:
+    offers_diy_choice: true
+    safety_critical: false
+  response:
+    must_contain_one_of: ["35 PSI", "tire pressure", "inflate", "yourself", "service", "screen"]
+    must_not_contain: ["brake", "airbag", "pull over"]
+latency_budget_ms: 10000

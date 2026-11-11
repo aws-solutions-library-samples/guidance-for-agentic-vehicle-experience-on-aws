@@ -1,0 +1,1653 @@
+{
+ "_source": "Read-only live reads of staging, 2026-10-10 (describe-table, get-function-configuration, scheduler get-schedule, glue get-table). Account ids, pool ids and API ids replaced with placeholders.",
+ "functions": {
+  "avx_broker": {
+   "Env": {
+    "AVX_ACTIONS_TABLE": "vsa-staging-avx-actions",
+    "AVX_FEEDBACK_TABLE": "vsa-staging-avx-feedback",
+    "AVX_FINDINGS_TABLE": "vsa-staging-avx-findings",
+    "AVX_NOTIFICATION_DEVICES_TABLE": "vsa-staging-notification-devices",
+    "AVX_RATE_LIMITS_TABLE": "vsa-staging-avx-rate-limits",
+    "AVX_STAGE": "staging"
+   },
+   "FunctionName": "vsa-staging-avx-broker-us-west-2",
+   "Handler": "agents.supervisor.lambdas.avx_broker.handler",
+   "Timeout": 30
+  },
+  "avx_chat": {
+   "Env": {
+    "ALLOWED_ORIGIN": "*",
+    "CMS_VEHICLES_TABLE": "cms-staging-storage-vehicles",
+    "CVX_RUNTIME_ARN": "arn:aws:bedrock-agentcore:us-west-2:123456789012:runtime/vsa_supervisor_text_staging-World00001",
+    "CVX_RUNTIME_REGION": "us-west-2",
+    "DEFAULT_PERSONA_ID": "fleet_driver",
+    "DEFAULT_TENANT_ID": "meridian-fleet"
+   },
+   "FunctionName": "vsa-staging-api-assistant-chat",
+   "Handler": "handler.handler",
+   "Timeout": 30
+  },
+  "avx_dms_event_consumer": {
+   "Env": {
+    "AVX_ACTIONS_TABLE": "vsa-staging-avx-actions"
+   },
+   "FunctionName": "vsa-staging-avx-dms-event-consumer-us-west-2",
+   "Handler": "handler.handler",
+   "Timeout": 10
+  },
+  "avx_findings": {
+   "Env": {
+    "AVX_ACTIONS_TABLE": "vsa-staging-avx-actions",
+    "AVX_CUSTOMER_ID_CLAIM_TRUSTED": "true",
+    "AVX_FINDINGS_TABLE": "vsa-staging-avx-findings",
+    "AVX_FLEET_IDS_CLAIM_TRUSTED": "true",
+    "AVX_STAGE": "staging",
+    "AVX_VEHICLE_ID_CLAIM_TRUSTED": "true",
+    "VSA_CMS_API_ENDPOINT": "<api-url>",
+    "VSA_DMS_API_ENDPOINT": "<api-url>"
+   },
+   "FunctionName": "vsa-staging-api-avx-findings",
+   "Handler": "handler.handler",
+   "Timeout": 30
+  },
+  "dms_adjudicator": {
+   "Env": {
+    "ADP_REGION": "us-east-1",
+    "AGENT_VERSION": "",
+    "ATHENA_DATABASE": "dms_staging",
+    "ATHENA_OUTPUT_LOCATION": "s3://dms-staging-athena-results-us-east-1-123456789012/tier2/",
+    "DEPLOYMENT_STAGE": "staging",
+    "DMS_AWS_REGION": "us-west-2"
+   },
+   "FunctionName": "dms-staging-fi-warranty-adjudicator",
+   "Handler": "source.simulation.fi_stand_ins.warranty_adjudicator_handler",
+   "Timeout": 300
+  },
+  "dms_api": {
+   "Env": {
+    "ADP_ATHENA_OUTPUT_LOCATION": "s3://dms-staging-athena-results-123456789012-us-east-1/parts-fitment/",
+    "ADP_PARTS_DATABASE": "adp_parts_domain",
+    "ADP_REGION": "us-east-1",
+    "CERTIFICATION_SCORES_TABLE": "dms-staging-certification-scores",
+    "DEALER_PERFORMANCE_TABLE": "dms-staging-dealer-performance",
+    "DEPLOYMENT_STAGE": "staging",
+    "DMS_AWS_REGION": "us-west-2",
+    "DM_VISIT_BRIEFS_TABLE": "dms-staging-dm-visit-briefs",
+    "EVENT_BUS_NAME": "dms-staging-events",
+    "FLEET_MEMBERSHIP_TABLE": "dms-staging-fleet-membership",
+    "FLEET_SYNC_MAX_AGE": "3600",
+    "PARTS_INVENTORY_TABLE": "dms-staging-parts-inventory",
+    "PARTS_ORDERS_TABLE": "dms-staging-parts-orders",
+    "PARTS_SURPLUS_MULTIPLIER": "1.5",
+    "REPAIR_ORDERS_TABLE": "dms-staging-repair-orders",
+    "RO_ROLLUPS_TABLE": "dms-staging-ro-rollups",
+    "WARRANTY_CANDIDATES_TABLE": "dms-staging-warranty-candidates",
+    "WARRANTY_CLAIMS_TABLE": "dms-staging-warranty-claims"
+   },
+   "FunctionName": "DmsApiStack-staging-<route>Fn",
+   "Handler": "source.handlers.repair_orders.create_fleet_repair_order",
+   "Timeout": 30
+  },
+  "dms_dealer_progress": {
+   "Env": {
+    "ADP_REGION": "us-east-1",
+    "AGENT_VERSION": "",
+    "ATHENA_DATABASE": "dms_staging",
+    "ATHENA_OUTPUT_LOCATION": "s3://dms-staging-athena-results-us-east-1-123456789012/tier2/",
+    "DEPLOYMENT_STAGE": "staging",
+    "DMS_AWS_REGION": "us-west-2",
+    "EVENT_BUS_NAME": "dms-staging-events"
+   },
+   "FunctionName": "dms-staging-fi-dealer-progress",
+   "Handler": "source.simulation.fi_stand_ins.dealer_progress_handler",
+   "Timeout": 300
+  },
+  "health_agent": {
+   "Env": {
+    "ADP_REGION": "us-east-1",
+    "ATHENA_RESULTS_BUCKET": "cvx-staging-athena-results-123456789012-us-east-1",
+    "ATHENA_WORKGROUP": "cvx-staging-analytics",
+    "AVX_ACTIONS_TABLE": "vsa-staging-avx-actions",
+    "AVX_AGENT_RUNS_TABLE": "vsa-staging-avx-agent-runs",
+    "AVX_FINDINGS_TABLE": "vsa-staging-avx-findings",
+    "CMS_DRIVERS_TABLE": "cms-staging-storage-drivers",
+    "CMS_DTC_HISTORY_TABLE": "cms-staging-storage-dtc-history",
+    "CMS_FLEET_LOCATIONS_TABLE": "cms-staging-storage-fleet-locations",
+    "CMS_USER_POOL_ID": "<cms-pool-id>",
+    "CMS_VEHICLES_TABLE": "cms-staging-storage-vehicles",
+    "CMS_VEHICLE_GROUNDINGS_TABLE": "cms-staging-storage-vehicle-groundings",
+    "DYNAMODB_REGION": "us-west-2",
+    "FI_COST_GUARDRAIL_ID": "<guardrail-id>",
+    "FI_COST_GUARDRAIL_VERSION": "DRAFT",
+    "FI_RECALL_MAX_MODEL_CALLS": "60",
+    "FI_RW_MODEL_ID": "us.anthropic.claude-sonnet-4-6",
+    "FI_WARRANTY_MAX_MODEL_CALLS": "30",
+    "HEALTH_FINDINGS_TABLE": "vsa-staging-health-findings",
+    "TIER2_MAX_LLM_CALLS_PER_BATCH": "100",
+    "TIER2_MAX_ROWS_PER_QUERY": "50000",
+    "TIER2_MAX_TOKENS": "50000",
+    "TIER2_MAX_TOKENS_BATTERY": "850000",
+    "TIER2_MAX_TOKENS_BRAKES": "300000",
+    "TIER2_MAX_TOKENS_TIRES": "350000",
+    "TIER2_MAX_VINS_BATTERY": "375",
+    "TIER2_MAX_VINS_BRAKES": "2000",
+    "TIER2_MAX_VINS_TIRES": "156",
+    "TIER2_MAX_WALL_SECONDS": "600",
+    "TIER2_WALL_PER_VIN_WRITE_SECONDS": "0.1",
+    "TIER2_WALL_SAFETY_PER_CALL_SECONDS": "10",
+    "VSA_STAGE": "staging"
+   },
+   "FunctionName": "vsa-staging-tier2-health-agent-us-west-2",
+   "Handler": "agents.tier2.runner.lambda_handler",
+   "Timeout": 900
+  }
+ },
+ "glue": {
+  "adp_staging_fleet_recall.managed_vehicles": {
+   "Columns": [
+    [
+     "vin",
+     "string"
+    ],
+    [
+     "fleet_id",
+     "string"
+    ],
+    [
+     "snapshot_date",
+     "date"
+    ]
+   ],
+   "TableType": "EXTERNAL_TABLE"
+  },
+  "adp_staging_fleet_recall.recall_campaigns_received": {
+   "Columns": [
+    [
+     "campaign_id",
+     "string"
+    ],
+    [
+     "manufacturer",
+     "string"
+    ],
+    [
+     "component",
+     "string"
+    ],
+    [
+     "summary",
+     "string"
+    ],
+    [
+     "consequence",
+     "string"
+    ],
+    [
+     "remedy",
+     "string"
+    ],
+    [
+     "do_not_drive",
+     "boolean"
+    ],
+    [
+     "park_outside",
+     "boolean"
+    ],
+    [
+     "models",
+     "array<string>"
+    ],
+    [
+     "model_year_min",
+     "int"
+    ],
+    [
+     "model_year_max",
+     "int"
+    ],
+    [
+     "plants",
+     "array<string>"
+    ],
+    [
+     "build_from",
+     "date"
+    ],
+    [
+     "build_to",
+     "date"
+    ],
+    [
+     "fault_codes",
+     "array<string>"
+    ],
+    [
+     "signature_lookback_days",
+     "int"
+    ],
+    [
+     "remedy_labor_op",
+     "string"
+    ],
+    [
+     "remedy_part_numbers",
+     "array<string>"
+    ],
+    [
+     "remedy_flat_rate_hours",
+     "decimal(5,2)"
+    ],
+    [
+     "remedy_available_from",
+     "date"
+    ],
+    [
+     "received_date",
+     "date"
+    ],
+    [
+     "catalog_version",
+     "string"
+    ],
+    [
+     "recall_class",
+     "string"
+    ]
+   ],
+   "TableType": "VIRTUAL_VIEW"
+  },
+  "adp_staging_fleet_recall.recall_vehicle_status": {
+   "Columns": [
+    [
+     "campaign_id",
+     "string"
+    ],
+    [
+     "vin",
+     "string"
+    ],
+    [
+     "fleet_id",
+     "string"
+    ],
+    [
+     "match_basis",
+     "varchar(10)"
+    ],
+    [
+     "confirming_code",
+     "string"
+    ],
+    [
+     "confirming_seen_on",
+     "date"
+    ],
+    [
+     "confirming_source",
+     "varchar(15)"
+    ],
+    [
+     "remedied",
+     "boolean"
+    ],
+    [
+     "remedy_ref",
+     "string"
+    ],
+    [
+     "remedied_on",
+     "date"
+    ],
+    [
+     "rule_version",
+     "string"
+    ],
+    [
+     "managed_as_of",
+     "date"
+    ]
+   ],
+   "TableType": "VIRTUAL_VIEW"
+  },
+  "dms_staging.parts_inventory": {
+   "Columns": [
+    [
+     "_change_kind",
+     "string"
+    ],
+    [
+     "_seq_no",
+     "string"
+    ],
+    [
+     "below_par",
+     "string"
+    ],
+    [
+     "bin_location",
+     "string"
+    ],
+    [
+     "brand_id",
+     "string"
+    ],
+    [
+     "category",
+     "string"
+    ],
+    [
+     "dealer_id",
+     "string"
+    ],
+    [
+     "is_recall_remedy",
+     "boolean"
+    ],
+    [
+     "par_level",
+     "bigint"
+    ],
+    [
+     "part_name",
+     "string"
+    ],
+    [
+     "part_number",
+     "string"
+    ],
+    [
+     "part_terminology_id",
+     "string"
+    ],
+    [
+     "qty_on_hand",
+     "bigint"
+    ],
+    [
+     "record_kind",
+     "string"
+    ],
+    [
+     "reorder_qty",
+     "bigint"
+    ],
+    [
+     "status",
+     "string"
+    ],
+    [
+     "surplus_flag",
+     "string"
+    ],
+    [
+     "unit_of_measure",
+     "string"
+    ]
+   ],
+   "TableType": "EXTERNAL_TABLE"
+  },
+  "dms_staging.repair_orders": {
+   "Columns": [
+    [
+     "_change_kind",
+     "string"
+    ],
+    [
+     "_seq_no",
+     "string"
+    ],
+    [
+     "created_at",
+     "string"
+    ],
+    [
+     "customer_id",
+     "string"
+    ],
+    [
+     "dealer_id",
+     "string"
+    ],
+    [
+     "district_id",
+     "string"
+    ],
+    [
+     "dtc_code",
+     "string"
+    ],
+    [
+     "dtc_protocol",
+     "string"
+    ],
+    [
+     "initiated_by",
+     "string"
+    ],
+    [
+     "labor_op",
+     "string"
+    ],
+    [
+     "opened_at",
+     "string"
+    ],
+    [
+     "record_kind",
+     "string"
+    ],
+    [
+     "ro_id",
+     "string"
+    ],
+    [
+     "service_advisor_id",
+     "string"
+    ],
+    [
+     "status",
+     "string"
+    ],
+    [
+     "tech_id",
+     "string"
+    ],
+    [
+     "updated_at",
+     "string"
+    ],
+    [
+     "vehicle_vin",
+     "string"
+    ],
+    [
+     "vmrs_assembly",
+     "string"
+    ],
+    [
+     "vmrs_component",
+     "string"
+    ],
+    [
+     "vmrs_failure_mode",
+     "string"
+    ],
+    [
+     "vmrs_system",
+     "string"
+    ],
+    [
+     "work_date",
+     "string"
+    ],
+    [
+     "lines",
+     "string"
+    ],
+    [
+     "pay_types",
+     "string"
+    ],
+    [
+     "customer_type",
+     "string"
+    ],
+    [
+     "fleet_id",
+     "string"
+    ],
+    [
+     "ro_partition",
+     "string"
+    ]
+   ],
+   "TableType": "EXTERNAL_TABLE"
+  },
+  "dms_staging.rooftops": {
+   "Columns": [
+    [
+     "_change_kind",
+     "string"
+    ],
+    [
+     "_seq_no",
+     "string"
+    ],
+    [
+     "city",
+     "string"
+    ],
+    [
+     "dealer_id",
+     "string"
+    ],
+    [
+     "latitude",
+     "double"
+    ],
+    [
+     "longitude",
+     "double"
+    ],
+    [
+     "name",
+     "string"
+    ],
+    [
+     "phone",
+     "string"
+    ],
+    [
+     "seeded_at",
+     "string"
+    ],
+    [
+     "state",
+     "string"
+    ],
+    [
+     "timezone",
+     "string"
+    ]
+   ],
+   "TableType": "EXTERNAL_TABLE"
+  },
+  "dms_staging.warranty_candidates": {
+   "Columns": [
+    [
+     "_change_kind",
+     "string"
+    ],
+    [
+     "_seq_no",
+     "string"
+    ],
+    [
+     "claimed",
+     "boolean"
+    ],
+    [
+     "computed_at",
+     "string"
+    ],
+    [
+     "coverage_group",
+     "string"
+    ],
+    [
+     "dealer_id",
+     "string"
+    ],
+    [
+     "fault_code",
+     "string"
+    ],
+    [
+     "filing_deadline",
+     "string"
+    ],
+    [
+     "in_service_date",
+     "string"
+    ],
+    [
+     "labor_op",
+     "string"
+    ],
+    [
+     "line_no",
+     "bigint"
+    ],
+    [
+     "matched_rule_id",
+     "string"
+    ],
+    [
+     "odometer_km",
+     "string"
+    ],
+    [
+     "recoverable_usd",
+     "bigint"
+    ],
+    [
+     "repair_date",
+     "string"
+    ],
+    [
+     "ro_id",
+     "string"
+    ],
+    [
+     "terms_version",
+     "string"
+    ],
+    [
+     "vehicle_vin",
+     "string"
+    ],
+    [
+     "verdict_reason",
+     "string"
+    ],
+    [
+     "verdict_status",
+     "string"
+    ]
+   ],
+   "TableType": "EXTERNAL_TABLE"
+  },
+  "dms_staging.warranty_terms": {
+   "Columns": [
+    [
+     "_change_kind",
+     "string"
+    ],
+    [
+     "_seq_no",
+     "string"
+    ],
+    [
+     "coverage_group",
+     "string"
+    ],
+    [
+     "effective_from",
+     "string"
+    ],
+    [
+     "filing_window_days",
+     "bigint"
+    ],
+    [
+     "labor_rate_usd",
+     "bigint"
+    ],
+    [
+     "term_miles",
+     "bigint"
+    ],
+    [
+     "term_years",
+     "bigint"
+    ],
+    [
+     "terms_version",
+     "string"
+    ]
+   ],
+   "TableType": "EXTERNAL_TABLE"
+  }
+ },
+ "schedules": [
+  {
+   "GroupName": "default",
+   "Name": "vsa-staging-tier2-daily-tires-us-west-2",
+   "ScheduleExpression": "cron(20 2 * * ? *)",
+   "ScheduleExpressionTimezone": "Etc/UTC",
+   "State": "ENABLED",
+   "Target": {
+    "Input": "{\"stage\":\"staging\",\"component\":\"tires\"}",
+    "RetryPolicy": {
+     "MaximumEventAgeInSeconds": 3600,
+     "MaximumRetryAttempts": 2
+    }
+   }
+  },
+  {
+   "GroupName": "default",
+   "Name": "vsa-staging-tier2-diagnostics-us-west-2",
+   "ScheduleExpression": "rate(5 minutes)",
+   "ScheduleExpressionTimezone": "Etc/UTC",
+   "State": "ENABLED",
+   "Target": {
+    "Input": "{\"stage\":\"staging\",\"component\":\"diagnostics\"}",
+    "RetryPolicy": {
+     "MaximumEventAgeInSeconds": 300,
+     "MaximumRetryAttempts": 0
+    }
+   }
+  },
+  {
+   "GroupName": "default",
+   "Name": "vsa-staging-tier2-daily-battery-us-west-2",
+   "ScheduleExpression": "cron(0 2 * * ? *)",
+   "ScheduleExpressionTimezone": "Etc/UTC",
+   "State": "ENABLED",
+   "Target": {
+    "Input": "{\"stage\":\"staging\",\"component\":\"battery\"}",
+    "RetryPolicy": {
+     "MaximumEventAgeInSeconds": 3600,
+     "MaximumRetryAttempts": 2
+    }
+   }
+  },
+  {
+   "GroupName": "default",
+   "Name": "vsa-staging-tier2-daily-brakes-us-west-2",
+   "ScheduleExpression": "cron(40 2 * * ? *)",
+   "ScheduleExpressionTimezone": "Etc/UTC",
+   "State": "ENABLED",
+   "Target": {
+    "Input": "{\"stage\":\"staging\",\"component\":\"brakes\"}",
+    "RetryPolicy": {
+     "MaximumEventAgeInSeconds": 3600,
+     "MaximumRetryAttempts": 2
+    }
+   }
+  },
+  {
+   "GroupName": "default",
+   "Name": "vsa-staging-tier2-daily-cost-us-west-2",
+   "ScheduleExpression": "cron(0 4 * * ? *)",
+   "ScheduleExpressionTimezone": "Etc/UTC",
+   "State": "ENABLED",
+   "Target": {
+    "Input": "{\"stage\":\"staging\",\"component\":\"cost\"}",
+    "RetryPolicy": {
+     "MaximumEventAgeInSeconds": 3600,
+     "MaximumRetryAttempts": 2
+    }
+   }
+  },
+  {
+   "GroupName": "default",
+   "Name": "vsa-staging-tier2-daily-recall-us-west-2",
+   "ScheduleExpression": "cron(0 5 * * ? *)",
+   "ScheduleExpressionTimezone": "Etc/UTC",
+   "State": "ENABLED",
+   "Target": {
+    "Input": "{\"stage\":\"staging\",\"component\":\"recall\"}",
+    "RetryPolicy": {
+     "MaximumEventAgeInSeconds": 3600,
+     "MaximumRetryAttempts": 2
+    }
+   }
+  },
+  {
+   "GroupName": "default",
+   "Name": "vsa-staging-tier2-daily-warranty-us-west-2",
+   "ScheduleExpression": "cron(20 5 * * ? *)",
+   "ScheduleExpressionTimezone": "Etc/UTC",
+   "State": "ENABLED",
+   "Target": {
+    "Input": "{\"stage\":\"staging\",\"component\":\"warranty\"}",
+    "RetryPolicy": {
+     "MaximumEventAgeInSeconds": 3600,
+     "MaximumRetryAttempts": 2
+    }
+   }
+  }
+ ],
+ "tables": {
+  "cms-staging-storage-drivers": {
+   "AttributeDefinitions": [
+    {
+     "AttributeName": "driverId",
+     "AttributeType": "S"
+    }
+   ],
+   "KeySchema": [
+    {
+     "AttributeName": "driverId",
+     "KeyType": "HASH"
+    }
+   ],
+   "StreamSpecification": {
+    "StreamEnabled": true,
+    "StreamViewType": "NEW_AND_OLD_IMAGES"
+   },
+   "TableName": "cms-staging-storage-drivers"
+  },
+  "cms-staging-storage-fleet-enrollment": {
+   "AttributeDefinitions": [
+    {
+     "AttributeName": "PK",
+     "AttributeType": "S"
+    },
+    {
+     "AttributeName": "SK",
+     "AttributeType": "S"
+    },
+    {
+     "AttributeName": "fleetId",
+     "AttributeType": "S"
+    },
+    {
+     "AttributeName": "vehicleId",
+     "AttributeType": "S"
+    }
+   ],
+   "GlobalSecondaryIndexes": [
+    {
+     "IndexName": "vehicleId-index",
+     "KeySchema": [
+      {
+       "AttributeName": "vehicleId",
+       "KeyType": "HASH"
+      },
+      {
+       "AttributeName": "fleetId",
+       "KeyType": "RANGE"
+      }
+     ],
+     "Projection": {
+      "ProjectionType": "ALL"
+     }
+    }
+   ],
+   "KeySchema": [
+    {
+     "AttributeName": "PK",
+     "KeyType": "HASH"
+    },
+    {
+     "AttributeName": "SK",
+     "KeyType": "RANGE"
+    }
+   ],
+   "StreamSpecification": {
+    "StreamEnabled": true,
+    "StreamViewType": "NEW_AND_OLD_IMAGES"
+   },
+   "TableName": "cms-staging-storage-fleet-enrollment"
+  },
+  "cms-staging-storage-fleet-locations": {
+   "AttributeDefinitions": [
+    {
+     "AttributeName": "fleetId",
+     "AttributeType": "S"
+    },
+    {
+     "AttributeName": "locationId",
+     "AttributeType": "S"
+    }
+   ],
+   "KeySchema": [
+    {
+     "AttributeName": "fleetId",
+     "KeyType": "HASH"
+    },
+    {
+     "AttributeName": "locationId",
+     "KeyType": "RANGE"
+    }
+   ],
+   "StreamSpecification": {
+    "StreamEnabled": true,
+    "StreamViewType": "NEW_AND_OLD_IMAGES"
+   },
+   "TableName": "cms-staging-storage-fleet-locations"
+  },
+  "cms-staging-storage-fleets": {
+   "AttributeDefinitions": [
+    {
+     "AttributeName": "fleetId",
+     "AttributeType": "S"
+    }
+   ],
+   "KeySchema": [
+    {
+     "AttributeName": "fleetId",
+     "KeyType": "HASH"
+    }
+   ],
+   "StreamSpecification": {
+    "StreamEnabled": true,
+    "StreamViewType": "NEW_AND_OLD_IMAGES"
+   },
+   "TableName": "cms-staging-storage-fleets"
+  },
+  "cms-staging-storage-vehicles": {
+   "AttributeDefinitions": [
+    {
+     "AttributeName": "vehicleId",
+     "AttributeType": "S"
+    },
+    {
+     "AttributeName": "vin",
+     "AttributeType": "S"
+    }
+   ],
+   "GlobalSecondaryIndexes": [
+    {
+     "IndexName": "vin-index",
+     "KeySchema": [
+      {
+       "AttributeName": "vin",
+       "KeyType": "HASH"
+      }
+     ],
+     "Projection": {
+      "ProjectionType": "KEYS_ONLY"
+     }
+    }
+   ],
+   "KeySchema": [
+    {
+     "AttributeName": "vehicleId",
+     "KeyType": "HASH"
+    }
+   ],
+   "StreamSpecification": {
+    "StreamEnabled": true,
+    "StreamViewType": "NEW_AND_OLD_IMAGES"
+   },
+   "TableName": "cms-staging-storage-vehicles"
+  },
+  "dms-staging-fleet-membership": {
+   "AttributeDefinitions": [
+    {
+     "AttributeName": "fleet_id",
+     "AttributeType": "S"
+    },
+    {
+     "AttributeName": "vehicle_vin",
+     "AttributeType": "S"
+    }
+   ],
+   "GlobalSecondaryIndexes": [
+    {
+     "IndexName": "fleet_id-index",
+     "KeySchema": [
+      {
+       "AttributeName": "fleet_id",
+       "KeyType": "HASH"
+      },
+      {
+       "AttributeName": "vehicle_vin",
+       "KeyType": "RANGE"
+      }
+     ],
+     "Projection": {
+      "ProjectionType": "ALL"
+     }
+    }
+   ],
+   "KeySchema": [
+    {
+     "AttributeName": "vehicle_vin",
+     "KeyType": "HASH"
+    },
+    {
+     "AttributeName": "fleet_id",
+     "KeyType": "RANGE"
+    }
+   ],
+   "StreamSpecification": {
+    "StreamEnabled": true,
+    "StreamViewType": "NEW_AND_OLD_IMAGES"
+   },
+   "TableName": "dms-staging-fleet-membership"
+  },
+  "dms-staging-repair-orders": {
+   "AttributeDefinitions": [
+    {
+     "AttributeName": "dealer_id",
+     "AttributeType": "S"
+    },
+    {
+     "AttributeName": "opened_at",
+     "AttributeType": "S"
+    },
+    {
+     "AttributeName": "ro_id",
+     "AttributeType": "S"
+    },
+    {
+     "AttributeName": "ro_partition",
+     "AttributeType": "S"
+    },
+    {
+     "AttributeName": "status",
+     "AttributeType": "S"
+    },
+    {
+     "AttributeName": "tech_id",
+     "AttributeType": "S"
+    },
+    {
+     "AttributeName": "vehicle_vin",
+     "AttributeType": "S"
+    },
+    {
+     "AttributeName": "vmrs_system",
+     "AttributeType": "S"
+    },
+    {
+     "AttributeName": "work_date",
+     "AttributeType": "S"
+    }
+   ],
+   "GlobalSecondaryIndexes": [
+    {
+     "IndexName": "vin-opened-index",
+     "KeySchema": [
+      {
+       "AttributeName": "vehicle_vin",
+       "KeyType": "HASH"
+      },
+      {
+       "AttributeName": "opened_at",
+       "KeyType": "RANGE"
+      }
+     ],
+     "Projection": {
+      "ProjectionType": "ALL"
+     }
+    },
+    {
+     "IndexName": "dealer-opened-index",
+     "KeySchema": [
+      {
+       "AttributeName": "dealer_id",
+       "KeyType": "HASH"
+      },
+      {
+       "AttributeName": "opened_at",
+       "KeyType": "RANGE"
+      }
+     ],
+     "Projection": {
+      "ProjectionType": "ALL"
+     }
+    },
+    {
+     "IndexName": "tech-day-index",
+     "KeySchema": [
+      {
+       "AttributeName": "tech_id",
+       "KeyType": "HASH"
+      },
+      {
+       "AttributeName": "work_date",
+       "KeyType": "RANGE"
+      }
+     ],
+     "Projection": {
+      "ProjectionType": "ALL"
+     }
+    },
+    {
+     "IndexName": "dealer-status-index",
+     "KeySchema": [
+      {
+       "AttributeName": "dealer_id",
+       "KeyType": "HASH"
+      },
+      {
+       "AttributeName": "status",
+       "KeyType": "RANGE"
+      }
+     ],
+     "Projection": {
+      "ProjectionType": "ALL"
+     }
+    },
+    {
+     "IndexName": "vmrs-system-index",
+     "KeySchema": [
+      {
+       "AttributeName": "vmrs_system",
+       "KeyType": "HASH"
+      },
+      {
+       "AttributeName": "opened_at",
+       "KeyType": "RANGE"
+      }
+     ],
+     "Projection": {
+      "ProjectionType": "ALL"
+     }
+    },
+    {
+     "IndexName": "vin-index",
+     "KeySchema": [
+      {
+       "AttributeName": "vehicle_vin",
+       "KeyType": "HASH"
+      }
+     ],
+     "Projection": {
+      "ProjectionType": "ALL"
+     }
+    },
+    {
+     "IndexName": "all-opened-index",
+     "KeySchema": [
+      {
+       "AttributeName": "ro_partition",
+       "KeyType": "HASH"
+      },
+      {
+       "AttributeName": "opened_at",
+       "KeyType": "RANGE"
+      }
+     ],
+     "Projection": {
+      "ProjectionType": "ALL"
+     }
+    }
+   ],
+   "KeySchema": [
+    {
+     "AttributeName": "ro_id",
+     "KeyType": "HASH"
+    }
+   ],
+   "StreamSpecification": {
+    "StreamEnabled": true,
+    "StreamViewType": "NEW_AND_OLD_IMAGES"
+   },
+   "TableName": "dms-staging-repair-orders"
+  },
+  "dms-staging-ro-rollups": {
+   "AttributeDefinitions": [
+    {
+     "AttributeName": "dealer_id",
+     "AttributeType": "S"
+    }
+   ],
+   "KeySchema": [
+    {
+     "AttributeName": "dealer_id",
+     "KeyType": "HASH"
+    }
+   ],
+   "StreamSpecification": {
+    "StreamEnabled": true,
+    "StreamViewType": "NEW_AND_OLD_IMAGES"
+   },
+   "TableName": "dms-staging-ro-rollups"
+  },
+  "dms-staging-rooftops": {
+   "AttributeDefinitions": [
+    {
+     "AttributeName": "dealer_id",
+     "AttributeType": "S"
+    }
+   ],
+   "KeySchema": [
+    {
+     "AttributeName": "dealer_id",
+     "KeyType": "HASH"
+    }
+   ],
+   "StreamSpecification": {
+    "StreamEnabled": true,
+    "StreamViewType": "NEW_AND_OLD_IMAGES"
+   },
+   "TableName": "dms-staging-rooftops"
+  },
+  "dms-staging-warranty-candidates": {
+   "AttributeDefinitions": [
+    {
+     "AttributeName": "line_no",
+     "AttributeType": "N"
+    },
+    {
+     "AttributeName": "ro_id",
+     "AttributeType": "S"
+    }
+   ],
+   "KeySchema": [
+    {
+     "AttributeName": "ro_id",
+     "KeyType": "HASH"
+    },
+    {
+     "AttributeName": "line_no",
+     "KeyType": "RANGE"
+    }
+   ],
+   "StreamSpecification": {
+    "StreamEnabled": true,
+    "StreamViewType": "NEW_AND_OLD_IMAGES"
+   },
+   "TableName": "dms-staging-warranty-candidates"
+  },
+  "dms-staging-warranty-claims": {
+   "AttributeDefinitions": [
+    {
+     "AttributeName": "claim_id",
+     "AttributeType": "S"
+    },
+    {
+     "AttributeName": "dealer_id",
+     "AttributeType": "S"
+    },
+    {
+     "AttributeName": "ro_id",
+     "AttributeType": "S"
+    },
+    {
+     "AttributeName": "status",
+     "AttributeType": "S"
+    }
+   ],
+   "GlobalSecondaryIndexes": [
+    {
+     "IndexName": "dealer-status-index",
+     "KeySchema": [
+      {
+       "AttributeName": "dealer_id",
+       "KeyType": "HASH"
+      },
+      {
+       "AttributeName": "status",
+       "KeyType": "RANGE"
+      }
+     ],
+     "Projection": {
+      "ProjectionType": "ALL"
+     }
+    },
+    {
+     "IndexName": "ro-index",
+     "KeySchema": [
+      {
+       "AttributeName": "ro_id",
+       "KeyType": "HASH"
+      }
+     ],
+     "Projection": {
+      "ProjectionType": "ALL"
+     }
+    }
+   ],
+   "KeySchema": [
+    {
+     "AttributeName": "claim_id",
+     "KeyType": "HASH"
+    }
+   ],
+   "StreamSpecification": {
+    "StreamEnabled": true,
+    "StreamViewType": "NEW_AND_OLD_IMAGES"
+   },
+   "TableName": "dms-staging-warranty-claims"
+  },
+  "dms-staging-warranty-terms": {
+   "AttributeDefinitions": [
+    {
+     "AttributeName": "coverage_group",
+     "AttributeType": "S"
+    },
+    {
+     "AttributeName": "terms_version",
+     "AttributeType": "S"
+    }
+   ],
+   "KeySchema": [
+    {
+     "AttributeName": "terms_version",
+     "KeyType": "HASH"
+    },
+    {
+     "AttributeName": "coverage_group",
+     "KeyType": "RANGE"
+    }
+   ],
+   "StreamSpecification": {
+    "StreamEnabled": true,
+    "StreamViewType": "NEW_AND_OLD_IMAGES"
+   },
+   "TableName": "dms-staging-warranty-terms"
+  },
+  "vsa-staging-avx-actions": {
+   "AttributeDefinitions": [
+    {
+     "AttributeName": "action_id",
+     "AttributeType": "S"
+    },
+    {
+     "AttributeName": "created_by",
+     "AttributeType": "S"
+    },
+    {
+     "AttributeName": "finding_id",
+     "AttributeType": "S"
+    },
+    {
+     "AttributeName": "fleet_id",
+     "AttributeType": "S"
+    },
+    {
+     "AttributeName": "target_ref",
+     "AttributeType": "S"
+    },
+    {
+     "AttributeName": "target_system",
+     "AttributeType": "S"
+    },
+    {
+     "AttributeName": "updated_at",
+     "AttributeType": "S"
+    }
+   ],
+   "GlobalSecondaryIndexes": [
+    {
+     "IndexName": "by_target_system",
+     "KeySchema": [
+      {
+       "AttributeName": "target_system",
+       "KeyType": "HASH"
+      }
+     ],
+     "Projection": {
+      "ProjectionType": "ALL"
+     }
+    },
+    {
+     "IndexName": "by_created_by",
+     "KeySchema": [
+      {
+       "AttributeName": "created_by",
+       "KeyType": "HASH"
+      }
+     ],
+     "Projection": {
+      "ProjectionType": "ALL"
+     }
+    },
+    {
+     "IndexName": "by_fleet",
+     "KeySchema": [
+      {
+       "AttributeName": "fleet_id",
+       "KeyType": "HASH"
+      },
+      {
+       "AttributeName": "updated_at",
+       "KeyType": "RANGE"
+      }
+     ],
+     "Projection": {
+      "ProjectionType": "ALL"
+     }
+    },
+    {
+     "IndexName": "by_target_ref",
+     "KeySchema": [
+      {
+       "AttributeName": "target_ref",
+       "KeyType": "HASH"
+      }
+     ],
+     "Projection": {
+      "ProjectionType": "ALL"
+     }
+    },
+    {
+     "IndexName": "by_finding",
+     "KeySchema": [
+      {
+       "AttributeName": "finding_id",
+       "KeyType": "HASH"
+      }
+     ],
+     "Projection": {
+      "ProjectionType": "ALL"
+     }
+    }
+   ],
+   "KeySchema": [
+    {
+     "AttributeName": "action_id",
+     "KeyType": "HASH"
+    }
+   ],
+   "TableName": "vsa-staging-avx-actions"
+  },
+  "vsa-staging-avx-agent-runs": {
+   "AttributeDefinitions": [
+    {
+     "AttributeName": "agent_component",
+     "AttributeType": "S"
+    },
+    {
+     "AttributeName": "started_at",
+     "AttributeType": "S"
+    }
+   ],
+   "KeySchema": [
+    {
+     "AttributeName": "agent_component",
+     "KeyType": "HASH"
+    },
+    {
+     "AttributeName": "started_at",
+     "KeyType": "RANGE"
+    }
+   ],
+   "TableName": "vsa-staging-avx-agent-runs"
+  },
+  "vsa-staging-avx-approval-rules": {
+   "AttributeDefinitions": [
+    {
+     "AttributeName": "fleet_id",
+     "AttributeType": "S"
+    },
+    {
+     "AttributeName": "rule_id",
+     "AttributeType": "S"
+    }
+   ],
+   "KeySchema": [
+    {
+     "AttributeName": "fleet_id",
+     "KeyType": "HASH"
+    },
+    {
+     "AttributeName": "rule_id",
+     "KeyType": "RANGE"
+    }
+   ],
+   "TableName": "vsa-staging-avx-approval-rules"
+  },
+  "vsa-staging-avx-feedback": {
+   "AttributeDefinitions": [
+    {
+     "AttributeName": "feedback_id",
+     "AttributeType": "S"
+    },
+    {
+     "AttributeName": "owner_id",
+     "AttributeType": "S"
+    }
+   ],
+   "KeySchema": [
+    {
+     "AttributeName": "owner_id",
+     "KeyType": "HASH"
+    },
+    {
+     "AttributeName": "feedback_id",
+     "KeyType": "RANGE"
+    }
+   ],
+   "TableName": "vsa-staging-avx-feedback"
+  },
+  "vsa-staging-avx-findings": {
+   "AttributeDefinitions": [
+    {
+     "AttributeName": "agent_id",
+     "AttributeType": "S"
+    },
+    {
+     "AttributeName": "computed_at",
+     "AttributeType": "S"
+    },
+    {
+     "AttributeName": "dealership_id",
+     "AttributeType": "S"
+    },
+    {
+     "AttributeName": "district_id",
+     "AttributeType": "S"
+    },
+    {
+     "AttributeName": "finding_id",
+     "AttributeType": "S"
+    },
+    {
+     "AttributeName": "finding_key",
+     "AttributeType": "S"
+    },
+    {
+     "AttributeName": "fleet_id",
+     "AttributeType": "S"
+    },
+    {
+     "AttributeName": "owner_id",
+     "AttributeType": "S"
+    },
+    {
+     "AttributeName": "vehicle_id",
+     "AttributeType": "S"
+    },
+    {
+     "AttributeName": "vin",
+     "AttributeType": "S"
+    }
+   ],
+   "GlobalSecondaryIndexes": [
+    {
+     "IndexName": "by_vin",
+     "KeySchema": [
+      {
+       "AttributeName": "vin",
+       "KeyType": "HASH"
+      }
+     ],
+     "Projection": {
+      "ProjectionType": "ALL"
+     }
+    },
+    {
+     "IndexName": "by_district",
+     "KeySchema": [
+      {
+       "AttributeName": "district_id",
+       "KeyType": "HASH"
+      }
+     ],
+     "Projection": {
+      "ProjectionType": "ALL"
+     }
+    },
+    {
+     "IndexName": "by_fleet",
+     "KeySchema": [
+      {
+       "AttributeName": "fleet_id",
+       "KeyType": "HASH"
+      }
+     ],
+     "Projection": {
+      "ProjectionType": "ALL"
+     }
+    },
+    {
+     "IndexName": "by_finding_key",
+     "KeySchema": [
+      {
+       "AttributeName": "finding_key",
+       "KeyType": "HASH"
+      }
+     ],
+     "Projection": {
+      "ProjectionType": "ALL"
+     }
+    },
+    {
+     "IndexName": "by_dealership",
+     "KeySchema": [
+      {
+       "AttributeName": "dealership_id",
+       "KeyType": "HASH"
+      }
+     ],
+     "Projection": {
+      "ProjectionType": "ALL"
+     }
+    },
+    {
+     "IndexName": "by_vehicle",
+     "KeySchema": [
+      {
+       "AttributeName": "vehicle_id",
+       "KeyType": "HASH"
+      }
+     ],
+     "Projection": {
+      "ProjectionType": "ALL"
+     }
+    },
+    {
+     "IndexName": "by_agent_computed_at",
+     "KeySchema": [
+      {
+       "AttributeName": "agent_id",
+       "KeyType": "HASH"
+      },
+      {
+       "AttributeName": "computed_at",
+       "KeyType": "RANGE"
+      }
+     ],
+     "Projection": {
+      "ProjectionType": "ALL"
+     }
+    },
+    {
+     "IndexName": "by_owner",
+     "KeySchema": [
+      {
+       "AttributeName": "owner_id",
+       "KeyType": "HASH"
+      }
+     ],
+     "Projection": {
+      "ProjectionType": "ALL"
+     }
+    }
+   ],
+   "KeySchema": [
+    {
+     "AttributeName": "finding_id",
+     "KeyType": "HASH"
+    }
+   ],
+   "StreamSpecification": {
+    "StreamEnabled": true,
+    "StreamViewType": "NEW_IMAGE"
+   },
+   "TableName": "vsa-staging-avx-findings"
+  },
+  "vsa-staging-avx-rate-limits": {
+   "AttributeDefinitions": [
+    {
+     "AttributeName": "owner_id",
+     "AttributeType": "S"
+    },
+    {
+     "AttributeName": "window_key",
+     "AttributeType": "S"
+    }
+   ],
+   "KeySchema": [
+    {
+     "AttributeName": "owner_id",
+     "KeyType": "HASH"
+    },
+    {
+     "AttributeName": "window_key",
+     "KeyType": "RANGE"
+    }
+   ],
+   "TableName": "vsa-staging-avx-rate-limits"
+  }
+ }
+}

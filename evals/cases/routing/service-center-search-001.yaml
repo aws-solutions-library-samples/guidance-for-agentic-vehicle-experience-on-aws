@@ -1,0 +1,20 @@
+id: service-center-search-001
+description: "Driver asks to find a service center near them; agent should call find_service_center directly"
+tier: 2
+persona: fleet-driver
+vehicle_id: VEH-0025
+driver_id: drv-samantha-carter
+input:
+  type: text
+  utterance: "find me a service center near me"
+expected:
+  tool_calls:
+    - name: find_service_center
+      args_contain: {}
+  routing:
+    offers_diy_choice: false
+    safety_critical: false
+  response:
+    must_contain_one_of: ["service center", "shop", "miles", "appointment", "available"]
+    must_not_contain: ["I cannot find", "no service centers"]
+latency_budget_ms: 5000

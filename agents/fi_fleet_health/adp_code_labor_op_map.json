@@ -1,0 +1,221 @@
+{
+  "_doc": [
+    "Which DMS labor ops count as the repair of a fault code or the completion of a PM task.",
+    "One vocabulary, DMS's (LAB-*), for ADP's view and AVX's bookings (G6-D2, user 2026-10-17).",
+    "Three op sets that never share a name (option (a), user 2026-10-18): fault repairs, PM tasks, and AVX's Agent 2 bookings (listed in AVX only, nowhere here).",
+    "fault_codes: every fault_codes.yaml code with band p0, attention or soon. Each p0 (stop-driving) code has an op of its own, listed for no other code or task; attention and soon codes take their system's repair op from system_repair_ops.",
+    "pm_tasks: the PM task codes pm_vehicle_status reads. Their ops are ordinary dealer service and clear no fault.",
+    "AVX vendors this file (agents/fi_fleet_health/adp_code_labor_op_map.json, sha256-pinned) and checks every op it can book is listed here for its code or task, and that its Agent 2 and fallback ops are listed nowhere here."
+  ],
+  "system_repair_ops": {
+    "abs": "LAB-ABSFLT-01",
+    "body": "LAB-BCMFLT-01",
+    "brakes": "LAB-BRKFLT-01",
+    "communication": "LAB-NETFLT-01",
+    "cooling": "LAB-COOLFLT-01",
+    "emissions": "LAB-EXHFLT-01",
+    "fuel": "LAB-FUELFLT-01",
+    "hv_battery": "LAB-HVFLT-01",
+    "powertrain": "LAB-PTFLT-01",
+    "restraints": "LAB-SRSFLT-01",
+    "steering": "LAB-STRFLT-01"
+  },
+  "fault_codes": {
+    "B0001": [
+      "LAB-SRSFLT-01"
+    ],
+    "B0001_FIRE": [
+      "LAB-FIRE-01"
+    ],
+    "B1004": [
+      "LAB-BCMFLT-01"
+    ],
+    "B109B": [
+      "LAB-SRSFLT-01"
+    ],
+    "B1100": [
+      "LAB-HVFLT-01"
+    ],
+    "B1115": [
+      "LAB-SRSFLT-01"
+    ],
+    "B11D6": [
+      "LAB-SRSFLT-01"
+    ],
+    "B1234": [
+      "LAB-BCMFLT-01"
+    ],
+    "B124D": [
+      "LAB-SRSFLT-01"
+    ],
+    "B1419": [
+      "LAB-SRSFLT-01"
+    ],
+    "C0035": [
+      "LAB-ABSFLT-01"
+    ],
+    "C0040": [
+      "LAB-ABSFLT-01"
+    ],
+    "C004A": [
+      "LAB-STRFLT-01"
+    ],
+    "C0091": [
+      "LAB-BRKFLT-01"
+    ],
+    "C0460": [
+      "LAB-STRFLT-01"
+    ],
+    "C0561": [
+      "LAB-ABSFLT-01"
+    ],
+    "C1001": [
+      "LAB-ABSFLT-01"
+    ],
+    "C1201": [
+      "LAB-BRKFLT-01"
+    ],
+    "C1234": [
+      "LAB-BRKSYS-01"
+    ],
+    "C1235": [
+      "LAB-BRKFLT-01"
+    ],
+    "C1241": [
+      "LAB-BRKFLT-01"
+    ],
+    "C2007": [
+      "LAB-BRKFLT-01"
+    ],
+    "P0001": [
+      "LAB-FUELFLT-01"
+    ],
+    "P0093": [
+      "LAB-FUELFLT-01"
+    ],
+    "P0118": [
+      "LAB-COOLFLT-01"
+    ],
+    "P0171": [
+      "LAB-FUELFLT-01"
+    ],
+    "P0217": [
+      "LAB-COOLOT-01"
+    ],
+    "P0219": [
+      "LAB-PTFLT-01"
+    ],
+    "P0299": [
+      "LAB-PTFLT-01"
+    ],
+    "P0300": [
+      "LAB-PTFLT-01"
+    ],
+    "P0340": [
+      "LAB-PTFLT-01"
+    ],
+    "P0401": [
+      "LAB-EXHFLT-01"
+    ],
+    "P0420": [
+      "LAB-EXHFLT-01"
+    ],
+    "P0455": [
+      "LAB-EXHFLT-01"
+    ],
+    "P0520": [
+      "LAB-OILPR-01"
+    ],
+    "P0606": [
+      "LAB-PTFLT-01"
+    ],
+    "P0607": [
+      "LAB-PTFLT-01"
+    ],
+    "P0700": [
+      "LAB-TCM-01"
+    ],
+    "P0A0D": [
+      "LAB-HVILK-01"
+    ],
+    "P0A1F": [
+      "LAB-HVFLT-01"
+    ],
+    "P0A7F": [
+      "LAB-HVFLT-01"
+    ],
+    "P0A80": [
+      "LAB-HVPACK-01"
+    ],
+    "P0AA6": [
+      "LAB-HVISO-01"
+    ],
+    "P0AFA": [
+      "LAB-HVFLT-01"
+    ],
+    "P1A0F": [
+      "LAB-HVFLT-01"
+    ],
+    "P1AAA": [
+      "LAB-HVFLT-01"
+    ],
+    "P1AB0": [
+      "LAB-HVFLT-01"
+    ],
+    "P1B0F": [
+      "LAB-HVFLT-01"
+    ],
+    "P1B16": [
+      "LAB-HVFLT-01"
+    ],
+    "P20EE": [
+      "LAB-EXHFLT-01"
+    ],
+    "U0073": [
+      "LAB-NETFLT-01"
+    ],
+    "U0100": [
+      "LAB-NETFLT-01"
+    ],
+    "U0101": [
+      "LAB-NETFLT-01"
+    ],
+    "U0121": [
+      "LAB-NETFLT-01"
+    ],
+    "U0401": [
+      "LAB-NETFLT-01"
+    ],
+    "U0415": [
+      "LAB-NETFLT-01"
+    ],
+    "U3000": [
+      "LAB-CTLMOD-01"
+    ],
+    "U3000_CRASH": [
+      "LAB-CRASH-01"
+    ]
+  },
+  "pm_tasks": {
+    "TIRE_ROTATION": [
+      "LAB-SUS-03"
+    ],
+    "BRAKE_INSPECTION": [
+      "LAB-BRK-01",
+      "LAB-BRK-02"
+    ],
+    "SCHEDULED_MAINTENANCE": [
+      "LAB-PM-001",
+      "LAB-PM-002"
+    ],
+    "HV_BATTERY_CHECK": [
+      "LAB-HV-02"
+    ],
+    "CABIN_FILTER": [
+      "LAB-CAB-01"
+    ],
+    "OIL_CHANGE": [
+      "LAB-OIL-01"
+    ]
+  }
+}

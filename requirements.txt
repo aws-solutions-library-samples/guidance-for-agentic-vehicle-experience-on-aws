@@ -1,0 +1,152 @@
+# THIS FILE IS THE ONE THAT SHIPS. It is the only requirements file the
+# AgentCore runtime installs from, for both the bidi and text runtimes.
+#
+# This file lives at the repo root because the AgentCore starter toolkit
+# auto-detects `requirements.txt` relative to the source_path, and our
+# source_path is the repo root (so the entrypoint can import the
+# agents.supervisor.* package tree). `.bedrock_agentcore.yaml` contains no
+# `requirements` key for either runtime, so there is no override.
+#
+# A sibling `agents/supervisor/requirements.txt` used to exist, and a comment
+# here used to designate that sibling as the authoritative one, to be synced by
+# hand. That designation was false and it caused a production outage:
+# `redis==5.3.1` was declared there, agentcore bundled THIS file which lacked it,
+# and the runtime could not initialize because the tools package imports redis at
+# module scope (issues/2026-09-10-agentcore-runtime-missing-redis/). The same
+# two-file confusion muddied the 2026-09-11 bidi diagnosis eleven days later.
+#
+# That sibling was DELETED 2026-09-21. Do not recreate it — declaring a runtime
+# dependency anywhere but this file means it does not ship.
+# tests/architecture/test_requirements_pins_repo_wide.py enforces its absence.
+#
+# Lambdas have their own requirements.txt under lambdas/*/ and are
+# deployed by a separate build script (scripts/build-*.sh), so they
+# are unaffected by this file.
+
+# bedrock-agentcore: preview package, pinned to installed working version per
+# ~/.kiro/steering/dependency-versions.md. Verified 2026-08-03 by T1.1 substrate gate:
+# BedrockAgentCoreApp 1.9.1 confirmed functional for non-conversational scheduled
+# invocations. See docs/tech.md § "CVX Tier 2 substrate (verified 2026-08-03)".
+bedrock-agentcore==1.9.1
+# bedrock-agentcore-starter-toolkit: deliberately NOT listed here.
+#
+# It is the local `agentcore` CLI (deploy/invoke/configure), not a runtime import.
+# Nothing in this repo imports `bedrock_agentcore_starter_toolkit` — verified
+# 2026-09-21 — and the Makefile installs it standalone
+# (`pipx install bedrock-agentcore-starter-toolkit`, Makefile:65 and :176), which
+# is the correct home for a CLI.
+#
+# It was pinned here on 2026-08-03 as `==0.3.9`, and that BLOCKED EVERY RUNTIME
+# DEPLOY: 0.3.9 requires `openapi-spec-validator>=0.7.2`, while this file pins
+# `openapi-spec-validator==0.7.1` (below) for CI exit-code parity on the AVX
+# contract. uv resolved the pair as unsatisfiable, so `agentcore deploy` failed
+# during dependency install before it could build anything. The conflict stayed
+# latent until a dependency change forced a rebuild.
+#
+# Do not re-add it. If a runtime ever genuinely needs the toolkit at import time,
+# reconcile it against the openapi-spec-validator pin first — and note that
+# bumping that pin is owned by spec 2026-09-18-avx-tier2-ios-cards-and-actions
+# Fix Group 6, not by this file.
+# See issues/2026-09-21-bidi-voice-import-error-unpinned-sdk/.
+# strands-agents pinned to ==1.39.0 (lazy pyaudio import; works on linux/arm64
+# without portaudio system lib). Versions <1.27.0 import pyaudio eagerly at
+# `strands.experimental.bidi.io.audio` module load — breaks any deploy that
+# can't install pyaudio. Strands 1.27.0+ uses __getattr__ lazy loading so
+# pyaudio is only loaded if BidiAudioIO is explicitly used (which the bidi
+# runtime does NOT — audio chunks come in via WebSocket, not local mic).
+#
+# A critical fix for Nova Sonic v2 (PR #2188, merged 2026-04-24 in upstream)
+# is in the 1.39.0 release — bidi_app.py's local monkey-patch can stay for
+# safety but is no longer strictly required.
+strands-agents==1.39.0
+boto3==1.43.6
+# requests pinned exact 2026-09-21 (was `>=2.32.0`). Same reasoning as the
+# aws_sdk_bedrock_runtime incident below: a range is an unreviewed dependency
+# upgrade on every container rebuild. 2.34.0 is the version installed in .venv
+# and in the deployed image; released 2026-05-11, so the 7-day quarantine in
+# ~/.kiro/steering/dependency-versions.md is satisfied with room to spare.
+requests==2.34.0
+# pydantic bumped to 2.13.4 (latest stable as of 2026-05-27, locally tested,
+# known-compatible with the rest of the stack).
+# Required to resolve with strands-agents==1.39.0, which transitively
+# requires pydantic>=2.11.0 via mcp>=1.23.0.
+pydantic==2.13.4
+# python-frontmatter pinned exact 2026-09-21 (was `>=1.1.0`). 1.1.0 is both the
+# installed version and the current latest, so this pin does not change what
+# resolves today — it stops a future release from entering the image silently.
+python-frontmatter==1.1.0
+# Required by strands.experimental.bidi for Nova Sonic (bidi_app.py).
+# Text-mode agentcore_app.py doesn't use this but having it in one
+# requirements set keeps both runtimes deployable from the same image.
+#
+# PINNED EXACT, and it must stay that way. This was `>=0.0.2` until 2026-09-21,
+# which silently broke bidi voice for 11 days: the 2026-09-11 runtime redeploy
+# resolved the range to 0.11.0 (released 2026-08-24), and 0.11.0 renamed
+# `BedrockRuntimeClient` -> `AsyncBedrockRuntimeClient`. That is an import-time
+# break inside `strands.experimental.bidi.models.nova_sonic`, so the container
+# died before serving a single request and every iOS voice attempt surfaced only
+# an opaque NSURLErrorDomain -1011 from the failed WebSocket upgrade. The
+# control plane still reported the runtime `READY` throughout.
+#
+# 0.x packages make breaking changes between minors; a range here is not a
+# convenience, it is an unreviewed dependency upgrade on every redeploy.
+# 0.6.0 is the version already installed locally and verified against
+# strands-agents==1.39.0 (nova_sonic imports, BidiNovaSonicModel resolves).
+# Before changing it, run tests/architecture/test_bidi_runtime_deps_pinned.py.
+# See issues/2026-09-21-bidi-voice-import-error-unpinned-sdk/.
+aws_sdk_bedrock_runtime==0.6.0
+# Eval pipeline additional dependencies (pinned exact versions per dependency-versions.md)
+pyyaml==6.0.2
+# websockets 13.1 released 2024-09-09 — satisfies 7-day quarantine rule
+websockets==13.1
+
+# Required by agents/supervisor/_lib/dms_cert_cache.py, which imports redis at
+# module level; tools/__init__.py -> dms_warranty -> dms_cert_cache, so the WHOLE
+# tools package fails to import without it and the runtime cannot initialize.
+# Was declared ONLY in the since-deleted agents/supervisor/requirements.txt while
+# agentcore bundles THIS file, so it never shipped and took the runtime down.
+# See issues/2026-09-10-agentcore-runtime-missing-redis/ and the header above.
+redis==5.3.1
+
+
+# openapi-spec-validator: CI schema-tests job pins this to 0.7.1 in
+# .github/workflows/lint.yml. Pinned here so local environments resolve the
+# same version CI runs. The two versions (0.7.1 vs 0.9.0) produce different
+# exit codes against the AVX contract — this pin closes that divergence.
+# See spec 2026-09-18-avx-tier2-ios-cards-and-actions Fix Group 6.
+openapi-spec-validator==0.7.1
+
+# ── JWT signature verification at the bidi session boundary ───────────────────
+# Used by agents/supervisor/jwt_verify.py (Fix Group 18 T18.6, security review
+# Cycle 1 W1). bidi_app.py calls assert_jwt_enforceable() at import, so in
+# `enforce` mode a missing package here refuses container start by design.
+#
+# Both of these ALREADY reach the image today — but only down a three-link chain
+# of ranges that nothing in this repo controls, verified 2026-09-23 by reading
+# installed distribution metadata:
+#
+#   strands-agents==1.39.0 -> mcp>=1.23.0,<2.0.0 -> pyjwt[crypto]>=2.10.1
+#                                                      -> cryptography>=3.4.0
+#
+# So the hazard is not absence, it is drift — the same shape as the
+# aws_sdk_bedrock_runtime incident above, three times over, since a rebuild may
+# float mcp, PyJWT and cryptography independently. The load-bearing link is
+# `mcp` requesting the `[crypto]` extra: that is a third-party decision a minor
+# mcp release inside <2.0.0 could drop, which would silently remove RS256 from
+# the image without changing one line of this repo. In `observe` mode that
+# degrades quietly, which is the worst case for a security control.
+#
+# Declared explicitly for the reason the file header gives: a runtime dependency
+# declared anywhere but this file does not ship. The `[crypto]` extra is stated
+# on our own line to make the intent ours rather than inherited; the separate
+# cryptography pin is what actually fixes the version, since the extra alone
+# would leave it a range.
+#
+# Versions are the installed, locally-verified ones rather than latest (PyJWT
+# 2.14.0, cryptography 50.0.1), per this repo's precedent of pinning known-good
+# and treating an upgrade as its own decision. Quarantine per
+# ~/.kiro/steering/dependency-versions.md is satisfied with wide margin:
+# PyJWT 2.12.1 released 2026-03-13 (194d), cryptography 48.0.0 2026-05-04 (142d).
+# Before changing either, run tests/architecture/test_bidi_runtime_deps_pinned.py.
+PyJWT[crypto]==2.12.1
+cryptography==48.0.0

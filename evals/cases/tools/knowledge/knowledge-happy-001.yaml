@@ -1,0 +1,16 @@
+tool: knowledge
+id: knowledge-happy-001
+description: "lookup_knowledge for recall query — returns found=true with passages from local corpora/ (BEDROCK_KB_ID unset; falls back to local corpora; see issue 2026-05-26-dtc-kb-not-configured)"
+tier: 1
+persona: fleet-driver
+vehicle_id: VEH-0025
+driver_id: drv-samantha-carter
+input:
+  type: text
+  input_args:
+    query: "recall 24V-567 rear axle"
+    max_results: 3
+expected:
+  tool_output:
+    found: true
+latency_budget_ms: 1000

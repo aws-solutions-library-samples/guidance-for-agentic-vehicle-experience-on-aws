@@ -1,0 +1,27 @@
+tool: book
+id: book-happy-001
+description: "Book emits valid STAR envelope with P3 default priority (no prior triage in session)"
+tier: 1
+persona: fleet-driver
+vehicle_id: VEH-0025
+driver_id: drv-samantha-carter
+input:
+  type: text
+  utterance: "book service for coolant overtemp"
+  input_args:
+    reportedSymptom: "Coolant temperature spiked on highway."
+    customerActionsTaken:
+      - "create-ticket"
+      - "warm-transfer-to-fleet-ops"
+    narrative: "P3 monitor — coolant over-temperature, schedule service within two weeks."
+expected:
+  tool_output:
+    envelope:
+      schemaVersion: "1.0.0"
+      messageType: "ServiceRequestAdd"
+      payload:
+        priority: "P3"
+        urgency:
+          classification: "monitor"
+          recommendedWindowHours: 336
+latency_budget_ms: 1000

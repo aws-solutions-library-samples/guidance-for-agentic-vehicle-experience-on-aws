@@ -1,0 +1,21 @@
+id: tire-pressure-low-001
+description: "Driver reports low tire pressure light; agent should offer DIY-or-service choice via diy_repair_advisor"
+tier: 2
+persona: fleet-driver
+vehicle_id: VEH-0025
+driver_id: drv-samantha-carter
+input:
+  type: text
+  utterance: "my tire pressure light came on"
+expected:
+  tool_calls:
+    - name: diy_repair_advisor
+      args_contain:
+        query: "tire pressure"
+  routing:
+    offers_diy_choice: true
+    safety_critical: false
+  response:
+    must_contain_one_of: ["yourself", "35 PSI", "tire pressure", "inflate", "service"]
+    must_not_contain: ["brake", "airbag", "pull over"]
+latency_budget_ms: 5000

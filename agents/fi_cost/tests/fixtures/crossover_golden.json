@@ -1,0 +1,125 @@
+{
+  "_comment": "Generated from services/fleet_intelligence/lifecycle.py. Pinned by sha256 in test_sell_timing.py.",
+  "_lifecycle_source": "services/fleet_intelligence/lifecycle.py",
+  "_horizon_months": 3,
+  "vectors": [
+    {
+      "name": "no_crossover",
+      "description": "Flat maintenance well below depreciation; no crossover within or beyond 3-month horizon",
+      "input": {
+        "vehicle_params": {
+          "purchasePrice": 60000.0
+        },
+        "maintenance_series": [
+          {
+            "yearMonth": "2026-07",
+            "maintenanceCost": 100.0
+          },
+          {
+            "yearMonth": "2026-08",
+            "maintenanceCost": 100.0
+          },
+          {
+            "yearMonth": "2026-09",
+            "maintenanceCost": 100.0
+          }
+        ],
+        "horizon_months": 3
+      },
+      "expected": {
+        "crossover_month": null,
+        "r_squared_meaningful": true,
+        "series_length": 3,
+        "maintenance_fit": {
+          "slope": 0.0,
+          "intercept": 100.0
+        },
+        "depreciation_params": {
+          "purchase_price": 60000.0,
+          "monthly_depreciation": 500.0,
+          "life_months": 120
+        }
+      },
+      "triggers_finding": false
+    },
+    {
+      "name": "crossover_now",
+      "description": "Maintenance rising steeply against low-value vehicle; crossover within 3-month horizon",
+      "input": {
+        "vehicle_params": {
+          "purchasePrice": 30000.0
+        },
+        "maintenance_series": [
+          {
+            "yearMonth": "2026-07",
+            "maintenanceCost": 220.0
+          },
+          {
+            "yearMonth": "2026-08",
+            "maintenanceCost": 230.0
+          },
+          {
+            "yearMonth": "2026-09",
+            "maintenanceCost": 240.0
+          }
+        ],
+        "horizon_months": 3
+      },
+      "expected": {
+        "crossover_month": "2026-10",
+        "r_squared_meaningful": true,
+        "series_length": 3,
+        "maintenance_fit": {
+          "slope": 10.0,
+          "intercept": 220.0
+        },
+        "depreciation_params": {
+          "purchase_price": 30000.0,
+          "monthly_depreciation": 250.0,
+          "life_months": 120
+        }
+      },
+      "triggers_finding": true,
+      "expected_action": "reassign_or_remarket"
+    },
+    {
+      "name": "beyond_horizon",
+      "description": "Maintenance rising slowly; crossover would exist beyond the 3-month horizon",
+      "input": {
+        "vehicle_params": {
+          "purchasePrice": 60000.0
+        },
+        "maintenance_series": [
+          {
+            "yearMonth": "2026-07",
+            "maintenanceCost": 200.0
+          },
+          {
+            "yearMonth": "2026-08",
+            "maintenanceCost": 210.0
+          },
+          {
+            "yearMonth": "2026-09",
+            "maintenanceCost": 220.0
+          }
+        ],
+        "horizon_months": 3
+      },
+      "expected": {
+        "crossover_month": null,
+        "r_squared_meaningful": true,
+        "series_length": 3,
+        "maintenance_fit": {
+          "slope": 10.0,
+          "intercept": 200.0
+        },
+        "depreciation_params": {
+          "purchase_price": 60000.0,
+          "monthly_depreciation": 500.0,
+          "life_months": 120
+        }
+      },
+      "triggers_finding": false
+    }
+  ]
+}

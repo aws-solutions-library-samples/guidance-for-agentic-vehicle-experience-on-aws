@@ -1,0 +1,20 @@
+tool: escalate
+id: escalate-edge-001
+description: "escalate_to_human P0 returns severity=P0 and contactId from Connect mock"
+tier: 1
+persona: fleet-driver
+vehicle_id: VEH-0025
+driver_id: drv-samantha-carter
+input:
+  type: text
+  utterance: "emergency brake failure escalate P0"
+  input_args:
+    severity: "P0"
+    reason: "brake failure ABS disabled"
+    summary: "Driver reports brake warning light and soft pedal."
+    dispatch_roadside: true
+expected:
+  tool_output:
+    severity: "P0"
+    contactId: "mock-contact-id-abc123"
+latency_budget_ms: 1000

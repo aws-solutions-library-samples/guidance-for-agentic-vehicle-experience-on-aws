@@ -1,0 +1,20 @@
+id: oil-change-due-001
+description: "Driver reports oil change reminder is on; agent should book directly (low priority maintenance)"
+tier: 2
+persona: fleet-driver
+vehicle_id: VEH-0025
+driver_id: drv-samantha-carter
+input:
+  type: text
+  utterance: "my oil change reminder is on"
+expected:
+  tool_calls:
+    - name: book
+      args_contain: {}
+  routing:
+    offers_diy_choice: false
+    safety_critical: false
+  response:
+    must_contain_one_of: ["oil change", "appointment", "booked", "scheduled", "service"]
+    must_not_contain: ["emergency", "pull over", "hazard"]
+latency_budget_ms: 5000

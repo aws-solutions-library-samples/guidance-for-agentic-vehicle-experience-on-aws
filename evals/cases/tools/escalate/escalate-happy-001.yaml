@@ -1,0 +1,21 @@
+tool: escalate
+id: escalate-happy-001
+description: "escalate_to_human P1 returns contactId and participantToken from Connect mock"
+tier: 1
+persona: fleet-driver
+vehicle_id: VEH-0025
+driver_id: drv-samantha-carter
+input:
+  type: text
+  utterance: "connect me to a human agent"
+  input_args:
+    severity: "P1"
+    reason: "engine overheating"
+    summary: ""
+    dispatch_roadside: false
+expected:
+  tool_output:
+    severity: "P1"
+    rsaDispatched: false
+    contactId: "mock-contact-id-abc123"
+latency_budget_ms: 1000
